@@ -1,5 +1,11 @@
-const CACHE = 'stotra-v1';
-const FILES = ['./index.html', './manifest.json'];
+const CACHE = 'stotra-v2';
+const BASE = '/sambasadashiva';
+const FILES = [
+  BASE + '/index.html',
+  BASE + '/manifest.json',
+  BASE + '/icon-192.png',
+  BASE + '/icon-512.png'
+];
 
 self.addEventListener('install', e => {
   e.waitUntil(
