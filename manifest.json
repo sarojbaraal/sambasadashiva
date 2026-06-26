@@ -2,7 +2,8 @@
   "name": "दैनिक स्तोत्र पाठ",
   "short_name": "स्तोत्र",
   "description": "ॐ नमः शिवाय — दैनिक स्तोत्र पाठ",
-  "start_url": "./index.html",
+  "start_url": "/sambasadashiva/index.html",
+  "scope": "/sambasadashiva/",
   "display": "standalone",
   "background_color": "#2C1A0A",
   "theme_color": "#8B1A1A",
@@ -10,13 +11,13 @@
   "lang": "sa",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "/sambasadashiva/icon-192.png",
       "sizes": "678x702",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icon-512.png",
+      "src": "/sambasadashiva/icon-512.png",
       "sizes": "678x702",
       "type": "image/png",
       "purpose": "any maskable"
