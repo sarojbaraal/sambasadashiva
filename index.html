@@ -1220,13 +1220,34 @@ adjustPadding();
 window.addEventListener('resize', adjustPadding);
 
 // ── Tab switching ──
+// ─── ट्याबहरूको स्क्रोल पोजिसन याद राख्नका लागि ───
+let tabScrollPositions = {};
+let currentActiveTab = document.querySelector('.tab-btn.active')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || '';
+
 function showTab(name, btn) {
-  document.querySelectorAll('.stotra-section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  btn.classList.add('active');
-  btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+    // नयाँ ट्याबमा जानुअघि हालको ट्याब कुन स्थानमा थियो (Scroll Y) सेभ गर्ने
+    if (currentActiveTab) {
+        tabScrollPositions[currentActiveTab] = window.scrollY;
+    }
+
+    document.querySelectorAll('.stotra-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    
+    // वर्तमान सक्रिय ट्याबको नाम अपडेट गर्ने
+    currentActiveTab = name;
+
+    // यदि यो ट्याबमा पहिले नै स्क्रोल गरिएको थियो भने त्यहीँ पुर्‍याउने, नत्र सुरु (0) मा लैजाने
+    setTimeout(() => {
+        const savedTarget = tabScrollPositions[name] || 0;
+        window.scrollTo({
+            top: savedTarget,
+            behavior: 'auto' // 'auto' राख्दा ट्याब फेरिने बित्तिकै तुरुन्तै पुरानो ठाउँमा पुग्छ
+        });
+    }, 10);
 }
 
 // ─── SWIPE TO CHANGE TABS ───
@@ -1245,7 +1266,7 @@ document.addEventListener('touchend', e => {
 }, false);
 
 function handleGesture() {
-    const minSwipeDistance = 100; // स्वाइप मान्नका लागि चाहिने न्यूनतम दुरी (पिक्सेलमा)
+    const minSwipeDistance = 60; // स्वाइप मान्नका लागि चाहिने न्यूनतम दुरी (पिक्सेलमा)
     const activeBtn = document.querySelector('.tab-btn.active');
     if (!activeBtn) return;
 
