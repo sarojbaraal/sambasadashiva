@@ -1212,31 +1212,93 @@
 </div>
 
 <script>
-// ── Measure sticky height & set content padding ──
+// ── Measure sticky height & set content padding (debounced on resize) ──
+const stickyTopEl = document.getElementById('stickyTop');
+const contentAreaEl = document.getElementById('contentArea');
 function adjustPadding() {
-  const h = document.getElementById('stickyTop').offsetHeight;
-  document.getElementById('contentArea').style.paddingTop = h + 'px';
+  contentAreaEl.style.paddingTop = stickyTopEl.offsetHeight + 'px';
 }
 adjustPadding();
-window.addEventListener('resize', adjustPadding);
+let resizeRAF = null;
+window.addEventListener('resize', () => {
+  if (resizeRAF) cancelAnimationFrame(resizeRAF);
+  resizeRAF = requestAnimationFrame(adjustPadding);
+}, { passive: true });
 
-// ─── स्क्रोल मोड र पोजिसन भेरिएबल ───
+// ─── ट्याब पोजिसन भेरिएबल ───
 let tabScrollPositions = {};
 let currentActiveTab = document.querySelector('.tab-btn.active')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || '';
-let isSmoothScrollOn = false; // डिफल्टमा बिस्तारै स्क्रोल हुने मोड बन्द छ
+
+// ─── अटो स्क्रोल (बिस्तारै स्क्रोल) — पढ्दै गर्दा पेज आफै तल सर्ने सुविधा ───
+let isSmoothScrollOn = false;   // अटो-स्क्रोल अन/अफ
+let autoScrollRAF = null;       // requestAnimationFrame ID
+let autoScrollLastTs = null;
+let autoScrollPauseTimer = null;
+let autoScrollRemainder = 0;    // sub-pixel क्यारी-ओभर (scrollBy ले १px भन्दा सानो चाल बेवास्ता गर्छ)
+const AUTO_SCROLL_SPEED = 22;   // पिक्सेल प्रति सेकेन्ड — बिस्तारै, पढ्न मिल्ने गति
+
+function setScrollBtnUI(on) {
+    const btn = document.getElementById('scrollModeBtn');
+    btn.innerText = on ? "बिस्तारै स्क्रोल: अन" : "बिस्तारै स्क्रोल: बन्द";
+    btn.style.background = on ? "var(--saffron)" : "#ffffff18";
+}
+
+function autoScrollStep(ts) {
+    if (!isSmoothScrollOn) { autoScrollRAF = null; return; }
+
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    if (window.scrollY >= maxScroll - 1) {
+        // पेजको फेदमा पुगेपछि अटो-स्क्रोल रोक्ने
+        stopAutoScroll();
+        isSmoothScrollOn = false;
+        setScrollBtnUI(false);
+        return;
+    }
+
+    if (autoScrollLastTs !== null) {
+        const dt = ts - autoScrollLastTs;
+        autoScrollRemainder += (AUTO_SCROLL_SPEED * dt) / 1000;
+        const wholePixels = Math.floor(autoScrollRemainder);
+        if (wholePixels > 0) {
+            window.scrollBy(0, wholePixels);
+            autoScrollRemainder -= wholePixels; // बाँकी सब-पिक्सेल भाग अर्को फ्रेमका लागि जोगाउने
+        }
+    }
+    autoScrollLastTs = ts;
+    autoScrollRAF = requestAnimationFrame(autoScrollStep);
+}
+
+function startAutoScroll() {
+    if (autoScrollRAF) return; // पहिले नै चलिरहेको छ
+    autoScrollLastTs = null;
+    autoScrollRemainder = 0;
+    autoScrollRAF = requestAnimationFrame(autoScrollStep);
+}
+
+function stopAutoScroll() {
+    if (autoScrollRAF) cancelAnimationFrame(autoScrollRAF);
+    autoScrollRAF = null;
+    autoScrollLastTs = null;
+}
 
 // बटन थिच्दा मोड अन/अफ गर्ने फङ्सन
 function toggleScrollMode() {
     isSmoothScrollOn = !isSmoothScrollOn;
-    const btn = document.getElementById('scrollModeBtn');
-    if (isSmoothScrollOn) {
-        btn.innerText = "बिस्तारै स्क्रोल: अन";
-        btn.style.background = "var(--saffron)"; // अन हुँदा रङ बदलिने
-    } else {
-        btn.innerText = "बिस्तारै स्क्रोल: बन्द";
-        btn.style.background = "#ffffff18";
-    }
+    setScrollBtnUI(isSmoothScrollOn);
+    if (isSmoothScrollOn) startAutoScroll(); else stopAutoScroll();
 }
+
+// प्रयोगकर्ताले औंलाले छोइ/स्क्रोल गरेको बेला अटो-स्क्रोल केही बेर रोक्ने, त्यसपछि फेरि सुरु गर्ने
+function pauseAutoScrollTemporarily() {
+    if (!isSmoothScrollOn) return;
+    stopAutoScroll();
+    clearTimeout(autoScrollPauseTimer);
+    autoScrollPauseTimer = setTimeout(() => {
+        if (isSmoothScrollOn) startAutoScroll();
+    }, 1500);
+}
+document.addEventListener('touchmove', pauseAutoScrollTemporarily, { passive: true });
+window.addEventListener('wheel', pauseAutoScrollTemporarily, { passive: true });
 
 function showTab(name, btn) {
     // नयाँ ट्याबमा जानुअघि हालको पोजिसन (Scroll Y) सेभ गर्ने
@@ -1244,29 +1306,23 @@ function showTab(name, btn) {
         tabScrollPositions[currentActiveTab] = window.scrollY;
     }
 
-    document.querySelectorAll('.stotra-section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    
+    const wasAutoScrolling = isSmoothScrollOn;
+    stopAutoScroll();
+
+    document.querySelectorAll('.stotra-section.active').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn.active').forEach(b => b.classList.remove('active'));
+
     document.getElementById('tab-' + name).classList.add('active');
     btn.classList.add('active');
     btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    
+
     currentActiveTab = name;
 
     // ब्राउजरलाई ट्याब रेन्डर गर्न पर्याप्त समय (150ms) दिइएको छ
     setTimeout(() => {
         const savedTarget = tabScrollPositions[name] || 0;
-        
-        if (isSmoothScrollOn) {
-            // बिस्तारै स्क्रोल अन हुँदा आधुनिक विधिको प्रयोग
-            window.scroll({
-                top: savedTarget,
-                behavior: 'smooth'
-            });
-        } else {
-            // बन्द हुँदा तुरुन्तै जम्प गर्ने
-            window.scrollTo(0, savedTarget);
-        }
+        window.scrollTo(0, savedTarget);
+        if (wasAutoScrolling) startAutoScroll(); // अटो-स्क्रोल अन थियो भने ट्याब बदलेपछि पनि जारी राख्ने
     }, 150); // टाइमङ १५० सम्म बढाउँदा मोबाइलमा नपड्कीकन मज्जाले स्क्रोल हुन्छ
 }
 
@@ -1277,20 +1333,22 @@ let touchendX = 0;
 // औंलाले स्क्रिन छुँदाको स्थान
 document.addEventListener('touchstart', e => {
     touchstartX = e.changedTouches[0].screenX;
-}, false);
+}, { passive: true });
 
 // औंला स्क्रिनबाट उठाउँदाको स्थान र स्वाइप गणना
 document.addEventListener('touchend', e => {
     touchendX = e.changedTouches[0].screenX;
     handleGesture();
-}, false);
+}, { passive: true });
+
+const allTabBtns = Array.from(document.querySelectorAll('.tab-nav .tab-btn')); // एकपटक मात्र क्यास गरिने
 
 function handleGesture() {
     const minSwipeDistance = 80; // स्वाइप मान्नका लागि चाहिने न्यूनतम दुरी (पिक्सेलमा)
     const activeBtn = document.querySelector('.tab-btn.active');
     if (!activeBtn) return;
 
-    const tabs = Array.from(document.querySelectorAll('.tab-nav .tab-btn'));
+    const tabs = allTabBtns;
     const currentIndex = tabs.indexOf(activeBtn);
 
     // Left Swipe (दाहिनेबाट देब्रे तान्दा -> अर्को ट्याबमा जाने)
@@ -1315,13 +1373,15 @@ function handleGesture() {
 // ── Font size ──
 const steps = [75, 85, 100, 115, 130, 150, 170];
 let fIdx = 2;
+const fontTargetEls = document.querySelectorAll('.shloka, .jay-item'); // एकपटक मात्र क्यास गरिने
+const fontLabelEl = document.getElementById('fontLabel');
 function changeFont(dir) {
   fIdx = Math.max(0, Math.min(steps.length - 1, fIdx + dir));
   const pct = steps[fIdx];
-  document.querySelectorAll('.shloka, .jay-item').forEach(el => {
+  fontTargetEls.forEach(el => {
     el.style.fontSize = (pct / 100) + 'rem';
   });
-  document.getElementById('fontLabel').textContent = pct + '%';
+  fontLabelEl.textContent = pct + '%';
 }
 
 // ── Wake Lock (screen stays on) ──
