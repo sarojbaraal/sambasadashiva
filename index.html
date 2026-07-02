@@ -373,6 +373,7 @@
       <button class="font-btn" onclick="changeFont(-1)">अ−</button>
       <span class="font-label" id="fontLabel">100%</span>
       <button class="font-btn" onclick="changeFont(1)">अ+</button>
+      <button class="font-btn" id="scrollModeBtn" onclick="toggleScrollMode()" style="margin-left: auto;">बिस्तारै स्क्रोल: बन्द</button>
     </div>
   </header>
 
@@ -1219,13 +1220,26 @@ function adjustPadding() {
 adjustPadding();
 window.addEventListener('resize', adjustPadding);
 
-// ── Tab switching ──
-// ─── ट्याबहरूको स्क्रोल पोजिसन याद राख्नका लागि ───
+// ─── स्क्रोल मोड र पोजिसन भेरिएबल ───
 let tabScrollPositions = {};
 let currentActiveTab = document.querySelector('.tab-btn.active')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || '';
+let isSmoothScrollOn = false; // डिफल्टमा बिस्तारै स्क्रोल हुने मोड बन्द छ
+
+// बटन थिच्दा मोड अन/अफ गर्ने फङ्सन
+function toggleScrollMode() {
+    isSmoothScrollOn = !isSmoothScrollOn;
+    const btn = document.getElementById('scrollModeBtn');
+    if (isSmoothScrollOn) {
+        btn.innerText = "बिस्तारै स्क्रोल: अन";
+        btn.style.background = "var(--saffron)"; // अन हुँदा रङ बदलिने
+    } else {
+        btn.innerText = "बिस्तारै स्क्रोल: बन्द";
+        btn.style.background = "#ffffff18";
+    }
+}
 
 function showTab(name, btn) {
-    // नयाँ ट्याबमा जानुअघि हालको ट्याब कुन स्थानमा थियो (Scroll Y) सेभ गर्ने
+    // नयाँ ट्याबमा जानुअघि हालको पोजिसन सेभ गर्ने
     if (currentActiveTab) {
         tabScrollPositions[currentActiveTab] = window.scrollY;
     }
@@ -1237,15 +1251,14 @@ function showTab(name, btn) {
     btn.classList.add('active');
     btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     
-    // वर्तमान सक्रिय ट्याबको नाम अपडेट गर्ने
     currentActiveTab = name;
 
-    // यदि यो ट्याबमा पहिले नै स्क्रोल गरिएको थियो भने त्यहीँ पुर्‍याउने, नत्र सुरु (0) मा लैजाने
     setTimeout(() => {
         const savedTarget = tabScrollPositions[name] || 0;
         window.scrollTo({
             top: savedTarget,
-            behavior: 'auto' // 'auto' राख्दा ट्याब फेरिने बित्तिकै तुरुन्तै पुरानो ठाउँमा पुग्छ
+            // 👈 यहाँ बटनको अवस्था हेरेर 'smooth' वा 'auto' निर्धारण हुन्छ
+            behavior: isSmoothScrollOn ? 'smooth' : 'auto' 
         });
     }, 10);
 }
