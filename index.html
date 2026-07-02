@@ -1235,6 +1235,48 @@ function showTab(name, btn) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// ─── SWIPE TO CHANGE TABS ───
+let touchstartX = 0;
+let touchendX = 0;
+
+// औंलाले स्क्रिन छुँदाको स्थान
+document.addEventListener('touchstart', e => {
+    touchstartX = e.changedTouches[0].screenX;
+}, false);
+
+// औंला स्क्रिनबाट उठाउँदाको स्थान र स्वाइप गणना
+document.addEventListener('touchend', e => {
+    touchendX = e.changedTouches[0].screenX;
+    handleGesture();
+}, false);
+
+function handleGesture() {
+    const minSwipeDistance = 60; // स्वाइप मान्नका लागि चाहिने न्यूनतम दुरी (पिक्सेलमा)
+    const activeBtn = document.querySelector('.tab-btn.active');
+    if (!activeBtn) return;
+
+    const tabs = Array.from(document.querySelectorAll('.tab-nav .tab-btn'));
+    const currentIndex = tabs.indexOf(activeBtn);
+
+    // Left Swipe (दाहिनेबाट देब्रे तान्दा -> अर्को ट्याबमा जाने)
+    if (touchstartX - touchendX > minSwipeDistance) {
+        if (currentIndex < tabs.length - 1) {
+            const nextTab = tabs[currentIndex + 1];
+            nextTab.click();
+            nextTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+    }
+    
+    // Right Swipe (देब्रेबाट दाहिने तान्दा -> अघिल्लो ट्याबमा जाने)
+    if (touchendX - touchstartX > minSwipeDistance) {
+        if (currentIndex > 0) {
+            const prevTab = tabs[currentIndex - 1];
+            prevTab.click();
+            prevTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+    }
+}
+
 // ── Font size ──
 const steps = [75, 85, 100, 115, 130, 150, 170];
 let fIdx = 2;
