@@ -1241,7 +1241,7 @@ function toggleScrollMode() {
 }
 
 function showTab(name, btn) {
-    // नयाँ ट्याबमा जानुअघि हालको पोजिसन सेभ गर्ने
+    // नयाँ ट्याबमा जानुअघि हालको पोजिसन (Scroll Y) सेभ गर्ने
     if (currentActiveTab) {
         tabScrollPositions[currentActiveTab] = window.scrollY;
     }
@@ -1255,14 +1255,21 @@ function showTab(name, btn) {
     
     currentActiveTab = name;
 
+    // ब्राउजरलाई ट्याब रेन्डर गर्न पर्याप्त समय (150ms) दिइएको छ
     setTimeout(() => {
         const savedTarget = tabScrollPositions[name] || 0;
-        window.scrollTo({
-            top: savedTarget,
-            // 👈 यहाँ बटनको अवस्था हेरेर 'smooth' वा 'auto' निर्धारण हुन्छ
-            behavior: isSmoothScrollOn ? 'smooth' : 'auto' 
-        });
-    }, 100);
+        
+        if (isSmoothScrollOn) {
+            // बिस्तारै स्क्रोल अन हुँदा आधुनिक विधिको प्रयोग
+            window.scroll({
+                top: savedTarget,
+                behavior: 'smooth'
+            });
+        } else {
+            // बन्द हुँदा तुरुन्तै जम्प गर्ने
+            window.scrollTo(0, savedTarget);
+        }
+    }, 150); // टाइमङ १५० सम्म बढाउँदा मोबाइलमा नपड्कीकन मज्जाले स्क्रोल हुन्छ
 }
 
 // ─── SWIPE TO CHANGE TABS ───
