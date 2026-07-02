@@ -1235,7 +1235,7 @@ let autoScrollRAF = null;       // requestAnimationFrame ID
 let autoScrollLastTs = null;
 let autoScrollPauseTimer = null;
 let autoScrollRemainder = 0;    // sub-pixel क्यारी-ओभर (scrollBy ले १px भन्दा सानो चाल बेवास्ता गर्छ)
-const AUTO_SCROLL_SPEED = 22;   // पिक्सेल प्रति सेकेन्ड — बिस्तारै, पढ्न मिल्ने गति
+const AUTO_SCROLL_SPEED = 12;   // पिक्सेल प्रति सेकेन्ड — बिस्तारै, पढ्न मिल्ने गति
 
 function setScrollBtnUI(on) {
     const btn = document.getElementById('scrollModeBtn');
