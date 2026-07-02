@@ -32,7 +32,9 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
+html {
+    scroll-behavior: smooth; /* 👈 यसले ब्राउजरलाई बिस्तारै स्क्रोल गर्ने क्षमता दिन्छ */
+}
   body {
     font-family: 'Noto Sans Devanagari', sans-serif;
     background: var(--cream);
@@ -1260,7 +1262,7 @@ function showTab(name, btn) {
             // 👈 यहाँ बटनको अवस्था हेरेर 'smooth' वा 'auto' निर्धारण हुन्छ
             behavior: isSmoothScrollOn ? 'smooth' : 'auto' 
         });
-    }, 10);
+    }, 100);
 }
 
 // ─── SWIPE TO CHANGE TABS ───
