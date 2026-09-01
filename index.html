@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sa">
+<html lang="ne">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;500;600;700&family=Noto+Serif+Devanagari:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;500;600;700&family=Noto+Serif+Devanagari:wght@400;600;700&family=Rozha+One&display=swap');
 
   :root {
     --saffron:    #D4621A;
@@ -29,29 +29,59 @@
     --divider:    #C9860A44;
     --shadow:     rgba(44,26,10,0.18);
     --header-h:   0px;
+    color-scheme: light;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+
+  /* ── DARK MODE (toggled via data-theme="dark" on <html>) ── */
+  html[data-theme="dark"] {
+    --saffron:    #E07A35;
+    --gold:       #E0A840;
+    --gold-light: #F5D488;
+    --cream:      #17110A;
+    --parchment:  #241C10;
+    --dark-brown: #0D0904;
+    --mid-brown:  #D9BE93;
+    --text-main:  #EFE3C8;
+    --text-muted: #C9AE82;
+    --divider:    #E0A84040;
+    --shadow:     rgba(0,0,0,0.55);
+    color-scheme: dark;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-/*html {scroll-behavior: smooth; /* 👈 यसले ब्राउजरलाई बिस्तारै स्क्रोल गर्ने क्षमता दिन्छ }*/
+  /* Note: scroll-behavior:smooth is intentionally NOT set on <html> — it would
+     fight with the JS-driven auto-scroll and the instant tab-switch scroll restore below. */
   body {
     font-family: 'Noto Sans Devanagari', sans-serif;
     background: var(--cream);
     color: var(--text-main);
     min-height: 100vh;
     overflow-x: hidden;
+    transition: background 0.25s ease, color 0.25s ease;
   }
 
   /* ── STICKY WRAPPER ── */
+  /* .sticky-top is now just a semantic grouping div (not positioned) —
+     .app-header and .tab-nav-shell each position themselves as fixed,
+     so they can hide/show independently while scrolling (see JS). */
   .sticky-top {
-    position: fixed;
-    top: 0; left: 0; right: 0;
+    position: relative;
     z-index: 200;
-    box-shadow: 0 3px 18px var(--shadow);
   }
 
   /* ── HEADER ── */
+  /* top:0 always — vertical position is fully driven by JS via translateY,
+     recalculated every scroll frame so it tracks the finger/scroll 1:1
+     (same feel as the banner's native position:sticky), with no separate
+     CSS-transition "snap" fighting the live scroll updates. */
   .app-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 210;
     background: linear-gradient(160deg, var(--deep-red) 0%, #5A0D0D 55%, var(--dark-brown) 100%);
+    box-shadow: 0 3px 18px var(--shadow);
+    will-change: transform;
   }
 
   .header-inner {
@@ -61,14 +91,6 @@
     text-align: center;
     gap: 12px;
     padding: 12px 16px 8px;
-  }
-
-  .om-symbol {
-    font-size: 1.9rem;
-    color: var(--gold-light);
-    line-height: 1;
-    text-shadow: 0 0 12px #F0C05088;
-    flex-shrink: 0;
   }
 
   .header-text h1 {
@@ -130,19 +152,63 @@
     text-align: center;
   }
 
+  /* Theme (light/dark) toggle button */
+  .theme-btn {
+    background: #ffffff18;
+    border: 1px solid #ffffff28;
+    color: var(--gold-light);
+    border-radius: 6px;
+    padding: 3px 9px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: background 0.2s;
+  }
+  .theme-btn:active { background: #ffffff35; }
+
+  /* ── TAB NAV SHELL ── */
+  /* top:0 (static) — like the header, its actual on-screen position comes
+     entirely from a JS-computed translateY every scroll frame, so it moves
+     in perfect lockstep with the scroll instead of a threshold+CSS-transition
+     "jump". No border-bottom here — it was a translucent line sitting right
+     above the banner and read as a stray gap; the box-shadow alone gives
+     enough separation. */
+  .tab-nav-shell {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #3A1A08, #2C1A0A);
+    box-shadow: 0 3px 18px var(--shadow);
+    will-change: transform;
+  }
+
   /* ── TAB NAV — pill style ── */
   .tab-nav {
     display: flex;
     overflow-x: auto;
     gap: 6px;
     padding: 8px 10px 9px;
-    background: linear-gradient(to bottom, #3A1A08, #2C1A0A);
-    border-bottom: 2px solid var(--divider);
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
     align-items: center;
   }
   .tab-nav::-webkit-scrollbar { display: none; }
+
+  /* Edge fades hinting there are more tabs to scroll to — shown/hidden by JS
+     based on actual scroll position, not just decorative. */
+  .tab-fade {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 26px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 2;
+  }
+  .tab-fade.show { opacity: 1; }
+  .tab-fade-left  { left: 0;  background: linear-gradient(to right, #2C1A0A, transparent); }
+  .tab-fade-right { right: 0; background: linear-gradient(to left,  #2C1A0A, transparent); }
 
   .tab-btn {
     flex-shrink: 0;
@@ -279,11 +345,11 @@
   .mantra-block.shanti { background: linear-gradient(135deg,#FFF8E7 0%,var(--cream) 100%); }
 
   .mantra-label {
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: var(--saffron);
-    text-transform: uppercase;
+    font-family: 'Noto Serif Devanagari', serif;
+    font-size: 1.32rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--gold);
     margin-bottom: 8px;
     display: flex;
     align-items: center;
@@ -335,15 +401,14 @@
 
   .shanti-tag {
     display: inline-block;
-    background: var(--gold);
-    color: white;
-    font-size: 1.2rem;
-    border-radius: 3px;
-    padding: 1px 6px;
-    margin-top: 5px;
-    font-family: sans-serif;
-    font-weight: 700;
-    letter-spacing: 0.06em;
+    background: none;
+    color: var(--saffron);
+    font-size: 1.35rem;
+    padding: 2px 0;
+    margin-top: 6px;
+    font-family: 'Rozha One', 'Noto Serif Devanagari', serif;
+    font-weight: 400;
+    letter-spacing: 0.08em;
   }
 
   /* ── JAYAKAR ── */
@@ -405,7 +470,6 @@
 <div class="sticky-top" id="stickyTop">
   <header class="app-header">
     <div class="header-inner">
-      <div class="om-symbol"></div>
       <div class="header-text">
         <h1>दैनिक स्तोत्र पाठ</h1>
       </div>
@@ -416,27 +480,32 @@
       <button class="font-btn" onclick="changeFont(-1)">अ−</button>
       <span class="font-label" id="fontLabel">100%</span>
       <button class="font-btn" onclick="changeFont(1)">अ+</button>
-      <button class="font-btn" id="scrollModeBtn" onclick="toggleScrollMode()" style="margin-left: auto;">आफै स्क्रोल गर्न यहाँ थिच्नुहोस्</button>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="उज्यालो/अँध्यारो मोड">🌙</button>
+      <button class="font-btn" id="scrollModeBtn" onclick="toggleScrollMode()" style="margin-left: 8px;">आफै स्क्रोल गर्न यहाँ थिच्नुहोस्</button>
     </div>
   </header>
 
-  <nav class="tab-nav" id="tabNav">
-    <button class="tab-btn active" onclick="showTab('shanti',this)"><span class="tab-icon">🕉️</span>शान्ति</button>
-    <button class="tab-btn" onclick="showTab('ganesh',this)"><span class="tab-icon">🐘</span>गणेश</button>
-    <button class="tab-btn" onclick="showTab('surya',this)"><span class="tab-icon">☀️</span>सूर्य</button>
-    <button class="tab-btn" onclick="showTab('vishnu',this)"><span class="tab-icon">🪷</span>विष्णु</button>
-    <button class="tab-btn" onclick="showTab('shivaguru',this)"><span class="tab-icon">🔱</span>शिव-गुरु</button>
-    <button class="tab-btn" onclick="showTab('rudra',this)"><span class="tab-icon">🔱</span>रुद्राष्टकम्</button>
-    <button class="tab-btn" onclick="showTab('pancha',this)"><span class="tab-icon">📿</span>पञ्चाक्षर</button>
-    <button class="tab-btn" onclick="showTab('manas',this)"><span class="tab-icon">🪔</span>मानस पूजा</button>
-    <button class="tab-btn" onclick="showTab('tandava',this)"><span class="tab-icon">💃</span>ताण्डव</button>
-    <button class="tab-btn" onclick="showTab('saraswati',this)"><span class="tab-icon">🎵</span>सरस्वती</button>
-    <button class="tab-btn" onclick="showTab('lakshmi',this)"><span class="tab-icon">🌸</span>लक्ष्मी</button>
-    <button class="tab-btn" onclick="showTab('parvati-1',this)"><span class="tab-icon">🌺</span>देवी प्रार्थना</button>
-    <button class="tab-btn" onclick="showTab('parvati-2',this)"><span class="tab-icon">🌊</span>आनन्दलहरी</button>
-    <button class="tab-btn" onclick="showTab('parvati-3',this)"><span class="tab-icon">🙏</span>देव्यपराध</button>
-    <button class="tab-btn" onclick="showTab('jay',this)"><span class="tab-icon">🚩</span>जयजयकार</button>
-  </nav>
+  <div class="tab-nav-shell" id="tabNavShell">
+    <nav class="tab-nav" id="tabNav">
+      <button class="tab-btn active" data-tab="shanti" onclick="showTab('shanti',this)"><span class="tab-icon">🕉️</span>शान्ति</button>
+      <button class="tab-btn" data-tab="ganesh" onclick="showTab('ganesh',this)"><span class="tab-icon">🐘</span>गणेश</button>
+      <button class="tab-btn" data-tab="surya" onclick="showTab('surya',this)"><span class="tab-icon">☀️</span>सूर्य</button>
+      <button class="tab-btn" data-tab="vishnu" onclick="showTab('vishnu',this)"><span class="tab-icon">🪷</span>विष्णु</button>
+      <button class="tab-btn" data-tab="shivaguru" onclick="showTab('shivaguru',this)"><span class="tab-icon">🔱</span>शिव-गुरु</button>
+      <button class="tab-btn" data-tab="rudra" onclick="showTab('rudra',this)"><span class="tab-icon">🔱</span>रुद्राष्टकम्</button>
+      <button class="tab-btn" data-tab="pancha" onclick="showTab('pancha',this)"><span class="tab-icon">📿</span>पञ्चाक्षर</button>
+      <button class="tab-btn" data-tab="manas" onclick="showTab('manas',this)"><span class="tab-icon">🪔</span>मानस पूजा</button>
+      <button class="tab-btn" data-tab="tandava" onclick="showTab('tandava',this)"><span class="tab-icon">💃</span>ताण्डव</button>
+      <button class="tab-btn" data-tab="saraswati" onclick="showTab('saraswati',this)"><span class="tab-icon">🎵</span>सरस्वती</button>
+      <button class="tab-btn" data-tab="lakshmi" onclick="showTab('lakshmi',this)"><span class="tab-icon">🌸</span>लक्ष्मी</button>
+      <button class="tab-btn" data-tab="parvati-1" onclick="showTab('parvati-1',this)"><span class="tab-icon">🌺</span>देवी प्रार्थना</button>
+      <button class="tab-btn" data-tab="parvati-2" onclick="showTab('parvati-2',this)"><span class="tab-icon">🌊</span>आनन्दलहरी</button>
+      <button class="tab-btn" data-tab="parvati-3" onclick="showTab('parvati-3',this)"><span class="tab-icon">🙏</span>देव्यपराध</button>
+      <button class="tab-btn" data-tab="jay" onclick="showTab('jay',this)"><span class="tab-icon">🚩</span>जयजयकार</button>
+    </nav>
+    <div class="tab-fade tab-fade-left" id="fadeLeft"></div>
+    <div class="tab-fade tab-fade-right" id="fadeRight"></div>
+  </div>
 </div>
 
 <!-- CONTENT (top padding set by JS after measuring sticky height) -->
@@ -445,7 +514,7 @@
 <!-- 1. SHANTI -->
 <section class="stotra-section active" id="tab-shanti">
   <div class="deity-banner">
-    <img src="deity-photo-shanti.png" onerror="this.parentElement.style.background='linear-gradient(135deg,#8B1A1A,#2C1A0A)';this.style.display='none'" alt="OM">
+    <img src="deity-photo-shanti.png" onerror="bannerFallback(this,'linear-gradient(135deg,#8B1A1A,#2C1A0A)')" alt="OM">
     <div class="banner-overlay">
       <h2>🕉 शान्ति मन्त्र</h2>
       <!----<p class="subtitle">Shanti Mantra</p>---->
@@ -478,7 +547,7 @@
 <!-- 2. GANESH -->
 <section class="stotra-section" id="tab-ganesh">
     <div class="deity-banner">
-        <img src="deity-photo-ganesh.png" onerror="this.parentElement.style.background='#4a1a00';this.style.display='none'" alt="Ganesha">
+        <img src="deity-photo-ganesh.png" onerror="bannerFallback(this,'#4a1a00')" alt="Ganesha">
         <div class="banner-overlay">
             <h2>🐘 श्री गणेशाय नमः</h2>
         </div>
@@ -518,7 +587,7 @@
 <section class="stotra-section" id="tab-surya">
   <div class="deity-banner">
     <img src="deity-photo-surya.png"
-         onerror="this.parentElement.style.background='#3a2000';this.style.display='none'" alt="Surya">
+         onerror="bannerFallback(this,'#3a2000')" alt="Surya">
     <div class="banner-overlay">
       <h2>☀️ ॐ आदित्याय नमः</h2>
       <!----<p class="subtitle">Surya Vandana</p>--->
@@ -569,7 +638,7 @@
 <section class="stotra-section" id="tab-vishnu">
   <div class="deity-banner">
     <img src="deity-photo-vishnu.png"
-         onerror="this.parentElement.style.background='#001a3a';this.style.display='none'" alt="Vishnu">
+         onerror="bannerFallback(this,'#001a3a')" alt="Vishnu">
     <div class="banner-overlay">
       <h2>🪷 ॐ विष्णवे नमः</h2>
       <!----<p class="subtitle">Vishnu Vandana</p>---->
@@ -597,7 +666,7 @@
 <section class="stotra-section" id="tab-shivaguru">
   <div class="deity-banner">
     <img src="deity-photo-mahadev.png"
-         onerror="this.parentElement.style.background='#1a0a2a';this.style.display='none'" alt="Shiva">
+         onerror="bannerFallback(this,'#1a0a2a')" alt="Shiva">
     <div class="banner-overlay">
       <h2>🔱 ॐ नमः शिवाय • ॐ गुरवे नमः</h2>
       <!----<p class="subtitle">Shiva-Guru Vandana</p>---->
@@ -646,7 +715,7 @@
 <section class="stotra-section" id="tab-rudra">
   <div class="deity-banner">
     <img src="deity-photo-rudrastakam.png"
-         onerror="this.parentElement.style.background='#1a0a2a';this.style.display='none'" alt="Shiva Nataraja">
+         onerror="bannerFallback(this,'#1a0a2a')" alt="Shiva Nataraja">
     <div class="banner-overlay">
       <h2>🔱 श्रीरुद्राष्टकम्</h2>
      <!---- <p class="subtitle">8 verses — Goswami Tulsidas</p>---->
@@ -700,7 +769,7 @@
 <section class="stotra-section" id="tab-pancha">
   <div class="deity-banner">
     <img src="deity-photo-panchakshar.png"
-         onerror="this.parentElement.style.background='#1a0a2a';this.style.display='none'" alt="Shiva">
+         onerror="bannerFallback(this,'#1a0a2a')" alt="Shiva">
     <div class="banner-overlay">
       <h2>🔱 शिव पञ्चाक्षर स्तोत्रम्</h2>
       <!----<p class="subtitle">न-म-शि-व-य — 5 verses</p>---->
@@ -793,7 +862,7 @@
 <section class="stotra-section" id="tab-manas">
   <div class="deity-banner">
     <img src="deity-photo-manas.png"
-         onerror="this.parentElement.style.background='#1a0a00';this.style.display='none'" alt="Shiva parvati">
+         onerror="bannerFallback(this,'#1a0a00')" alt="Shiva parvati">
     <div class="banner-overlay">
       <h2>🪔 शिव मानस पूजा स्तोत्रम्</h2>
      <!---- <p class="subtitle">Adi Shankaracharya</p>---->
@@ -838,7 +907,7 @@
 <section class="stotra-section" id="tab-tandava">
   <div class="deity-banner">
     <img src="deity-photo-tandav.png"
-         onerror="this.parentElement.style.background='#0a001a';this.style.display='none'" alt="Nataraja">
+         onerror="bannerFallback(this,'#0a001a')" alt="Nataraja">
     <div class="banner-overlay">
       <h2>💫 शिवताण्डवस्तोत्रम्</h2>
       <!----<p class="subtitle">Shiva Tandava Stotram — Ravana krit</p>---->
@@ -937,7 +1006,7 @@
 <section class="stotra-section" id="tab-saraswati">
   <div class="deity-banner">
     <img src="deity-photo-saraswati.png"
-         onerror="this.parentElement.style.background='#001a2a';this.style.display='none'" alt="Saraswati">
+         onerror="bannerFallback(this,'#001a2a')" alt="Saraswati">
     <div class="banner-overlay">
       <h2>🦢🪕📚 ॐ सरस्वत्यै नमः</h2>
      <!---- <p class="subtitle">Saraswati Vandana</p>---->
@@ -973,7 +1042,7 @@
 <section class="stotra-section" id="tab-lakshmi">
   <div class="deity-banner">
     <img src="deity-photo-laxmi.png"
-         onerror="this.parentElement.style.background='#1a1000';this.style.display='none'" alt="Lakshmi">
+         onerror="bannerFallback(this,'#1a1000')" alt="Lakshmi">
     <div class="banner-overlay">
       <h2>🌸🪷💰 ॐ महालक्ष्म्यै नमः</h2>
     <!----  <p class="subtitle">Mahalakshmi Vandana</p>---->
@@ -1004,7 +1073,7 @@
 <!-- 12. parvati-1 -->
 <section class="stotra-section" id="tab-parvati-1">
     <div class="deity-banner">
-        <img src="deity-photo-parvati.png" onerror="this.parentElement.style.background='#1a0010';this.style.display='none'" alt="parvati-1">
+        <img src="deity-photo-parvati.png" onerror="bannerFallback(this,'#1a0010')" alt="parvati-1">
         <div class="banner-overlay">
             <h2>🌸🔱 ॐ पार्वत्यै नमः</h2>
           <!----  <p class="subtitle">parvati-1-Devi Vandana</p>---->
@@ -1046,7 +1115,7 @@
 <section class="stotra-section" id="tab-parvati-2">
   <div class="deity-banner">
     <img src="deity-photo-parvati.png"
-         onerror="this.parentElement.style.background='#1a0010';this.style.display='none'" alt="parvati-2">
+         onerror="bannerFallback(this,'#1a0010')" alt="parvati-2">
     <div class="banner-overlay">
       <h2>🌺🔱 ॐ पार्वत्यै नमः</h2>
      <!---- <p class="subtitle">parvati-2-Devi Vandana</p>---->
@@ -1162,7 +1231,7 @@
 <!-- 12. parvati-3 -->
 <section class="stotra-section" id="tab-parvati-3">
     <div class="deity-banner">
-        <img src="deity-photo-parvati.png" onerror="this.parentElement.style.background='#1a0010';this.style.display='none'">
+        <img src="deity-photo-parvati.png" onerror="bannerFallback(this,'#1a0010')">
         <div class="banner-overlay">
             <h2>🌸🔱🙏🏻🙇🏽 ॐ पार्वत्यै नमः</h2>
             <!----<p class="subtitle">parvati-3-Dev Vandana</p>---->
@@ -1235,7 +1304,7 @@
 <section class="stotra-section" id="tab-jay">
   <div class="deity-banner">
     <img src="deity-photo-jayjaykar.png"
-         onerror="this.parentElement.style.background='#1a0800';this.style.display='none'" alt="Trimurti">
+         onerror="bannerFallback(this,'#1a0800')" alt="Trimurti">
     <div class="banner-overlay">
       <h2>🙏 जयजयकार</h2>
     <!----  <p class="subtitle">समापन — Jay Jayakar</p>---->
@@ -1336,24 +1405,130 @@
 </div>
 
 <script>
-// ── Measure sticky height & set content padding (debounced on resize) ──
-const stickyTopEl = document.getElementById('stickyTop');
-const contentAreaEl = document.getElementById('contentArea');
+// ── Image fallback for deity banners (shared, instead of repeating inline JS per <img>) ──
+function bannerFallback(imgEl, color) {
+  imgEl.parentElement.style.background = color;
+  imgEl.style.display = 'none';
+}
+
+// ── Light / Dark theme ──
+const themeBtnEl = document.getElementById('themeBtn');
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  themeBtnEl.textContent = theme === 'dark' ? '☀️' : '🌙';
+  try { localStorage.setItem('stotra-theme', theme); } catch (e) {}
+}
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  setTheme(isDark ? 'light' : 'dark');
+}
+(function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem('stotra-theme'); } catch (e) {}
+  if (!saved) {
+    saved = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  }
+  setTheme(saved);
+})();
+
+// ── Measure header/nav heights & set content padding (debounced on resize) ──
+const appHeaderEl    = document.querySelector('.app-header');
+const tabNavShellEl  = document.getElementById('tabNavShell');
+const tabNavEl       = document.getElementById('tabNav');
+const contentAreaEl  = document.getElementById('contentArea');
+let headerH = 0, navH = 0;
+
+// ── Hide-on-scroll state (continuous, scroll-linked — not a threshold+snap) ──
+// header/nav are translated by exactly the pixels scrolled each frame, same as
+// how the deity banner naturally moves via position:sticky — so all of it reads
+// as one continuous motion instead of the top bars "jumping" while the banner
+// glides. Rule: scrolling down hides both together, in step with the scroll.
+// Scrolling up brings the tab-nav back in step; the header stays hidden until
+// the very top is reached (then everything resets in one go).
+let headerHideAmt = 0; // 0..headerH  (how many px of the header are currently tucked away)
+let navHideAmt = 0;    // 0..navH
+
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+function applyHeaderNavTransform() {
+  appHeaderEl.style.transform = `translateY(${-headerHideAmt}px)`;
+  const navY = (headerH - headerHideAmt) - navHideAmt;
+  tabNavShellEl.style.transform = `translateY(${navY}px)`;
+  // Deity banner / section-header stick right under whatever is currently
+  // visible — computed from the SAME numbers driving the transforms above, on
+  // every frame, so there's never a stale/lagging value causing a gap.
+  document.documentElement.style.setProperty('--header-h', Math.max(0, navY + navH) + 'px');
+}
+
 function adjustPadding() {
-  const h = stickyTopEl.offsetHeight;
-  contentAreaEl.style.paddingTop = h + 'px';
-  document.documentElement.style.setProperty('--header-h', h + 'px');
+  // getBoundingClientRect gives sub-pixel precision (offsetHeight rounds to an
+  // integer, which was the other source of the hairline gap); ceil so we round
+  // up rather than under-measure.
+  headerH = Math.ceil(appHeaderEl.getBoundingClientRect().height);
+  navH = Math.ceil(tabNavShellEl.getBoundingClientRect().height);
+  headerHideAmt = clamp(headerHideAmt, 0, headerH);
+  navHideAmt = clamp(navHideAmt, 0, navH);
+  // Content padding stays fixed to the fully-expanded height — it only matters
+  // for the page's resting layout, not for the temporary hide/show animation.
+  contentAreaEl.style.paddingTop = (headerH + navH) + 'px';
+  applyHeaderNavTransform();
 }
 adjustPadding();
 let resizeRAF = null;
+// Re-measure once the Devanagari web fonts actually finish loading — until then,
+// headerH/navH may have been measured against fallback-font metrics.
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(adjustPadding);
+}
+// Also re-measure whenever the header/nav's own rendered size changes for any
+// reason (rotation, text reflow, etc.) — more reliable than only listening to
+// window resize.
+if (window.ResizeObserver) {
+  const sizeObserver = new ResizeObserver(() => {
+    if (resizeRAF) cancelAnimationFrame(resizeRAF);
+    resizeRAF = requestAnimationFrame(adjustPadding);
+  });
+  sizeObserver.observe(appHeaderEl);
+  sizeObserver.observe(tabNavShellEl);
+}
 window.addEventListener('resize', () => {
   if (resizeRAF) cancelAnimationFrame(resizeRAF);
   resizeRAF = requestAnimationFrame(adjustPadding);
 }, { passive: true });
 
+const TOP_THRESHOLD = 4; // px from top counts as "at the top"
+let lastScrollY = window.scrollY;
+
+let scrollRAF = null;
+function onScroll() {
+  if (scrollRAF) return;
+  scrollRAF = requestAnimationFrame(() => {
+    scrollRAF = null;
+    const y = window.scrollY;
+    const dy = y - lastScrollY;
+    lastScrollY = y;
+
+    if (y <= TOP_THRESHOLD) {
+      headerHideAmt = 0;
+      navHideAmt = 0;
+    } else if (dy > 0) {
+      // Scrolling down — hide both, exactly matching however far was scrolled
+      // (works identically for a single small auto-scroll tick or a fast fling).
+      headerHideAmt = clamp(headerHideAmt + dy, 0, headerH);
+      navHideAmt = clamp(navHideAmt + dy, 0, navH);
+    } else if (dy < 0) {
+      // Scrolling up — only the tab-nav comes back, in step with the scroll;
+      // the header amount is left untouched until we reach the top.
+      navHideAmt = clamp(navHideAmt + dy, 0, navH);
+    }
+    applyHeaderNavTransform();
+  });
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+
 // ─── ट्याब पोजिसन भेरिएबल ───
 let tabScrollPositions = {};
-let currentActiveTab = document.querySelector('.tab-btn.active')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || '';
+let currentActiveTab = document.querySelector('.tab-btn.active')?.dataset.tab || '';
 
 // ─── अटो स्क्रोल (बिस्तारै स्क्रोल) — पढ्दै गर्दा पेज आफै तल सर्ने सुविधा ───
 let isSmoothScrollOn = false;   // अटो-स्क्रोल अन/अफ
@@ -1428,6 +1603,18 @@ function pauseAutoScrollTemporarily() {
 // Mouse wheel (desktop) मा पनि pause
 window.addEventListener('wheel', pauseAutoScrollTemporarily, { passive: true });
 
+// ── Tab-nav scroll fades (only shown when there's actually more to scroll to) ──
+const fadeLeftEl  = document.getElementById('fadeLeft');
+const fadeRightEl = document.getElementById('fadeRight');
+function updateTabFades() {
+  const maxScroll = tabNavEl.scrollWidth - tabNavEl.clientWidth;
+  fadeLeftEl.classList.toggle('show', tabNavEl.scrollLeft > 4);
+  fadeRightEl.classList.toggle('show', tabNavEl.scrollLeft < maxScroll - 4);
+}
+tabNavEl.addEventListener('scroll', updateTabFades, { passive: true });
+window.addEventListener('resize', updateTabFades);
+updateTabFades();
+
 function showTab(name, btn) {
     // नयाँ ट्याबमा जानुअघि हालको पोजिसन (Scroll Y) सेभ गर्ने
     if (currentActiveTab) {
@@ -1442,6 +1629,7 @@ function showTab(name, btn) {
     document.getElementById('tab-' + name).classList.add('active');
     btn.classList.add('active');
     btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    setTimeout(updateTabFades, 320); // after the scrollIntoView animation settles
 
     currentActiveTab = name;
 
@@ -1500,18 +1688,14 @@ function handleGesture() {
     const isUI = tgt && (tgt.closest('.tab-btn') || tgt.closest('.font-btn') || tgt.closest('#scrollModeBtn'));
 
     if (!isUI && duration < MAX_TAP && absDx < MAX_MOVE && absDy < MAX_MOVE) {
-        // Toggle auto-scroll on/off
-        isSmoothScrollOn = !isSmoothScrollOn;
-        userDisabledAutoScroll = !isSmoothScrollOn;
-        setScrollBtnUI(isSmoothScrollOn);
+        // Reuse the single source of truth for the toggle instead of duplicating it here.
+        toggleScrollMode();
         if (isSmoothScrollOn) {
-            startAutoScroll();
-            // Brief visual flash to confirm
+            // Brief visual flash to confirm (tap-specific feedback only)
+            const flashColor = document.documentElement.getAttribute('data-theme') === 'dark' ? '#3A2A10' : '#FFF8E7';
             document.body.style.transition = 'background 0.15s';
-            document.body.style.background = '#FFF8E7';
+            document.body.style.background = flashColor;
             setTimeout(() => { document.body.style.background = ''; }, 150);
-        } else {
-            stopAutoScroll();
         }
         return;
     }
