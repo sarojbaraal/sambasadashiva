@@ -1486,6 +1486,9 @@ window.addEventListener('resize', () => {
 
 const TOP_THRESHOLD = 4; // px from top counts as "at the top"
 let lastScrollY = window.scrollY;
+// A tab click locks the header/font-bar hidden. The lock is released only by
+// an intentional downward user gesture, never by programmatic tab scrolling.
+let headerHiddenByTab = false;
 
 let scrollRAF = null;
 function onScroll() {
@@ -1496,7 +1499,9 @@ function onScroll() {
     const dy = y - lastScrollY;
     lastScrollY = y;
 
-    if (y <= TOP_THRESHOLD) {
+    if (headerHiddenByTab) {
+      headerHideAmt = headerH;
+    } else if (y <= TOP_THRESHOLD) {
       headerHideAmt = 0;
     } else if (dy !== 0) {
       // One shared offset makes the header, font bar, tab navigation, and
@@ -1582,8 +1587,14 @@ function pauseAutoScrollTemporarily() {
         if (isSmoothScrollOn) startAutoScroll();
     }, 1500);
 }
-// Mouse wheel (desktop) मा पनि pause
-window.addEventListener('wheel', pauseAutoScrollTemporarily, { passive: true });
+// Mouse wheel (desktop) मा पनि pause. A downward wheel is an intentional
+// scroll gesture, so it releases the tab-click lock while keeping the header
+// fully collapsed.
+function handleWheelForHeader(e) {
+    if (headerHiddenByTab && e.deltaY > 0) headerHiddenByTab = false;
+    pauseAutoScrollTemporarily();
+}
+window.addEventListener('wheel', handleWheelForHeader, { passive: true });
 
 // ── Tab-nav scroll fades (only shown when there's actually more to scroll to) ──
 const fadeLeftEl  = document.getElementById('fadeLeft');
@@ -1598,6 +1609,13 @@ window.addEventListener('resize', updateTabFades);
 updateTabFades();
 
 function showTab(name, btn) {
+    // A tab click is navigation UI, not a request to reveal the page chrome.
+    // Lock the header/font-bar hidden before any scrollIntoView or restoration
+    // callback can run, while the tab navigation remains at the top.
+    headerHiddenByTab = true;
+    headerHideAmt = headerH;
+    applyHeaderNavTransform();
+
     // नयाँ ट्याबमा जानुअघि हालको पोजिसन (Scroll Y) सेभ गर्ने
     if (currentActiveTab) {
         tabScrollPositions[currentActiveTab] = window.scrollY;
@@ -1618,7 +1636,11 @@ function showTab(name, btn) {
     // ब्राउजरलाई ट्याब रेन्डर गर्न पर्याप्त समय (150ms) दिइएको छ
     setTimeout(() => {
         const savedTarget = tabScrollPositions[name] || 0;
+        // Restore the content position without changing the persistent
+        // tab-click header lock.
         window.scrollTo(0, savedTarget);
+        headerHideAmt = headerH;
+        applyHeaderNavTransform();
         // ट्याब बदलिनासाथ अटो-स्क्रोल आफैं सुरु हुन्छ, प्रयोगकर्ताले
         // आफैं बटन थिचेर बन्द नगरेसम्म (अघिल्लो ट्याबको स्क्रोल अवस्था जे भए पनि)
         if (!userDisabledAutoScroll) {
@@ -1645,6 +1667,14 @@ document.addEventListener('touchstart', e => {
     touchstartX    = e.changedTouches[0].screenX;
     touchstartY    = e.changedTouches[0].screenY;
     touchstartTime = Date.now();
+}, { passive: true });
+
+// On touch devices, release the lock only when the user deliberately swipes
+// downward. Tab taps and horizontal tab swipes do not reveal the header.
+document.addEventListener('touchmove', e => {
+    if (!headerHiddenByTab) return;
+    const currentY = e.touches[0].screenY;
+    if (currentY < touchstartY - 8) headerHiddenByTab = false;
 }, { passive: true });
 
 document.addEventListener('touchend', e => {
