@@ -423,7 +423,7 @@
 
   .jay-item .jai {
     flex-shrink: 0;
-    font-size: 0.68rem;
+    font-size: 0.9rem;
     font-weight: 700;
     color: white;
     background: var(--saffron);
@@ -466,6 +466,7 @@
     <div class="header-inner">
       <div class="header-text">
         <h1>दैनिक स्तोत्र पाठ</h1>
+        <p>शिव-इष्ट केन्द्रित नित्य साधना</p>
       </div>
       <!--<div class="wake-dot" id="wakeDot" title="Screen awake"></div>-->
     </div>
@@ -480,22 +481,24 @@
   </header>
 
   <div class="tab-nav-shell" id="tabNavShell">
+    <!-- SHIVA-SADHANA-HIERARCHY -->
     <nav class="tab-nav" id="tabNav">
-      <button class="tab-btn active" data-tab="shanti" onclick="showTab('shanti',this)"><span class="tab-icon">🕉️</span>शान्ति</button>
+      <button class="tab-btn active" data-tab="shivaguru" onclick="showTab('shivaguru',this)"><span class="tab-icon">🔱</span>शिव-गुरु</button>
       <button class="tab-btn" data-tab="ganesh" onclick="showTab('ganesh',this)"><span class="tab-icon">🐘</span>गणेश</button>
       <button class="tab-btn" data-tab="surya" onclick="showTab('surya',this)"><span class="tab-icon">☀️</span>सूर्य</button>
       <button class="tab-btn" data-tab="vishnu" onclick="showTab('vishnu',this)"><span class="tab-icon">🪷</span>विष्णु</button>
-      <button class="tab-btn" data-tab="shivaguru" onclick="showTab('shivaguru',this)"><span class="tab-icon">🔱</span>शिव-गुरु</button>
-      <button class="tab-btn" data-tab="rudra" onclick="showTab('rudra',this)"><span class="tab-icon">🔱</span>रुद्राष्टकम्</button>
-      <button class="tab-btn" data-tab="pancha" onclick="showTab('pancha',this)"><span class="tab-icon">📿</span>पञ्चाक्षर</button>
       <button class="tab-btn" data-tab="manas" onclick="showTab('manas',this)"><span class="tab-icon">🪔</span>मानस पूजा</button>
+      <button class="tab-btn" data-tab="pancha" onclick="showTab('pancha',this)"><span class="tab-icon">📿</span>पञ्चाक्षर</button>
+      <button class="tab-btn" data-tab="rudra" onclick="showTab('rudra',this)"><span class="tab-icon">🔱</span>रुद्राष्टकम्</button>
       <button class="tab-btn" data-tab="tandava" onclick="showTab('tandava',this)"><span class="tab-icon">💃</span>ताण्डव</button>
-      <button class="tab-btn" data-tab="saraswati" onclick="showTab('saraswati',this)"><span class="tab-icon">🎵</span>सरस्वती</button>
-      <button class="tab-btn" data-tab="lakshmi" onclick="showTab('lakshmi',this)"><span class="tab-icon">🌸</span>लक्ष्मी</button>
       <button class="tab-btn" data-tab="parvati-1" onclick="showTab('parvati-1',this)"><span class="tab-icon">🌺</span>देवी प्रार्थना</button>
       <button class="tab-btn" data-tab="parvati-2" onclick="showTab('parvati-2',this)"><span class="tab-icon">🌊</span>आनन्दलहरी</button>
       <button class="tab-btn" data-tab="parvati-3" onclick="showTab('parvati-3',this)"><span class="tab-icon">🙏</span>देव्यपराध</button>
+      <button class="tab-btn" data-tab="saraswati" onclick="showTab('saraswati',this)"><span class="tab-icon">🎵</span>सरस्वती</button>
+      <button class="tab-btn" data-tab="lakshmi" onclick="showTab('lakshmi',this)"><span class="tab-icon">🌸</span>लक्ष्मी</button>
+      <button class="tab-btn" data-tab="kshama" onclick="showTab('kshama',this)"><span class="tab-icon">🙏</span>क्षमा–समर्पण</button>
       <button class="tab-btn" data-tab="jay" onclick="showTab('jay',this)"><span class="tab-icon">🚩</span>जयजयकार</button>
+      <button class="tab-btn" data-tab="shanti" onclick="showTab('shanti',this)"><span class="tab-icon">🕉️</span>शान्ति</button>
     </nav>
     <div class="tab-fade tab-fade-left" id="fadeLeft"></div>
     <div class="tab-fade tab-fade-right" id="fadeRight"></div>
@@ -506,39 +509,47 @@
 <div class="content-area" id="contentArea">
 
 <!-- 1. SHANTI -->
-<section class="stotra-section active" id="tab-shanti">
+<section class="stotra-section active" id="tab-shivaguru">
   <div class="deity-banner">
-    <img src="deity-photo-shanti.png" onerror="bannerFallback(this,'linear-gradient(135deg,#8B1A1A,#2C1A0A)')" alt="OM">
+    <img src="deity-photo-mahadev.png"
+         onerror="bannerFallback(this,'#1a0a2a')" alt="Shiva">
     <div class="banner-overlay">
-      <h2>🕉 शान्ति मन्त्र</h2>
-      <!----<p class="subtitle">Shanti Mantra</p>---->
+      <h2>🔱 ॐ नमः शिवाय • ॐ गुरवे नमः</h2>
+      <!----<p class="subtitle">Shiva-Guru Vandana</p>---->
     </div>
   </div>
 
-  <div class="mantra-block shanti">
-    <div class="mantra-label">पूर्ण मन्त्र</div>
-    <div class="shloka"><span class="om">ॐ</span> पूर्णमदः पूर्णमिदं पूर्णात् पूर्णमुदच्यते।
-पूर्णस्य पूर्णमादाय पूर्णमेवावशिष्यते॥
+  <div class="mantra-block">
+    <div class="mantra-label">शिव-गुरु वन्दना</div>
+    <div class="shloka"><span class="om">ॐ</span> नमः शिवाय गुरवे, सच्चिदानन्द मूर्तये।
+निष्प्रपञ्चाय शान्ताय, निरालम्बाय तेजसे॥
+<span class="om">ॐ</span> सह नाववतु। सह नौ भुनक्तु।
+सह वीर्यं करवावहै।
+तेजस्वि नावधीतमस्तु मा विद्विषावहै।
 <span class="shanti-tag">ॐ शान्तिः शान्तिः शान्तिः</span></div>
   </div>
-
   <div class="mantra-block">
-    <div class="mantra-label">सर्वे भवन्तु सुखिनः</div>
-    <div class="shloka"><span class="om">ॐ</span> सर्वे भवन्तु सुखिनः सर्वे सन्तु निरामयाः।
-सर्वे भद्राणि पश्यन्तु मा कश्चिद्दुःखभाग्भवेत्।
-<span class="shanti-tag">ॐ शान्तिः शान्तिः शान्तिः</span></div>
+    <div class="mantra-label">गुरु मन्त्र</div>
+    <div class="shloka">गुरु ब्रह्मा गुरु विष्णु गुरुदेवो महेश्वरः।
+गुरु साक्षात् परब्रह्म तस्मै श्री गुरवे नमः॥</div>
   </div>
-
   <div class="mantra-block">
-    <div class="mantra-label">असतो मा</div>
-    <div class="shloka"><span class="om">ॐ</span> असतो मा सद्गमय।
-तमसो मा ज्योतिर्गमय।
-मृत्योर्माऽमृतं गमय।
-<span class="shanti-tag">ॐ शान्तिः शान्तिः शान्तिः</span></div>
+    <div class="mantra-label">त्वमेव माता</div>
+    <div class="shloka">त्वमेव माता च पिता त्वमेव,त्वमेव बन्धुश्च सखा त्वमेव
+त्वमेव विद्या द्रविणम् त्वमेव, त्वमेव सर्वम् मम देव देव॥</div>
+  </div>
+  <div class="mantra-block">
+    <div class="mantra-label">महामृत्युञ्जय मन्त्रः</div>
+    <div class="shloka"><span class="om">ॐ</span> त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम्।
+उर्वारुकमिव बन्धनान्मृत्योर्मुक्षीय माऽमृतात्॥</div>
+  </div>
+  <div class="mantra-block">
+    <div class="mantra-label">कर्पूरगौरं</div>
+    <div class="shloka">कर्पूरगौरं करुणावतारं संसारसारम् भुजगेन्द्रहारम्।
+सदावसन्तं हृदयारविन्दे भवं भवानीसहितं नमामि॥</div>
   </div>
 </section>
 
-<!-- 2. GANESH -->
 <section class="stotra-section" id="tab-ganesh">
     <div class="deity-banner">
         <img src="deity-photo-ganesh.png" onerror="bannerFallback(this,'#4a1a00')" alt="Ganesha">
@@ -577,7 +588,6 @@
     </div>
 </section>
 
-<!-- 3. SURYA -->
 <section class="stotra-section" id="tab-surya">
   <div class="deity-banner">
     <img src="deity-photo-surya.png"
@@ -628,7 +638,6 @@
 </div>
 </section>
 
-<!-- 4. VISHNU -->
 <section class="stotra-section" id="tab-vishnu">
   <div class="deity-banner">
     <img src="deity-photo-vishnu.png"
@@ -656,110 +665,50 @@
   </div>
 </section>
 
-<!-- 5. SHIVA-GURU -->
-<section class="stotra-section" id="tab-shivaguru">
+<section class="stotra-section" id="tab-manas">
   <div class="deity-banner">
-    <img src="deity-photo-mahadev.png"
-         onerror="bannerFallback(this,'#1a0a2a')" alt="Shiva">
+    <img src="deity-photo-manas.png"
+         onerror="bannerFallback(this,'#1a0a00')" alt="Shiva parvati">
     <div class="banner-overlay">
-      <h2>🔱 ॐ नमः शिवाय • ॐ गुरवे नमः</h2>
-      <!----<p class="subtitle">Shiva-Guru Vandana</p>---->
+      <h2>🪔 शिव मानस पूजा स्तोत्रम्</h2>
+     <!---- <p class="subtitle">Adi Shankaracharya</p>---->
     </div>
   </div>
 
   <div class="mantra-block">
-    <div class="mantra-label">शिव-गुरु वन्दना</div>
-    <div class="shloka"><span class="om">ॐ</span> नमः शिवाय गुरवे, सच्चिदानन्द मूर्तये।
-निष्प्रपञ्चाय शान्ताय, निरालम्बाय तेजसे॥
-<span class="om">ॐ</span> सह नाववतु। सह नौ भुनक्तु।
-सह वीर्यं करवावहै।
-तेजस्वि नावधीतमस्तु मा विद्विषावहै।
-<span class="shanti-tag">ॐ शान्तिः शान्तिः शान्तिः</span></div>
-  </div>
-  <div class="mantra-block">
-    <div class="mantra-label">गुरु मन्त्र</div>
-    <div class="shloka">गुरु ब्रह्मा गुरु विष्णु गुरुदेवो महेश्वरः।
-गुरु साक्षात् परब्रह्म तस्मै श्री गुरवे नमः॥</div>
-  </div>
-  <div class="mantra-block">
-    <div class="mantra-label">त्वमेव माता</div>
-    <div class="shloka">त्वमेव माता च पिता त्वमेव,त्वमेव बन्धुश्च सखा त्वमेव
-त्वमेव विद्या द्रविणम् त्वमेव, त्वमेव सर्वम् मम देव देव॥</div>
-  </div>
-  <div class="mantra-block">
-    <div class="mantra-label">महामृत्युञ्जय मन्त्रः</div>
-    <div class="shloka"><span class="om">ॐ</span> त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम्।
-उर्वारुकमिव बन्धनान्मृत्योर्मुक्षीय माऽमृतात्॥</div>
-  </div>
-  <div class="mantra-block">
-    <div class="mantra-label">कर्पूरगौरं</div>
-    <div class="shloka">कर्पूरगौरं करुणावतारं संसारसारम् भुजगेन्द्रहारम्।
-सदावसन्तं हृदयारविन्दे भवं भवानीसहितं नमामि॥</div>
-  </div>
-  <div class="mantra-block">
-    <div class="mantra-label">समर्पण</div>
-    <div class="shloka">कायेन वाचा मनसेन्द्रियैर्वा
-      बुद्ध्यात्मना वा प्रकृतेः स्वभावात्।
-करोमि यद्यत्सकलं परस्मै
-      गुरुवरायेति समर्पयामि॥</div>
+     <div class="mantra-label">शिव मानस पूजा स्तोत्रम्</div>
+    <div class="shloka">रत्नैः कल्पितमासनं हिमजलैः स्नानं च दिव्याम्बरं,
+नाना रत्न विभूषितम् मृग मदामोदाङ्कितम् चन्दनम्॥
+जाती चम्पक बिल्वपत्र रचितं पुष्पं च धूपं तथा,
+दीपं देव दयानिधे पशुपते हृत्कल्पितम् गृह्यताम्<span class="verse-num">॥१॥</span>
+
+सौवर्णे नवरत्न-खण्ड-रचिते पात्रे घृतं पायसं,
+भक्ष्यं पञ्चविधं पयो-दधि-युतं रम्भाफलं पानकम्।
+शाकानाम्-अयुतं जलं रुचिकरं कर्पूरखण्डोज्ज्वलं,
+ताम्बूलंमनसा मयाविरचितं भक्त्या प्रभो स्वीकुरु<span class="verse-num">॥२॥</span>
+
+छत्रं चामरयोः युगं व्यजनकं चादर्शकं निर्मलं,
+वीणा-भेरि-मृदङ्ग-काहल-कला गीतं च नृत्यं तथा।
+साष्टाङ्गं प्रणतिः स्तुतिः बहुविधा ह्येतत्समस्तं मया,
+सङ्क्लपेन समर्पितं तवविभो पूजांगृहाणप्रभो<span class="verse-num">॥३॥</span>
+
+आत्मा त्वं गिरिजा मतिः सहचराः प्राणाः शरीरं गृहं,
+पूजा ते विषयोपभोगरचना निद्रा समाधिस्थितिः।
+सञ्चारः पदयोः प्रदक्षिणविधिः स्तोत्राणि सर्वा गिरो,
+यद्घत्कर्म करोमि तत्तदखिलं शम्भो तवाराधनम्<span class="verse-num">॥४॥</span>
+</div>
+</div>
+
+<div class="mantra-block">
+  <div class="mantra-label">आत्मार्पण</div>
+  <div class="shloka">
+करचरणकृतं वाक-कायजं कर्मजं वा,
+श्रवणनयनजं वा मानसं वापराधम् ।
+विहितमविहितं वा सर्वमेतत्क्षमस्व
+जय जय करुणाब्धे श्रीमहादेव शम्भो॥</div>
   </div>
 </section>
 
-<!-- 6. RUDRASHTAKAM -->
-<section class="stotra-section" id="tab-rudra">
-  <div class="deity-banner">
-    <img src="deity-photo-rudrastakam.png"
-         onerror="bannerFallback(this,'#1a0a2a')" alt="Shiva Nataraja">
-    <div class="banner-overlay">
-      <h2>🔱 श्रीरुद्राष्टकम्</h2>
-     <!---- <p class="subtitle">8 verses — Goswami Tulsidas</p>---->
-    </div>
-  </div>
-
-  <div class="mantra-block">
-    <div class="shloka">नमामीशमीशान निर्वाणरूपं
-      विभुं व्यापकं ब्रह्मवेदस्वरूपम्।
-निजं निर्गुणं निर्विकल्पं निरीहं
-      चिदाकाशमाकाशवासं भजेऽहम्॥<span class="verse-num">१॥</span>
-
-निराकारमोंकारमूलं तुरीयं
-      गिरा ज्ञान गोतीतमीशं गिरीशम्।
-करालं महाकाल कालं कृपालं
-      गुणागार संसारपारं नतोऽहम्॥<span class="verse-num">२॥</span>
-      
-तुषाराद्रि संकाश गौरं गभीरं
-      मनोभूत कोटिप्रभा श्री शरीरम्।
-स्फुरन्मौलि कल्लोलिनी चारु गङ्गा
-      लसद्भालबालेन्दु कण्ठे भुजङ्गा॥<span class="verse-num">३॥</span>
-      
-चलत्कुण्डलं भ्रू सुनेत्रं विशालं
-      प्रसन्नाननं नीलकण्ठं दयालम्।
-मृगाधीशचर्माम्बरं मुण्डमालं
-      प्रियं शंकरं सर्वनाथं भजामि॥<span class="verse-num">४॥</span>
-      
-प्रचण्डं प्रकृष्टं प्रगल्भं परेशं
-      अखण्डं अजं भानुकोटिप्रकाशम्।
-त्रयः शूल निर्मूलनं शूलपाणिं
-      भजेऽहं भवानीपतिं भावगम्यम्॥<span class="verse-num">५॥</span>
-      
-कलातीत कल्याण कल्पान्तकारी
-      सदा सज्जनानन्ददाता पुरारी।
-चिदानन्द संदोह मोहापहारी
-      प्रसीद प्रसीद प्रभो मन्मथारी॥<span class="verse-num">६॥</span>
-      
-न यावत् उमानाथ पादारविन्दं
-      भजन्तीह लोके परे वा नराणाम्।
-न तावत् सुखं शान्ति सन्तापनाशं
-      प्रसीद प्रभो सर्वभूताधिवासम्॥<span class="verse-num">७॥</span>
-      
-न जानामि योगं जपं नैव पूजां
-      नतोऽहं सदा सर्वदा शम्भु तुभ्यम्।
-जरा जन्म दुःखौघ तातप्यमानं
-      प्रभो पाहि आपन्नमामीश शम्भो॥<span class="verse-num">८॥</span></div>
-  </div>
-</section>
-
-<!-- 7. PANCHAKSHAR -->
 <section class="stotra-section" id="tab-pancha">
   <div class="deity-banner">
     <img src="deity-photo-panchakshar.png"
@@ -852,52 +801,59 @@
   </div>
 </section>
 
-<!-- 8. MANAS PUJA -->
-<section class="stotra-section" id="tab-manas">
+<section class="stotra-section" id="tab-rudra">
   <div class="deity-banner">
-    <img src="deity-photo-manas.png"
-         onerror="bannerFallback(this,'#1a0a00')" alt="Shiva parvati">
+    <img src="deity-photo-rudrashtakam.png"
+         onerror="bannerFallback(this,'#1a0a2a')" alt="Shiva Nataraja">
     <div class="banner-overlay">
-      <h2>🪔 शिव मानस पूजा स्तोत्रम्</h2>
-     <!---- <p class="subtitle">Adi Shankaracharya</p>---->
+      <h2>🔱 श्रीरुद्राष्टकम्</h2>
+     <!---- <p class="subtitle">8 verses — Goswami Tulsidas</p>---->
     </div>
   </div>
 
   <div class="mantra-block">
-     <div class="mantra-label">शिव मानस पूजा स्तोत्रम्</div>
-    <div class="shloka">रत्नैः कल्पितमासनं हिमजलैः स्नानं च दिव्याम्बरं,
-नाना रत्न विभूषितम् मृग मदामोदाङ्कितम् चन्दनम्॥
-जाती चम्पक बिल्वपत्र रचितं पुष्पं च धूपं तथा,
-दीपं देव दयानिधे पशुपते हृत्कल्पितम् गृह्यताम्<span class="verse-num">॥१॥</span>
+    <div class="shloka">नमामीशमीशान निर्वाणरूपं
+      विभुं व्यापकं ब्रह्मवेदस्वरूपम्।
+निजं निर्गुणं निर्विकल्पं निरीहं
+      चिदाकाशमाकाशवासं भजेऽहम्॥<span class="verse-num">१॥</span>
 
-सौवर्णे नवरत्न-खण्ड-रचिते पात्रे घृतं पायसं,
-भक्ष्यं पञ्चविधं पयो-दधि-युतं रम्भाफलं पानकम्।
-शाकानाम्-अयुतं जलं रुचिकरं कर्पूरखण्डोज्ज्वलं,
-ताम्बूलं मनसा मया विरचितं भक्त्या प्रभो स्वीकुरु<span class="verse-num">॥२॥</span>
-
-छत्रं चामरयोः युगं व्यजनकं चादर्शकं निर्मलं,
-वीणा-भेरि-मृदङ्ग-काहल-कला गीतं च नृत्यं तथा।
-साष्टाङ्गं प्रणतिः स्तुतिः बहुविधा ह्येतत्समस्तं मया,
-सङ्क्लपेन समर्पितं तव विभो पूजां गृहाण प्रभो<span class="verse-num">॥३॥</span>
-
-आत्मा त्वं गिरिजा मतिः सहचराः प्राणाः शरीरं गृहं,
-पूजा ते विषयोपभोगरचना निद्रा समाधिस्थितिः।
-सञ्चारः पदयोः प्रदक्षिणविधिः स्तोत्राणि सर्वा गिरो,
-यद्घत्कर्म करोमि तत्तदखिलं शम्भो तवाराधनम्<span class="verse-num">॥४॥</span>
-</div>
-</div>
-
-<div class="mantra-block">
-  <div class="mantra-label">आत्मार्पण</div>
-  <div class="shloka">
-करचरणकृतं वाक-कायजं कर्मजं वा,
-श्रवणनयनजं वा मानसं वापराधम् ।
-विहितमविहितं वा सर्वमेतत्क्षमस्व
-जय जय करुणाब्धे श्रीमहादेव शम्भो॥</div>
+निराकारमोंकारमूलं तुरीयं
+      गिरा ज्ञान गोतीतमीशं गिरीशम्।
+करालं महाकाल कालं कृपालं
+      गुणागार संसारपारं नतोऽहम्॥<span class="verse-num">२॥</span>
+      
+तुषाराद्रि संकाश गौरं गभीरं
+      मनोभूत कोटिप्रभा श्री शरीरम्।
+स्फुरन्मौलि कल्लोलिनी चारु गङ्गा
+      लसद्भालबालेन्दु कण्ठे भुजङ्गा॥<span class="verse-num">३॥</span>
+      
+चलत्कुण्डलं भ्रू सुनेत्रं विशालं
+      प्रसन्नाननं नीलकण्ठं दयालम्।
+मृगाधीशचर्माम्बरं मुण्डमालं
+      प्रियं शंकरं सर्वनाथं भजामि॥<span class="verse-num">४॥</span>
+      
+प्रचण्डं प्रकृष्टं प्रगल्भं परेशं
+      अखण्डं अजं भानुकोटिप्रकाशम्।
+त्रयः शूल निर्मूलनं शूलपाणिं
+      भजेऽहं भवानीपतिं भावगम्यम्॥<span class="verse-num">५॥</span>
+      
+कलातीत कल्याण कल्पान्तकारी
+      सदा सज्जनानन्ददाता पुरारी।
+चिदानन्द संदोह मोहापहारी
+      प्रसीद प्रसीद प्रभो मन्मथारी॥<span class="verse-num">६॥</span>
+      
+न यावत् उमानाथ पादारविन्दं
+      भजन्तीह लोके परे वा नराणाम्।
+न तावत् सुखं शान्ति सन्तापनाशं
+      प्रसीद प्रभो सर्वभूताधिवासम्॥<span class="verse-num">७॥</span>
+      
+न जानामि योगं जपं नैव पूजां
+      नतोऽहं सदा सर्वदा शम्भु तुभ्यम्।
+जरा जन्म दुःखौघ तातप्यमानं
+      प्रभो पाहि आपन्नमामीश शम्भो॥<span class="verse-num">८॥</span></div>
   </div>
 </section>
 
-<!-- 9. TANDAVA -->
 <section class="stotra-section" id="tab-tandava">
   <div class="deity-banner">
     <img src="deity-photo-tandav.png"
@@ -959,19 +915,19 @@
 स्मरांतकं पुरांतकं भावंतकं मखांतकं
     गजांतकांधकांतकं तमंतकांतकं भजे॥<span class="verse-num">१०॥</span>
 
-जयत्वदभ्रविभ्रम भ्रमद्भुजङ्गमश्वसद्
+जयत्वदभ्र-विभ्रम-भ्रमद्-भुजङ्गम-श्वसद्
   विनिर्गमत् क्रमस्फुरत् कराल भाल हव्यवाट्।
-धिमिद्धिमिद्धि मिध्वनन्मृदंग तुंगमंगल
+धिमिद्-धिमिद्-धिमि-ध्वनन्-मृदङ्ग तुंगमंगल
   ध्वनिक्रमप्रवर्तित: प्रचण्ड ताण्डवः शिवः॥<span class="verse-num">११॥</span>
 
-दृषद्विचित्रतल्पयो र्भुजंगमौक्तिकमस्र
-    जोर्गरिष्ठरत्नलोष्ठयोः सुहृद्विपक्षपक्षयोः।
-तृणारविंदचक्षुषोः प्रजामहीमहेन्द्रयोः
-    समं प्रवर्तयन्मनः कदा सदाशिवं भजे॥<span class="verse-num">१२॥</span>
+दृषद्-विचित्र-तल्पयोर्-भुजङ्ग-मौक्तिक-स्रजोः
+  गरिष्ठ-रत्न-लोष्ठयोः सुहृद्-विपक्ष-पक्षयोः
+तृणा-रविन्द-चक्षुषोः प्रजा-मही-महेन्द्रयोः।
+  सम-प्रवृत्तिकः कदा सदाशिवं भजाम्यहम् ॥<span class="verse-num">१२॥</span>
 
-कदा निलिंपनिर्झरी निकुंजकोटरे वसन्‌
-  विमुक्तदुर्मतिः सदा शिरःस्थमंजलिं वहन्‌।
-विमुक्तलोललोचनो ललामभाललग्नकः
+कदा निलिम्प-निर्झरी-निकुञ्ज-कोटरे वसन्‌
+  विमुक्त-दुर्मतिः सदा शिरःस्थ-मञ्जलिं वहन्‌।
+विमुक्त-लोल-लोचनो ललाम-भाल-लग्नकः
   शिवेति मंत्रमुच्चरन्‌ कदा सुखी भवाम्यहम्‌॥<span class="verse-num">१३॥</span>
 
 निलिम्प नाथनागरी कदम्ब मौलमल्लिका-
@@ -984,10 +940,10 @@
 विमुक्त वाम लोचनो विवाहकालिकध्वनिः
   शिवेति मन्त्रभूषगो जगज्जयाय जायताम्‌॥<span class="verse-num">१५॥</span>
 
-इमं हि नित्यमेव मुक्तमुक्तमोत्तम स्तवं
-    पठन्स्मरन्‌ ब्रुवन्नरो विशुद्धमेति संततम्‌।
-हरे गुरौ सुभक्तिमाशु याति नान्यथागतिं
-    विमोहनं हि देहिनां सुशंकरस्य चिंतनम्॥<span class="verse-num">१६॥</span>
+इमं हि नित्य-मेव-मुक्त-मुक्तमोत्तमं स्तवं 
+  पठन-स्मरन्‌-ब्रुवन-नरो विशुद्ध-मेति सन्ततम्‌।
+हरे गुरौ सुभक्ति-माशु याति नान्यथा-गतिं 
+  विमोहनं हि देहिनां सुशङ्करस्य चिन्तनम्‌॥<span class="verse-num">१६॥</span>
 
 पूजाऽवसानसमये दशवक्रत्रगीतं
       यः शम्भूपूजनपरम् पठति प्रदोषे।
@@ -996,75 +952,6 @@
   </div>
 </section>
 
-<!-- 10. SARASWATI -->
-<section class="stotra-section" id="tab-saraswati">
-  <div class="deity-banner">
-    <img src="deity-photo-saraswati.png"
-         onerror="bannerFallback(this,'#001a2a')" alt="Saraswati">
-    <div class="banner-overlay">
-      <h2>🦢🪕📚 ॐ सरस्वत्यै नमः</h2>
-     <!---- <p class="subtitle">Saraswati Vandana</p>---->
-    </div>
-  </div>
-
-  <div class="mantra-block">
-    <div class="mantra-label">सरस्वती वन्दना</div>
-    <div class="shloka">या कुन्देन्दुतुषारहारधवला या शुभ्रवस्त्रावृता।
-या वीणावरदण्डमण्डितकरा या श्वेतपद्मासना॥
-या ब्रह्माच्युतशंकरप्रभृतिभिर्देवैः सदा पूजिता।
-सा मां पातु सरस्वति भगवती निःशेषजाड्यापहा॥
-
-शुक्लां ब्रह्मविचारसारपरमामाद्यां जगद्व्यापिनीं
-वीणापुस्तकधारिणीमभयदां जाड्यान्धकारापहाम्।
-हस्ते स्फाटिकमालिकां च दधतीं पद्मासने संस्थितां
-वन्दे तां परमेश्वरीं भगवतीं बुद्धिप्रदां शारदाम्॥</div>
-<div class="mantra-block"></div>
-<div class="mantra-label">सरस्वती द्वादश नाम</div>
-<div class="shloka">सरस्वती मया दृष्टा वीणापुस्तकधारिणी।
-        हंसवाहनसंयुक्ता विद्यादानं करोतु मे॥
-प्रथमं भारती नाम द्वितीयञ्च सरस्वती।
-        तृतीयं शारदा देवी चतुर्थं हंसवाहिनी॥
-पञ्चमं तु जगन्माता षष्ठं वागीश्वरी तथा।
-        सप्तमं चैव कौमारी अष्टमं वरदायिनी॥
-नवमं बुद्धिदात्री च दशमं ब्रह्मचारिणी।
-        एकादशं चन्द्रघण्टा द्वादशं भुवनेश्वरी॥
-द्वादशैतानि नामानि त्रिसन्ध्यं य पठेन्नरः।
-        जिह्वाग्रे वसते तस्य ब्रह्मरूपा सरस्वती॥</div>
-</section>
-
-<!-- 11. LAKSHMI -->
-<section class="stotra-section" id="tab-lakshmi">
-  <div class="deity-banner">
-    <img src="deity-photo-laxmi.png"
-         onerror="bannerFallback(this,'#1a1000')" alt="Lakshmi">
-    <div class="banner-overlay">
-      <h2>🌸🪷💰 ॐ महालक्ष्म्यै नमः</h2>
-    <!----  <p class="subtitle">Mahalakshmi Vandana</p>---->
-    </div>
-  </div>
-
-  <div class="mantra-block">
-    <div class="mantra-label">कनकधारा स्तोत्रम्</div>
-    <div class="shloka">अङ्गं हरेः पुलकभूषणमाश्रयन्ती
-      भृङ्गाङ्गनेव मुकुलाभरणं तमालम्।
-अङ्गीकृताखिलविभूतिरपाङ्गलीला
-      माङ्गल्यदास्तु मम मङ्गलदेवतायाः॥<span class="verse-num">१॥</span>
-
-मुग्धा मुहुर्विदधती वदने मुरारेः
-      प्रेमत्रपाप्रणिहितानि गतागतानि।
-माला दृशोर्मधुकरीव महोत्पले या
-      सा मे श्रियं दिशतु सागरसम्भवायाः॥<span class="verse-num">२॥</span></div>
-  </div>
-  <div class="mantra-block">
-    <div class="mantra-label">सूक्त महालक्ष्मी स्तोत्र</div>
-    <div class="shloka">त्वं श्रीरूपेन्द्रसदने मदनैकमाता,
-      ज्योत्स्नासि चन्द्रमसि चन्द्रमनोहरास्ये।
-सूर्ये प्रभासि जगत्त्रितये प्रभासि,
-      लक्ष्मि प्रसीद सततं नमतां शरण्ये॥</div>
-  </div>
-</section>
-
-<!-- 12. parvati-1 -->
 <section class="stotra-section" id="tab-parvati-1">
     <div class="deity-banner">
         <img src="deity-photo-parvati.png" onerror="bannerFallback(this,'#1a0010')" alt="parvati-1">
@@ -1105,7 +992,6 @@
     </div>
 </section>
 
-   <!-- 12. parvati-2 -->
 <section class="stotra-section" id="tab-parvati-2">
   <div class="deity-banner">
     <img src="deity-photo-parvati.png"
@@ -1222,7 +1108,7 @@
 शरण्ये त्र्यम्बके गौरि नारायणि नमोऽस्तुते॥</div>
   </div>
 </section>
-<!-- 12. parvati-3 -->
+
 <section class="stotra-section" id="tab-parvati-3">
     <div class="deity-banner">
         <img src="deity-photo-parvati.png" onerror="bannerFallback(this,'#1a0010')">
@@ -1293,8 +1179,107 @@
 एवं ज्ञात्वा महादेवि यथायोग्यं तथा कुरु ॥ <span class="verse-num">१२॥</span></dev>
     </dev>
     </section>
-    
-<!-- 13. JAYAKAR -->
+
+<section class="stotra-section" id="tab-saraswati">
+  <div class="deity-banner">
+    <img src="deity-photo-saraswati.png"
+         onerror="bannerFallback(this,'#001a2a')" alt="Saraswati">
+    <div class="banner-overlay">
+      <h2>🦢🪕📚 ॐ सरस्वत्यै नमः</h2>
+     <!---- <p class="subtitle">Saraswati Vandana</p>---->
+    </div>
+  </div>
+
+  <div class="mantra-block">
+    <div class="mantra-label">सरस्वती वन्दना</div>
+    <div class="shloka">या कुन्देन्दुतुषारहारधवला या शुभ्रवस्त्रावृता।
+या वीणावरदण्डमण्डितकरा या श्वेतपद्मासना॥
+या ब्रह्माच्युतशंकरप्रभृतिभिर्देवैः सदा पूजिता।
+सा मां पातु सरस्वति भगवती निःशेषजाड्यापहा॥
+
+शुक्लां ब्रह्मविचारसारपरमामाद्यां जगद्व्यापिनीं
+वीणापुस्तकधारिणीमभयदां जाड्यान्धकारापहाम्।
+हस्ते स्फाटिकमालिकां च दधतीं पद्मासने संस्थितां
+वन्दे तां परमेश्वरीं भगवतीं बुद्धिप्रदां शारदाम्॥</div>
+<div class="mantra-block"></div>
+<div class="mantra-label">सरस्वती द्वादश नाम</div>
+<div class="shloka">सरस्वती मया दृष्टा वीणापुस्तकधारिणी।
+        हंसवाहनसंयुक्ता विद्यादानं करोतु मे॥
+प्रथमं भारती नाम द्वितीयञ्च सरस्वती।
+        तृतीयं शारदा देवी चतुर्थं हंसवाहिनी॥
+पञ्चमं तु जगन्माता षष्ठं वागीश्वरी तथा।
+        सप्तमं चैव कौमारी अष्टमं वरदायिनी॥
+नवमं बुद्धिदात्री च दशमं ब्रह्मचारिणी।
+        एकादशं चन्द्रघण्टा द्वादशं भुवनेश्वरी॥
+द्वादशैतानि नामानि त्रिसन्ध्यं य पठेन्नरः।
+        जिह्वाग्रे वसते तस्य ब्रह्मरूपा सरस्वती॥</div>
+</section>
+
+<section class="stotra-section" id="tab-lakshmi">
+  <div class="deity-banner">
+    <img src="deity-photo-lakshmi.png"
+         onerror="bannerFallback(this,'#1a1000')" alt="Lakshmi">
+    <div class="banner-overlay">
+      <h2>🌸🪷💰 ॐ महालक्ष्म्यै नमः</h2>
+    <!----  <p class="subtitle">Mahalakshmi Vandana</p>---->
+    </div>
+  </div>
+
+  <div class="mantra-block">
+    <div class="mantra-label">कनकधारा स्तोत्रम्</div>
+    <div class="shloka">अङ्गं हरेः पुलकभूषणमाश्रयन्ती
+      भृङ्गाङ्गनेव मुकुलाभरणं तमालम्।
+अङ्गीकृताखिलविभूतिरपाङ्गलीला
+      माङ्गल्यदास्तु मम मङ्गलदेवतायाः॥<span class="verse-num">१॥</span>
+
+मुग्धा मुहुर्विदधती वदने मुरारेः
+      प्रेमत्रपाप्रणिहितानि गतागतानि।
+माला दृशोर्मधुकरीव महोत्पले या
+      सा मे श्रियं दिशतु सागरसम्भवायाः॥<span class="verse-num">२॥</span></div>
+  </div>
+  <div class="mantra-block">
+    <div class="mantra-label">सूक्त महालक्ष्मी स्तोत्र</div>
+    <div class="shloka">त्वं श्रीरूपेन्द्रसदने मदनैकमाता,
+      ज्योत्स्नासि चन्द्रमसि चन्द्रमनोहरास्ये।
+सूर्ये प्रभासि जगत्त्रितये प्रभासि,
+      लक्ष्मि प्रसीद सततं नमतां शरण्ये॥</div>
+  </div>
+</section>
+
+<section class="stotra-section" id="tab-kshama">
+  <div class="deity-banner">
+    <img src="deity-photo-mahadev.png"
+         onerror="bannerFallback(this,'#1a0a2a')" alt="Shiva">
+    <div class="banner-overlay">
+      <h2>🙏 क्षमा प्रार्थना • आत्मसमर्पण</h2>
+    </div>
+  </div>
+
+  <div class="mantra-block">
+    <div class="mantra-label">१. शिव क्षमा प्रार्थना</div>
+    <div class="shloka">करचरणकृतं वाक्कायजं कर्मजं वा,
+श्रवणनयनजं वा मानसं वापराधम्।
+विहितमविहितं वा सर्वमेतत्क्षमस्व
+जय जय करुणाब्धे श्रीमहादेव शम्भो॥</div>
+  </div>
+
+  <div class="mantra-block">
+    <div class="mantra-label">२. पूजा-विधि न्यूनताको क्षमायाचना</div>
+    <div class="shloka">आवाहनं न जानामि नैव जानामि पूजनम्।
+विसर्जनं न जानामि क्षमस्व परमेश्वर॥
+मन्त्रहीनं क्रियाहीनं भक्तिहीनं सदाशिव।
+यत्पूजितं मया देव परिपूर्णं तदस्तु मे॥</div>
+  </div>
+
+  <div class="mantra-block">
+    <div class="mantra-label">३. आत्मसमर्पण</div>
+    <div class="shloka">कायेन वाचा मनसेन्द्रियैर्वा
+बुद्ध्यात्मना वा प्रकृतेः स्वभावात्।
+करोमि यद्यत्सकलं परस्मै
+श्रीसदाशिवाय समर्पयामि॥</div>
+  </div>
+</section>
+
 <section class="stotra-section" id="tab-jay">
   <div class="deity-banner">
     <img src="deity-photo-jayjaykar.png"
@@ -1395,11 +1380,62 @@
   </div>
 </section>
 
-</div><!-- end content-area -->
+<section class="stotra-section" id="tab-shanti">
+  <div class="deity-banner">
+    <img src="deity-photo-shanti.png" onerror="bannerFallback(this,'linear-gradient(135deg,#8B1A1A,#2C1A0A)')" alt="OM">
+    <div class="banner-overlay">
+      <h2>🕉 शान्ति मन्त्र</h2>
+      <!----<p class="subtitle">Shanti Mantra</p>---->
+    </div>
+  </div>
 
-<div class="bottom-bar">
-  <span style="font-size: 0.85em; opacity: 0.8;">© 2026 Saroj Baral. All rights reserved.</span>
-</div>
+  <div class="mantra-block shanti">
+    <div class="mantra-label">पूर्ण मन्त्र</div>
+    <div class="shloka"><span class="om">ॐ</span> पूर्णमदः पूर्णमिदं पूर्णात् पूर्णमुदच्यते।
+पूर्णस्य पूर्णमादाय पूर्णमेवावशिष्यते॥
+<span class="shanti-tag">ॐ शान्तिः शान्तिः शान्तिः</span></div>
+  </div>
+
+  <div class="mantra-block">
+    <div class="mantra-label">सर्वे भवन्तु सुखिनः</div>
+    <div class="shloka"><span class="om">ॐ</span> सर्वे भवन्तु सुखिनः सर्वे सन्तु निरामयाः।
+सर्वे भद्राणि पश्यन्तु मा कश्चिद्दुःखभाग्भवेत्।
+<span class="shanti-tag">ॐ शान्तिः शान्तिः शान्तिः</span></div>
+  </div>
+
+  <div class="mantra-block">
+    <div class="mantra-label">असतो मा</div>
+    <div class="shloka"><span class="om">ॐ</span> असतो मा सद्गमय।
+तमसो मा ज्योतिर्गमय।
+मृत्योर्माऽमृतं गमय।
+<span class="shanti-tag">ॐ शान्तिः शान्तिः शान्तिः</span></div>
+  </div>
+</section>
+
+<!--
+DEITY IMAGE FILE MANIFEST
+Keep these image files in the same folder as this HTML file.
+
+Tab / Section                 Image filename
+---------------------------------------------------------------
+गुरु–शिव / शिव–गुरु           deity-photo-shiva.png
+गणेश                         deity-photo-ganesh.png
+सूर्य                         deity-photo-surya.png
+विष्णु                        deity-photo-vishnu.png
+शिव मानस पूजा                deity-photo-shiva-manas-puja.png
+शिव पञ्चाक्षर                deity-photo-panchakshara.png
+रुद्राष्टकम्                 deity-photo-rudrashtakam.png
+शिव ताण्डव / नटराज           deity-photo-nataraja.png
+पार्वती / शक्ति              deity-photo-parvati.png
+सरस्वती                      deity-photo-saraswati.png
+लक्ष्मी                       deity-photo-lakshmi.png
+क्षमा–समर्पण                 deity-photo-shiva.png
+जयजयकार                     deity-photo-jayjaykar.png
+शान्ति                       deity-photo-shanti.png
+---------------------------------------------------------------
+Note: parvati-1, parvati-2 and parvati-3 currently share the
+same deity-photo-parvati.png file.
+-->
 
 <script>
 // ── Image fallback for deity banners (shared, instead of repeating inline JS per <img>) ──
