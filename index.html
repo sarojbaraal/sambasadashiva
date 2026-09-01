@@ -62,9 +62,8 @@
   }
 
   /* ── STICKY WRAPPER ── */
-  /* .sticky-top is now just a semantic grouping div (not positioned) —
-     .app-header and .tab-nav-shell each position themselves as fixed,
-     so they can hide/show independently while scrolling (see JS). */
+  /* The header and tab navigation are fixed independently. JavaScript moves
+     them with one shared scroll offset so the tab bar settles at the top. */
   .sticky-top {
     position: relative;
     z-index: 200;
@@ -167,12 +166,8 @@
   .theme-btn:active { background: #ffffff35; }
 
   /* ── TAB NAV SHELL ── */
-  /* top:0 (static) — like the header, its actual on-screen position comes
-     entirely from a JS-computed translateY every scroll frame, so it moves
-     in perfect lockstep with the scroll instead of a threshold+CSS-transition
-     "jump". No border-bottom here — it was a translucent line sitting right
-     above the banner and read as a stray gap; the box-shadow alone gives
-     enough separation. */
+  /* Its position is calculated from the same header offset on every scroll
+     frame. It follows the header upward, then remains fixed at y=0. */
   .tab-nav-shell {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -1437,26 +1432,21 @@ const tabNavEl       = document.getElementById('tabNav');
 const contentAreaEl  = document.getElementById('contentArea');
 let headerH = 0, navH = 0;
 
-// ── Hide-on-scroll state (continuous, scroll-linked — not a threshold+snap) ──
-// header/nav are translated by exactly the pixels scrolled each frame, same as
-// how the deity banner naturally moves via position:sticky — so all of it reads
-// as one continuous motion instead of the top bars "jumping" while the banner
-// glides. Rule: scrolling down hides both together, in step with the scroll.
-// Scrolling up brings the tab-nav back in step; the header stays hidden until
-// the very top is reached (then everything resets in one go).
-let headerHideAmt = 0; // 0..headerH  (how many px of the header are currently tucked away)
-let navHideAmt = 0;    // 0..navH
+// ── Shared scroll-linked header/nav state ──
+// The header (including header-inner and font-bar) and the tab navigation use
+// one shared pixel offset. On the way down the header collapses 1:1 with the
+// page scroll; the tab navigation follows it and stops at the viewport top.
+// This keeps the banner overlay aligned directly below the visible tab bar.
+let headerHideAmt = 0; // 0..headerH
 
 function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
 function applyHeaderNavTransform() {
   appHeaderEl.style.transform = `translateY(${-headerHideAmt}px)`;
-  const navY = (headerH - headerHideAmt) - navHideAmt;
+  const navY = Math.max(0, headerH - headerHideAmt);
   tabNavShellEl.style.transform = `translateY(${navY}px)`;
-  // Deity banner / section-header stick right under whatever is currently
-  // visible — computed from the SAME numbers driving the transforms above, on
-  // every frame, so there's never a stale/lagging value causing a gap.
-  document.documentElement.style.setProperty('--header-h', Math.max(0, navY + navH) + 'px');
+  // The banner/section header uses the exact same calculated position.
+  document.documentElement.style.setProperty('--header-h', (navY + navH) + 'px');
 }
 
 function adjustPadding() {
@@ -1466,9 +1456,8 @@ function adjustPadding() {
   headerH = Math.ceil(appHeaderEl.getBoundingClientRect().height);
   navH = Math.ceil(tabNavShellEl.getBoundingClientRect().height);
   headerHideAmt = clamp(headerHideAmt, 0, headerH);
-  navHideAmt = clamp(navHideAmt, 0, navH);
-  // Content padding stays fixed to the fully-expanded height — it only matters
-  // for the page's resting layout, not for the temporary hide/show animation.
+  // Content padding stays fixed to the fully-expanded height so the initial
+  // layout never starts underneath either fixed bar.
   contentAreaEl.style.paddingTop = (headerH + navH) + 'px';
   applyHeaderNavTransform();
 }
@@ -1509,16 +1498,10 @@ function onScroll() {
 
     if (y <= TOP_THRESHOLD) {
       headerHideAmt = 0;
-      navHideAmt = 0;
-    } else if (dy > 0) {
-      // Scrolling down — hide both, exactly matching however far was scrolled
-      // (works identically for a single small auto-scroll tick or a fast fling).
+    } else if (dy !== 0) {
+      // One shared offset makes the header, font bar, tab navigation, and
+      // banner overlay move at the same speed in both directions.
       headerHideAmt = clamp(headerHideAmt + dy, 0, headerH);
-      navHideAmt = clamp(navHideAmt + dy, 0, navH);
-    } else if (dy < 0) {
-      // Scrolling up — only the tab-nav comes back, in step with the scroll;
-      // the header amount is left untouched until we reach the top.
-      navHideAmt = clamp(navHideAmt + dy, 0, navH);
     }
     applyHeaderNavTransform();
   });
