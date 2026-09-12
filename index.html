@@ -183,12 +183,104 @@
     display: flex;
     overflow-x: auto;
     gap: 6px;
-    padding: 8px 10px 9px;
+    padding: 8px 42px 9px 10px;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
     align-items: center;
   }
   .tab-nav::-webkit-scrollbar { display: none; }
+
+  /* ── JUMP BUTTON — opens the full tab list so switching from the first
+     tab to the last one takes one tap instead of a long swipe/scroll ── */
+  .tab-jump-btn {
+    position: absolute;
+    top: 6px; right: 6px; bottom: 6px;
+    z-index: 3;
+    width: 32px;
+    flex-shrink: 0;
+    background: linear-gradient(160deg, var(--saffron), var(--deep-red));
+    border: 1px solid #ffffff28;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 8px var(--shadow);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tab-jump-btn:active { transform: scale(0.94); }
+
+  /* ── TAB JUMP MENU — bottom-sheet grid of every tab for instant jump ── */
+  .tab-menu-overlay {
+    position: fixed; inset: 0;
+    z-index: 400;
+    background: rgba(0,0,0,0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    display: flex;
+    align-items: flex-end;
+  }
+  .tab-menu-overlay.open { opacity: 1; pointer-events: auto; }
+  .tab-menu-sheet {
+    width: 100%;
+    max-height: 72vh;
+    background: var(--parchment);
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -6px 24px var(--shadow);
+    transform: translateY(100%);
+    transition: transform 0.25s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .tab-menu-overlay.open .tab-menu-sheet { transform: translateY(0); }
+  .tab-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px 10px;
+    font-family: 'Noto Serif Devanagari', serif;
+    font-weight: 700;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--divider);
+  }
+  .tab-menu-close {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px 8px;
+  }
+  .tab-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 12px 14px calc(env(safe-area-inset-bottom, 0px) + 16px);
+    overflow-y: auto;
+  }
+  .tab-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    text-align: left;
+    background: #ffffff55;
+    border: 1.5px solid var(--divider);
+    border-radius: 12px;
+    padding: 9px 10px;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-size: 0.82rem;
+    color: var(--text-main);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tab-menu-item.active {
+    background: var(--saffron);
+    border-color: var(--saffron);
+    color: #fff;
+    font-weight: 700;
+  }
+  .tab-menu-item:active { transform: scale(0.97); }
 
   /* Edge fades hinting there are more tabs to scroll to — shown/hidden by JS
      based on actual scroll position, not just decorative. */
@@ -340,16 +432,28 @@
 
   .mantra-label {
     font-family: 'Noto Serif Devanagari', serif;
-    font-size: 1.32rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    color: var(--gold);
-    margin-bottom: 8px;
+    font-size: 1.34rem;
+    font-weight: 700;
+    letter-spacing: 0.035em;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 8px;
+    background: linear-gradient(120deg, var(--gold) 0%, var(--gold-light) 45%, var(--saffron) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--gold); /* fallback for browsers without background-clip:text */
+    text-shadow: 0 1px 1px rgba(0,0,0,0.06);
   }
-  .mantra-label::after { content:''; flex:1; height:1px; background:var(--divider); }
+  .mantra-label::before {
+    content: '❖';
+    flex-shrink: 0;
+    font-size: 0.8em;
+    -webkit-text-fill-color: var(--saffron);
+    color: var(--saffron);
+  }
+  .mantra-label::after { content:''; flex:1; height:1px; background: linear-gradient(to right, var(--divider), transparent); }
 
   .shloka {
     font-family: 'Noto Serif Devanagari', serif;
@@ -359,21 +463,26 @@
     white-space: pre-wrap;
   }
 
-  /* ── हरेक ट्याबको आफ्नै फन्ट साइज (यहाँ प्रत्येक ट्याबको लागि छुट्टै rem राख्नुहोस्) ── */
-  #tab-shanti     .shloka { font-size: 1.25rem; }
-  #tab-ganesh     .shloka { font-size: 1.40rem; }
-  #tab-surya      .shloka { font-size: 1.40rem; }
-  #tab-vishnu     .shloka { font-size: 1.30rem; }
-  #tab-shivaguru  .shloka { font-size: 1.30rem; }
-  #tab-rudra      .shloka { font-size: 1.40rem; }
-  #tab-pancha     .shloka { font-size: 1.40rem; }
-  #tab-manas      .shloka { font-size: 1.35rem; }
-  #tab-tandava    .shloka { font-size: 1.48rem; }
-  #tab-saraswati  .shloka { font-size: 1.30rem; }
-  #tab-lakshmi    .shloka { font-size: 1.40rem; }
-  #tab-parvati-1  .shloka { font-size: 1.40rem; }
-  #tab-parvati-2  .shloka { font-size: 1.40rem; }
-  #tab-parvati-3  .shloka { font-size: 1.45rem; }
+  /* ── हरेक ट्याबको आफ्नै फन्ट साइज ──
+     यो सूची माथिको tab-nav मा भएका बटनहरूकै क्रममा राखिएको छ (हेर्नुहोस् #tabNav
+     लाइन ~486)। नयाँ ट्याब थप्दा, ठ्याक्कै त्यही क्रममा यहाँ पनि एउटा लाइन थप्नुहोस् —
+     छुटाउनुभयो भने त्यो ट्याबले तलको .shloka डिफल्ट (1.30rem) प्रयोग गर्नेछ। */
+  #tab-shivaguru      .shloka { font-size: 1.30rem; }
+  #tab-ganesh         .shloka { font-size: 1.40rem; }
+  #tab-surya          .shloka { font-size: 1.40rem; }
+  #tab-vishnu         .shloka { font-size: 1.30rem; }
+  #tab-manas          .shloka { font-size: 1.35rem; }
+  #tab-pancha         .shloka { font-size: 1.40rem; }
+  #tab-rudra          .shloka { font-size: 1.40rem; }
+  #tab-tandava        .shloka { font-size: 1.48rem; }
+  #tab-devi-prarthana .shloka { font-size: 1.40rem; }
+  #tab-anandalahari   .shloka { font-size: 1.40rem; }
+  #tab-devyaparadha   .shloka { font-size: 1.45rem; }
+  #tab-saraswati      .shloka { font-size: 1.30rem; }
+  #tab-lakshmi        .shloka { font-size: 1.40rem; }
+  #tab-kshama         .shloka { font-size: 1.30rem; }
+  #tab-jay            .shloka { font-size: 1.30rem; }
+  #tab-shanti         .shloka { font-size: 1.40rem; }
 
   .shloka .pause { color: rgb(233, 11, 11); font-weight: 600; }
   .shloka .om    { color: var(--saffron); font-weight: 700; }
@@ -491,9 +600,9 @@
       <button class="tab-btn" data-tab="pancha" onclick="showTab('pancha',this)"><span class="tab-icon">📿</span>पञ्चाक्षर</button>
       <button class="tab-btn" data-tab="rudra" onclick="showTab('rudra',this)"><span class="tab-icon">🔱</span>रुद्राष्टकम्</button>
       <button class="tab-btn" data-tab="tandava" onclick="showTab('tandava',this)"><span class="tab-icon">💃</span>ताण्डव</button>
-      <button class="tab-btn" data-tab="parvati-1" onclick="showTab('parvati-1',this)"><span class="tab-icon">🌺</span>देवी प्रार्थना</button>
-      <button class="tab-btn" data-tab="parvati-2" onclick="showTab('parvati-2',this)"><span class="tab-icon">🌊</span>आनन्दलहरी</button>
-      <button class="tab-btn" data-tab="parvati-3" onclick="showTab('parvati-3',this)"><span class="tab-icon">🙏</span>देव्यपराध</button>
+      <button class="tab-btn" data-tab="devi-prarthana" onclick="showTab('devi-prarthana',this)"><span class="tab-icon">🌺</span>देवी प्रार्थना</button>
+      <button class="tab-btn" data-tab="anandalahari" onclick="showTab('anandalahari',this)"><span class="tab-icon">🌊</span>आनन्दलहरी</button>
+      <button class="tab-btn" data-tab="devyaparadha" onclick="showTab('devyaparadha',this)"><span class="tab-icon">🙏</span>देव्यपराध</button>
       <button class="tab-btn" data-tab="saraswati" onclick="showTab('saraswati',this)"><span class="tab-icon">🎵</span>सरस्वती</button>
       <button class="tab-btn" data-tab="lakshmi" onclick="showTab('lakshmi',this)"><span class="tab-icon">🌸</span>लक्ष्मी</button>
       <button class="tab-btn" data-tab="kshama" onclick="showTab('kshama',this)"><span class="tab-icon">🙏</span>क्षमा–समर्पण</button>
@@ -502,6 +611,18 @@
     </nav>
     <div class="tab-fade tab-fade-left" id="fadeLeft"></div>
     <div class="tab-fade tab-fade-right" id="fadeRight"></div>
+    <button class="tab-jump-btn" id="tabJumpBtn" onclick="openTabMenu()" title="सबै ट्याब हेर्नुहोस्">☰</button>
+  </div>
+</div>
+
+<!-- TAB JUMP MENU: lists every tab so you can go from tab 1 to tab 16 in one tap -->
+<div class="tab-menu-overlay" id="tabMenuOverlay" onclick="if(event.target.id==='tabMenuOverlay') closeTabMenu()">
+  <div class="tab-menu-sheet">
+    <div class="tab-menu-header">
+      <span>ट्याब छान्नुहोस्</span>
+      <button class="tab-menu-close" onclick="closeTabMenu()">✕</button>
+    </div>
+    <div class="tab-menu-grid" id="tabMenuGrid"></div>
   </div>
 </div>
 
@@ -950,12 +1071,12 @@
   </div>
 </section>
 
-<section class="stotra-section" id="tab-parvati-1">
+<section class="stotra-section" id="tab-devi-prarthana">
     <div class="deity-banner">
-        <img src="deity-photo-parvati.png" onerror="bannerFallback(this,'#1a0010')" alt="parvati-1">
+        <img src="deity-photo-devi-prarthana.png" onerror="bannerFallback(this,'#1a0010')" alt="Devi Prarthana">
         <div class="banner-overlay">
             <h2>🌸🔱 ॐ पार्वत्यै नमः</h2>
-          <!----  <p class="subtitle">parvati-1-Devi Vandana</p>---->
+          <!----  <p class="subtitle">devi-prarthana-Devi Vandana</p>---->
         </div>
     </div>
 
@@ -990,13 +1111,13 @@
     </div>
 </section>
 
-<section class="stotra-section" id="tab-parvati-2">
+<section class="stotra-section" id="tab-anandalahari">
   <div class="deity-banner">
-    <img src="deity-photo-parvati.png"
-         onerror="bannerFallback(this,'#1a0010')" alt="parvati-2">
+    <img src="deity-photo-anandalahari.png"
+         onerror="bannerFallback(this,'#1a0010')" alt="Anandalahari">
     <div class="banner-overlay">
       <h2>🌺🔱 ॐ पार्वत्यै नमः</h2>
-     <!---- <p class="subtitle">parvati-2-Devi Vandana</p>---->
+     <!---- <p class="subtitle">anandalahari-Devi Vandana</p>---->
     </div>
   </div>
 
@@ -1109,12 +1230,12 @@
   </div>
 </section>
 
-<section class="stotra-section" id="tab-parvati-3">
+<section class="stotra-section" id="tab-devyaparadha">
     <div class="deity-banner">
-        <img src="deity-photo-parvati.png" onerror="bannerFallback(this,'#1a0010')">
+        <img src="deity-photo-devyaparadha.png" onerror="bannerFallback(this,'#1a0010')" alt="Devyaparadha">
         <div class="banner-overlay">
             <h2>🌸🔱🙏🏻🙇🏽 ॐ पार्वत्यै नमः</h2>
-            <!----<p class="subtitle">parvati-3-Dev Vandana</p>---->
+            <!----<p class="subtitle">devyaparadha-Dev Vandana</p>---->
         </div>
     </div>
 
@@ -1649,6 +1770,7 @@ function showTab(name, btn) {
     setTimeout(updateTabFades, 320); // after the scrollIntoView animation settles
 
     currentActiveTab = name;
+    if (typeof syncTabMenuActive === 'function') syncTabMenuActive(name);
 
     // ब्राउजरलाई ट्याब रेन्डर गर्न पर्याप्त समय (150ms) दिइएको छ
     setTimeout(() => {
@@ -1679,6 +1801,47 @@ let touchendY   = 0;
 let touchstartTime = 0;
 
 const allTabBtns = Array.from(document.querySelectorAll('.tab-nav .tab-btn'));
+
+// ── Quick-jump menu: built directly from the tab-nav buttons above, so it
+// never falls out of sync — add/remove a tab in #tabNav and this list follows. ──
+const tabMenuOverlayEl = document.getElementById('tabMenuOverlay');
+const tabMenuGridEl    = document.getElementById('tabMenuGrid');
+
+function buildTabMenu() {
+    tabMenuGridEl.innerHTML = '';
+    // दिइएको ट्याब बटनसँग सम्बन्धित section नभेटिए console मा warning देखाउने,
+    // ताकि नयाँ ट्याब थप्दा कुनै हिस्सा छुट्यो भने छिट्टै थाहा होस्।
+    allTabBtns.forEach(btn => {
+        const name = btn.dataset.tab;
+        if (!document.getElementById('tab-' + name)) {
+            console.warn('⚠️ Tab "' + name + '" has a nav button but no matching #tab-' + name + ' section.');
+        }
+        const item = document.createElement('button');
+        item.className = 'tab-menu-item' + (btn.classList.contains('active') ? ' active' : '');
+        item.dataset.tab = name;
+        item.innerHTML = btn.innerHTML;
+        item.onclick = () => {
+            showTab(name, btn);
+            closeTabMenu();
+        };
+        tabMenuGridEl.appendChild(item);
+    });
+}
+buildTabMenu();
+
+function syncTabMenuActive(name) {
+    tabMenuGridEl.querySelectorAll('.tab-menu-item').forEach(el => {
+        el.classList.toggle('active', el.dataset.tab === name);
+    });
+}
+
+function openTabMenu() {
+    syncTabMenuActive(currentActiveTab);
+    tabMenuOverlayEl.classList.add('open');
+}
+function closeTabMenu() {
+    tabMenuOverlayEl.classList.remove('open');
+}
 
 document.addEventListener('touchstart', e => {
     touchstartX    = e.changedTouches[0].screenX;
