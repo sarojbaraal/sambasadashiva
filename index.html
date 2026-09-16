@@ -167,13 +167,14 @@
 
   .scroll-speed-popup {
     display: none;
-    bottom: 60px;
+    top: 50%;
+    right: 14px;
     align-items: center;
+    flex-direction: column;
     gap: 8px;
     padding: 9px;
     border-radius: 8px;
-    transform: rotate(-90deg);
-    transform-origin: right bottom;
+    transform: translateY(-50%);
   }
 
   .scroll-speed-popup.open { display: flex; }
@@ -1985,6 +1986,17 @@ function openScrollSpeedPopup() {
 }
 
 document.addEventListener('touchstart', openScrollSpeedPopup, { passive: true });
+
+function handleDesktopTap(event) {
+  if (event.pointerType !== 'mouse') return;
+  const target = event.target;
+  const isUI = target.closest('.tab-btn, .font-btn, .theme-btn, .tab-jump-btn, #scrollModeBtn, .scroll-speed-popup');
+  if (isUI) return;
+  openScrollSpeedPopup();
+  toggleScrollMode();
+}
+
+document.addEventListener('pointerdown', handleDesktopTap, { passive: true });
 
 function setScrollBtnUI(on) {
     const btn = document.getElementById('scrollModeBtn');
