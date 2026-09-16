@@ -33,7 +33,7 @@
     transition: background 0.25s ease, color 0.25s ease;
   }
 
-  /* ── DARK MODE (toggled via data-theme="dark" on <html>) ── */
+  /* ── DARK MODE  ── */
   html[data-theme="dark"] {
     --saffron:    #E07A35;
     --gold:       #E0A840;
@@ -149,6 +149,61 @@
     color: var(--gold-light);
     min-width: 36px;
     text-align: center;
+  }
+
+  .scroll-speed-toggle,
+  .scroll-speed-popup {
+    position: fixed;
+    right: 14px;
+    z-index: 300;
+    color: var(--gold-light);
+    background: var(--deep-red);
+    border: 1px solid var(--gold);
+    box-shadow: 0 4px 14px var(--shadow);
+  }
+
+  .scroll-speed-toggle {
+    bottom: 16px;
+    border-radius: 20px;
+    padding: 8px 13px;
+    font: inherit;
+    font-size: 0.76rem;
+    cursor: pointer;
+  }
+
+  .scroll-speed-toggle:active,
+  .scroll-speed-control:active { background: var(--saffron); }
+
+  .scroll-speed-popup {
+    display: none;
+    bottom: 60px;
+    align-items: center;
+    gap: 8px;
+    padding: 9px;
+    border-radius: 8px;
+  }
+
+  .scroll-speed-popup.open { display: flex; }
+
+  .scroll-speed-control {
+    min-width: 34px;
+    height: 30px;
+    padding: 0 8px;
+    border: 1px solid #ffffff38;
+    border-radius: 5px;
+    color: var(--gold-light);
+    background: #ffffff18;
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+  .scroll-speed-value {
+    min-width: 52px;
+    color: var(--gold-light);
+    font-size: 0.72rem;
+    text-align: center;
+    white-space: nowrap;
   }
 
   /* Theme (light/dark) toggle button */
@@ -619,6 +674,13 @@
   </div>
 </div>
 
+<button class="scroll-speed-toggle" id="scrollSpeedToggle" onclick="toggleScrollSpeedPopup()" aria-expanded="false">गति: 12</button>
+<div class="scroll-speed-popup" id="scrollSpeedPopup" role="dialog" aria-label="स्क्रोल गति नियन्त्रण">
+  <button class="scroll-speed-control" onclick="changeScrollSpeed(-2)" aria-label="स्क्रोल गति घटाउनुहोस्">−</button>
+  <span class="scroll-speed-value" id="scrollSpeedLabel">12 px/s</span>
+  <button class="scroll-speed-control" onclick="changeScrollSpeed(2)" aria-label="स्क्रोल गति बढाउनुहोस्">+</button>
+</div>
+
 <!-- TAB JUMP MENU: lists every tab so you can go from tab 1 to tab 16 in one tap -->
 <div class="tab-menu-overlay" id="tabMenuOverlay" onclick="if(event.target.id==='tabMenuOverlay') closeTabMenu()">
   <div class="tab-menu-sheet">
@@ -722,6 +784,7 @@
     एकादशं गणपतिं द्वादशं तु गजाननम् ॥४॥
 द्वादशैतानि नामानि त्रिसन्ध्यं यः पठेन्नरः ।
     न च विघ्नभयं तस्य सर्वसिद्धिश्च जायते ॥५॥
+    
 विद्यार्थी लभते विद्यां धनार्थी लभते धनम् ।
     पुत्रार्थी लभते पुत्रान्मोक्षार्थी लभते गतिम् ॥६॥
 जपेद् गणपतिस्तोत्रं षड्भिर्मासैः फलं लभेत् ।
@@ -744,38 +807,28 @@
   <div class="mantra-block">
     <div class="mantra-label"> सूर्याष्टकम् </div>
     <div class="shloka">आदिदेव नमस्तुभ्यं प्रसीद मम भास्कर।
-दिवाकर नमस्तुभ्यं प्रभाकर नमोऽस्तु ते॥<span class="verse-num">१॥</span>
-
+    दिवाकर नमस्तुभ्यं प्रभाकर नमोऽस्तु ते॥<span class="verse-num">१॥</span>
 सप्ताश्वरथमारूढं प्रचण्डं कश्यपात्मजम्।
-श्वेतपद्मधरं देवं तं सूर्यं प्रणमाम्यहम्॥<span class="verse-num">२॥</span>
-
+    श्वेतपद्मधरं देवं तं सूर्यं प्रणमाम्यहम्॥<span class="verse-num">२॥</span>
 लोहितं रथमारूढं सर्वलोकपितामहम्।
-महापापहरं देवं तं सूर्यं प्रणमाम्यहम्॥<span class="verse-num">३॥</span>
-    
+    महापापहरं देवं तं सूर्यं प्रणमाम्यहम्॥<span class="verse-num">३॥</span>    
 त्रैगुण्यं च महाशूरं ब्रह्माविष्णुमहेश्वरम् ।
-महापापहरं देवं तं सूर्यं प्रणमाम्यहम् ॥<span class="verse-num">४॥</span>
-
+    महापापहरं देवं तं सूर्यं प्रणमाम्यहम् ॥<span class="verse-num">४॥</span>
 बृंहितं तेजःपुञ्जं च वायुमाकाशमेव च ।
-प्रभुं च सर्वलोकानां तं सूर्यं प्रणमाम्यहम् ॥<span class="verse-num">५॥</span>
-
+    प्रभुं च सर्वलोकानां तं सूर्यं प्रणमाम्यहम् ॥<span class="verse-num">५॥</span>
 बन्धूकपुष्पसङ्काशं हारकुण्डलभूषितम् ।
-एकचक्रधरं देवं तं सूर्यं प्रणमाम्यहम् ॥<span class="verse-num">६॥</span>
-
+    एकचक्रधरं देवं तं सूर्यं प्रणमाम्यहम् ॥<span class="verse-num">६॥</span>
 तं सूर्यं जगत्कर्तारं महातेजःप्रदीपनम् ।
-महापापहरं देवं तं सूर्यं प्रणमाम्यहम् ॥<span class="verse-num">७॥</span>
-  
+    महापापहरं देवं तं सूर्यं प्रणमाम्यहम् ॥<span class="verse-num">७॥</span> 
 तं सूर्यं जगतां नाथं ज्ञानविज्ञानमोक्षदम् ।
-महापापहरं देवं तं सूर्यं प्रणमाम्यहम् ॥<span class="verse-num">८॥</span>
+    महापापहरं देवं तं सूर्यं प्रणमाम्यहम् ॥<span class="verse-num">८॥</span>
 
 सूर्याष्टकं पठेन्नित्यं ग्रहपीडाप्रणाशनम् ।
-अपुत्रो लभते पुत्रं दरिद्रो धनवान्भवेत् ॥<span class="verse-num">९॥</span>
-
+    अपुत्रो लभते पुत्रं दरिद्रो धनवान्भवेत् ॥<span class="verse-num">९॥</span>
 आमिशं मधुपानं च यः करोति रवेर्दिने ।
-सप्तजन्म भवेद्रोगी प्रतिजन्म दरिद्रता ॥<span class="verse-num">१०॥</span>
-
+    सप्तजन्म भवेद्रोगी प्रतिजन्म दरिद्रता ॥<span class="verse-num">१०॥</span>
 स्त्रीतैलमधुमांसानि यस्त्यजेत्तु रवेर्दिने ।
-न व्याधिः शोकदारिद्र्यं सूर्यलोकं स गच्छति॥<span class="verse-num">११॥</span>
-
+    न व्याधिः शोकदारिद्र्यं सूर्यलोकं स गच्छति॥<span class="verse-num">११॥</span>
   इति श्रीसूर्याष्टकस्तोत्रं सम्पूर्णम् ॥
   </div>
 </div>
@@ -1367,19 +1420,153 @@
     <div class="shloka">अङ्गं हरेः पुलकभूषणमाश्रयन्ती
       भृङ्गाङ्गनेव मुकुलाभरणं तमालम्।
 अङ्गीकृताखिलविभूतिरपाङ्गलीला
-      माङ्गल्यदास्तु मम मङ्गलदेवतायाः॥<span class="verse-num">१॥</span>
+      माङ्गल्यदास्तु मम मङ्गलदेवतायाः<span class="verse-num">॥१॥</span>
 
 मुग्धा मुहुर्विदधती वदने मुरारेः
       प्रेमत्रपाप्रणिहितानि गतागतानि।
 माला दृशोर्मधुकरीव महोत्पले या
-      सा मे श्रियं दिशतु सागरसम्भवायाः॥<span class="verse-num">२॥</span></div>
+      सा मे श्रियं दिशतु सागरसम्भवायाः<span class="verse-num">॥२॥</span>
+
+विश्वामरेन्द्रपदविभ्रमदानदक्षम्
+      आनन्दहेतुरधिकं मुरविद्विषोऽपि।
+ईषन्निषीदतु मयि क्षणमीक्षणार्धम्
+      इन्दीवरोदरसहोदरमिन्दिरायाः<span class="verse-num">॥३॥</span>
+
+आमीलिताक्षमधिगम्य मुदा मुकुन्दम्
+      आनन्दकन्दमनिमेषमनङ्गतन्त्रम्।
+आकेकरस्थितकनीनिकपक्ष्मनेत्रं
+      भूत्यै भवेन्मम भुजङ्गशयाङ्गनायाः<span class="verse-num">॥४॥</span>
+
+बाह्वन्तरे मधुजितः श्रितकौस्तुभे या
+      हारावलीव हरिनीलमयी विभाति।
+कामप्रदा भगवतोऽपि कटाक्षमाला
+      कल्याणमावहतु मे कमलालयायाः<span class="verse-num">॥५॥</span>
+
+कालाम्बुदालिललितोरसि कैटभारेः
+      धाराधरे स्फुरति या तडिदङ्गनेव।
+मातुः समस्तजगतां महनीयमूर्तिः
+      भद्राणि मे दिशतु भार्गवनन्दनायाः<span class="verse-num">॥६॥</span>
+
+प्राप्तं पदं प्रथमतः किल यत्प्रभावान्
+      माङ्गल्यभाजि मधुमाथिनि मन्मथेन।
+मय्यापतेत्तदिह मन्थरमीक्षणार्धं
+      मन्दालसं च मकरालयकन्यकायाः<span class="verse-num">॥७॥</span>
+
+दद्याद् दयानुपवनो द्रविणाम्बुधाराम्
+      अस्मिन्नकिञ्चनविहङ्गशिशौ विषण्णे।
+दुष्कर्मघर्ममपनीय चिराय दूरं
+      नारायणप्रणयिनी नयनाम्बुवाहः<span class="verse-num">॥८॥</span>
+
+इष्टाविशिष्टमतयोऽपि यया दयार्द्रदृष्ट्या
+      त्रिविष्टपपदं सुलभं लभन्ते।
+दृष्टिः प्रहृष्टकमलोदरदीप्तिरिष्टां
+      पुष्टिं कृषीष्ट मम पुष्करविष्टरायाः<span class="verse-num">॥९॥</span>
+
+गीर्देवतेति गरुडध्वजभामिनीति
+      शाकम्भरीति शशिशेखरवल्लभेति।
+सृष्टिस्थितिप्रलयकेलिषु संस्थितायै
+      तस्यै नमस्त्रिभुवनैकगुरोस्तरुण्यै<span class="verse-num">॥१०॥</span>
+
+श्रुत्यै नमोऽस्तु नमस्त्रिभुवनैकफलप्रसूत्यै
+      रत्यै नमोऽस्तु रमणीयगुणाश्रयायै।
+शक्त्यै नमोऽस्तु शतपत्रनिकेतनायै
+      पुष्ट्यै नमोऽस्तु पुरुषोत्तमवल्लभायै<span class="verse-num">॥११॥</span>
+
+नमोऽस्तु नालीकनिभाननायै
+      नमोऽस्तु दुग्धोदधिजन्मभूत्यै।
+नमोऽस्तु सोमामृतसोदरायै
+      नमोऽस्तु नारायणवल्लभायै<span class="verse-num">॥१२॥</span>
+
+नमोऽस्तु हेमाम्बुजपीठिकायै
+      नमोऽस्तु भूमण्डलनायिकायै।
+नमोऽस्तु देवादिदयापरायै
+      नमोऽस्तु शार्ङ्गायुधवल्लभायै<span class="verse-num">॥१३॥</span>
+
+नमोऽस्तु देव्यै भृगुनन्दनायै
+      नमोऽस्तु विष्णोरुरसि स्थितायै।
+नमोऽस्तु लक्ष्म्यै कमलालयायै
+      नमोऽस्तु दामोदरवल्लभायै<span class="verse-num">॥१४॥</span>
+
+नमोऽस्तु कान्त्यै कमलेक्षणायै
+      नमोऽस्तु भूत्यै भुवनप्रसूत्यै।
+नमोऽस्तु देवादिभिरर्चितायै
+      नमोऽस्तु नन्दात्मजवल्लभायै<span class="verse-num">॥१५॥</span>
+
+सम्पत्कराणि सकलेन्द्रियनन्दनानि
+      साम्राज्यदानविभवानि सरोरुहाक्षि।
+त्वद्वन्दनानि दुरिताहरणोद्यतानि
+      मामेव मातरनिशं कलयन्तु नान्यत्<span class="verse-num">॥१६॥</span>
+
+यत्कटाक्षसमुपासनाविधिः
+      सेवकस्य सकलार्थसम्पदः।
+सन्तनोति वचनाङ्गमानसैः
+      स्त्वां मुरारिहृदयेश्वरीं भजे<span class="verse-num">॥१७॥</span>
+
+सरसिजनिलये सरोजहस्ते
+      धवलतरांशुकगन्धमाल्यशोभे।
+भगवति हरिवल्लभे मनोज्ञे
+      त्रिभुवनभूतिकरि प्रसीद मह्यम्<span class="verse-num">॥१८॥</span>
+
+दिग्घस्तिभिः कनककुम्भमुखावसृष्ट
+      स्वर्वाहिनीविमलचारुजलप्लुताङ्गीम्।
+प्रातर्नमामि जगतां जननीमशेष
+      लोकाधिनाथगृहिणीममृताब्धिपुत्रीम्<span class="verse-num">॥१९॥</span>
+
+कमले कमलाक्षवल्लभे त्वं
+      करुणापूरतरङ्गितैरपाङ्गैः।
+अवलोकय मामकिञ्चनानां
+      प्रथमं पात्रमकृत्रिमं दयायाः<span class="verse-num">॥२०॥</span>
+
+स्तुवन्ति ये स्तुतिभिरमीभिरन्वहं
+      त्रयीमयीं त्रिभुवनमातरं रमाम्।
+गुणाधिका गुरुतरभाग्यभागिनो
+      भवन्ति ते भुवि बुधभाविताशयाः<span class="verse-num">॥२१॥</span>
+    </div>
   </div>
   <div class="mantra-block">
-    <div class="mantra-label">सूक्त महालक्ष्मी स्तोत्र</div>
-    <div class="shloka">त्वं श्रीरूपेन्द्रसदने मदनैकमाता,
+    <div class="mantra-label">श्रीमहालक्ष्मी स्तोत्रम्</div>
+    <div class="shloka">मातर्नमामि कमले कमलायताक्षि
+      श्रीविष्णुहृत्कमलवासिनि विश्वमातः।
+क्षीरोदजे कमलकोमलगर्भगौरि
+      लक्ष्मि प्रसीद सततं नमतां शरण्ये<span class="verse-num">॥१॥</span>
+
+त्वं श्रीरूपेन्द्रसदने मदनैकमाता
       ज्योत्स्नासि चन्द्रमसि चन्द्रमनोहरास्ये।
-सूर्ये प्रभासि जगत्त्रितये प्रभासि,
-      लक्ष्मि प्रसीद सततं नमतां शरण्ये॥</div>
+सूर्ये प्रभासि च जगत्त्रितये प्रभासि
+      लक्ष्मि प्रसीद सततं नमतां शरण्ये<span class="verse-num">॥२॥</span>
+
+त्वं जातवेदसि सदा दहनात्मशक्ति-
+      र्वेधास्त्वया जगदिदं विविधं विदध्यात्।
+विश्वम्भरोऽपि बिभृयादखिलं भवत्या
+      लक्ष्मि प्रसीद सततं नमतां शरण्ये<span class="verse-num">॥३॥</span>
+
+त्वत्त्यक्तमेतदमले हरते हरोऽपि
+      त्वं पासि हंसि विदधासि परावरासि।
+ईड्यो बभूव हरिरप्यमले त्वदाप्त्या
+      लक्ष्मि प्रसीद सततं नमतां शरण्ये<span class="verse-num">॥४॥</span>
+
+शूरः स एव स गुणी स बुधः स धन्यो
+      मान्यः स एव कुलशीलकलाकलापैः।
+एकः शुचिः स हि पुमान् सकलेऽपि लोके
+      यत्रापतेत्तव शुभे करुणाकटाक्षः<span class="verse-num">॥५॥</span>
+
+यस्मिन्वसेः क्षणमहो पुरुषे गजेऽश्वे
+      स्त्रैणे तृणे सरसि देवकुले गृहेऽन्ने।
+रत्ने पतत्रिणि पशौ शयने धरायां
+      सश्रीकमेव सकले तदिहास्ति नान्यत्<span class="verse-num">॥६॥</span>
+
+त्वत्स्पृष्टमेव सकलं शुचितां लभेत
+      त्वत्त्यक्तमेव सकलं त्वशुचीह लक्ष्मि।
+त्वन्नाम यत्र च सुमङ्गलमेव तत्र
+      श्रीविष्णुपत्नि कमले कमलालयेऽपि<span class="verse-num">॥७॥</span>
+
+लक्ष्मीं श्रियं च कमलां कमलालयां च
+      पद्मां रमां नलिनयुग्मकरां च मां च।
+क्षीरोदजाममृतकुम्भकरामिरां च
+      विष्णुप्रियामिति सदा जपतां क्व दुःखम्<span class="verse-num">॥८॥</span>
+
+इति श्रीस्कन्दमहापुराणे चतुर्थे काशीखण्डे पूर्वार्धे
+महालक्ष्मीस्तोत्रं नाम पञ्चमोऽध्यायः।</div>
   </div>
 </section>
 
@@ -1778,7 +1965,20 @@ let autoScrollRAF = null;       // requestAnimationFrame ID
 let autoScrollLastTs = null;
 let autoScrollPauseTimer = null;
 let autoScrollRemainder = 0;    // sub-pixel क्यारी-ओभर (scrollBy ले १px भन्दा सानो चाल बेवास्ता गर्छ)
-const AUTO_SCROLL_SPEED = 12;   // पिक्सेल प्रति सेकेन्ड — बिस्तारै, पढ्न मिल्ने गति
+let autoScrollSpeed = 12;       // पिक्सेल प्रति सेकेन्ड — प्रयोगकर्ताले बदल्न सक्ने गति
+
+function changeScrollSpeed(amount) {
+  autoScrollSpeed = Math.max(4, Math.min(60, autoScrollSpeed + Number(amount)));
+  document.getElementById('scrollSpeedLabel').textContent = `${autoScrollSpeed} px/s`;
+  document.getElementById('scrollSpeedToggle').textContent = `गति: ${autoScrollSpeed}`;
+}
+
+function toggleScrollSpeedPopup() {
+  const popup = document.getElementById('scrollSpeedPopup');
+  const toggle = document.getElementById('scrollSpeedToggle');
+  const isOpen = popup.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', String(isOpen));
+}
 
 function setScrollBtnUI(on) {
     const btn = document.getElementById('scrollModeBtn');
@@ -1800,7 +2000,7 @@ function autoScrollStep(ts) {
 
     if (autoScrollLastTs !== null) {
         const dt = ts - autoScrollLastTs;
-        autoScrollRemainder += (AUTO_SCROLL_SPEED * dt) / 1000;
+        autoScrollRemainder += (autoScrollSpeed * dt) / 1000;
         const wholePixels = Math.floor(autoScrollRemainder);
         if (wholePixels > 0) {
             window.scrollBy(0, wholePixels);
