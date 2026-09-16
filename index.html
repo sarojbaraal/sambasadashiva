@@ -157,9 +157,11 @@
     right: 14px;
     z-index: 300;
     color: var(--gold-light);
-    background: var(--deep-red);
-    border: 1px solid var(--gold);
-    box-shadow: 0 4px 14px var(--shadow);
+    background: rgba(139, 26, 26, 0.52);
+    border: 1px solid rgba(240, 192, 80, 0.48);
+    box-shadow: 0 4px 14px rgba(44, 26, 10, 0.12);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
 
   .scroll-speed-toggle {
@@ -172,7 +174,7 @@
   }
 
   .scroll-speed-toggle:active,
-  .scroll-speed-control:active { background: var(--saffron); }
+  .scroll-speed-control:active { background: rgba(212, 98, 26, 0.62); }
 
   .scroll-speed-popup {
     display: none;
@@ -192,7 +194,7 @@
     border: 1px solid #ffffff38;
     border-radius: 5px;
     color: var(--gold-light);
-    background: #ffffff18;
+    background: rgba(255, 255, 255, 0.10);
     font: inherit;
     font-size: 0.9rem;
     cursor: pointer;
