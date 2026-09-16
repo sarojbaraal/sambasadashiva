@@ -157,11 +157,11 @@
     right: 14px;
     z-index: 300;
     color: var(--gold-light);
-    background: rgba(139, 26, 26, 0.52);
-    border: 1px solid rgba(240, 192, 80, 0.48);
-    box-shadow: 0 4px 14px rgba(44, 26, 10, 0.12);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background: rgba(139, 26, 26, 0.32);
+    border: 1px solid rgba(240, 192, 80, 0.34);
+    box-shadow: 0 4px 14px rgba(44, 26, 10, 0.08);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
   }
 
   .scroll-speed-toggle {
@@ -194,18 +194,23 @@
     border: 1px solid #ffffff38;
     border-radius: 5px;
     color: var(--gold-light);
-    background: rgba(255, 255, 255, 0.10);
+    background: rgba(255, 255, 255, 0.07);
     font: inherit;
     font-size: 0.9rem;
     cursor: pointer;
   }
 
   .scroll-speed-value {
-    min-width: 52px;
+    min-width: 34px;
     color: var(--gold-light);
     font-size: 0.72rem;
     text-align: center;
     white-space: nowrap;
+  }
+
+  .scroll-speed-play {
+    min-width: 34px;
+    padding: 0 7px;
   }
 
   /* Theme (light/dark) toggle button */
@@ -677,9 +682,9 @@
 </div>
 
 <button class="scroll-speed-toggle" id="scrollSpeedToggle" onclick="toggleScrollSpeedPopup()" aria-expanded="false">गति: 12</button>
-<div class="scroll-speed-popup" id="scrollSpeedPopup" role="dialog" aria-label="स्क्रोल गति नियन्त्रण">
+<div class="scroll-speed-popup" id="scrollSpeedPopup" role="dialog" aria-label="स्क्रोल गति नियन्त्रण" onpointerdown="scheduleScrollSpeedPopupHide()">
   <button class="scroll-speed-control" onclick="changeScrollSpeed(-2)" aria-label="स्क्रोल गति घटाउनुहोस्">−</button>
-  <span class="scroll-speed-value" id="scrollSpeedLabel">12 px/s</span>
+  <button class="scroll-speed-control scroll-speed-play" id="scrollPopupModeBtn" onclick="toggleScrollMode()" aria-label="स्क्रोल सुरु गर्नुहोस्">▶</button>
   <button class="scroll-speed-control" onclick="changeScrollSpeed(2)" aria-label="स्क्रोल गति बढाउनुहोस्">+</button>
 </div>
 
@@ -1966,13 +1971,24 @@ let userDisabledAutoScroll = false; // प्रयोगकर्ताले �
 let autoScrollRAF = null;       // requestAnimationFrame ID
 let autoScrollLastTs = null;
 let autoScrollPauseTimer = null;
+let scrollSpeedPopupTimer = null;
 let autoScrollRemainder = 0;    // sub-pixel क्यारी-ओभर (scrollBy ले १px भन्दा सानो चाल बेवास्ता गर्छ)
 let autoScrollSpeed = 12;       // पिक्सेल प्रति सेकेन्ड — प्रयोगकर्ताले बदल्न सक्ने गति
 
+function scheduleScrollSpeedPopupHide() {
+  clearTimeout(scrollSpeedPopupTimer);
+  scrollSpeedPopupTimer = setTimeout(() => {
+    const popup = document.getElementById('scrollSpeedPopup');
+    const toggle = document.getElementById('scrollSpeedToggle');
+    popup.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }, 3000);
+}
+
 function changeScrollSpeed(amount) {
   autoScrollSpeed = Math.max(4, Math.min(60, autoScrollSpeed + Number(amount)));
-  document.getElementById('scrollSpeedLabel').textContent = `${autoScrollSpeed} px/s`;
   document.getElementById('scrollSpeedToggle').textContent = `गति: ${autoScrollSpeed}`;
+  scheduleScrollSpeedPopupHide();
 }
 
 function toggleScrollSpeedPopup() {
@@ -1980,12 +1996,17 @@ function toggleScrollSpeedPopup() {
   const toggle = document.getElementById('scrollSpeedToggle');
   const isOpen = popup.classList.toggle('open');
   toggle.setAttribute('aria-expanded', String(isOpen));
+  if (isOpen) scheduleScrollSpeedPopupHide();
+  else clearTimeout(scrollSpeedPopupTimer);
 }
 
 function setScrollBtnUI(on) {
     const btn = document.getElementById('scrollModeBtn');
+  const popupBtn = document.getElementById('scrollPopupModeBtn');
     btn.innerText = on ? "🟢 आफै चल्न सुरू भयो" : "🔴 आफै चल्न बन्द भयो";
     btn.style.background = on ? "var(--saffron)" : "#ffffff18";
+  popupBtn.textContent = on ? "⏸" : "▶";
+  popupBtn.setAttribute('aria-label', on ? "स्क्रोल रोक्नुहोस्" : "स्क्रोल सुरु गर्नुहोस्");
 }
 
 function autoScrollStep(ts) {
@@ -2195,7 +2216,7 @@ function handleGesture() {
     // ── Short tap (pause / resume) ──
     // Tab buttons र font buttons थिच्दा trigger नहोस् भनेर check
     const tgt = document.elementFromPoint(touchendX - window.pageXOffset, touchendY - window.pageYOffset);
-    const isUI = tgt && (tgt.closest('.tab-btn') || tgt.closest('.font-btn') || tgt.closest('#scrollModeBtn'));
+    const isUI = tgt && (tgt.closest('.tab-btn') || tgt.closest('.font-btn') || tgt.closest('#scrollModeBtn') || tgt.closest('.scroll-speed-toggle') || tgt.closest('.scroll-speed-popup'));
 
     if (!isUI && duration < MAX_TAP && absDx < MAX_MOVE && absDy < MAX_MOVE) {
         // Reuse the single source of truth for the toggle instead of duplicating it here.
