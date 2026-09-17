@@ -154,6 +154,7 @@
   .scroll-speed-popup {
     position: fixed;
     right: 14px;
+    bottom: 18px;
     z-index: 300;
     color: var(--gold-light);
     background: rgba(139, 26, 26, 0.32);
@@ -167,14 +168,13 @@
 
   .scroll-speed-popup {
     display: none;
-    top: 50%;
     right: 14px;
+    bottom: 18px;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
     gap: 8px;
-    padding: 9px;
-    border-radius: 8px;
-    transform: translateY(-50%);
+    padding: 9px 10px;
+    border-radius: 10px;
   }
 
   .scroll-speed-popup.open { display: flex; }
@@ -193,16 +193,13 @@
   }
 
   .scroll-speed-value {
-    min-width: 34px;
+    min-width: 48px;
     color: var(--gold-light);
     font-size: 0.72rem;
     text-align: center;
     white-space: nowrap;
-  }
-
-  .scroll-speed-play {
-    min-width: 34px;
-    padding: 0 7px;
+    letter-spacing: 0.04em;
+    padding: 0 2px;
   }
 
   /* Theme (light/dark) toggle button */
@@ -674,9 +671,9 @@
 </div>
 
 <div class="scroll-speed-popup" id="scrollSpeedPopup" role="dialog" aria-label="स्क्रोल गति नियन्त्रण" onpointerdown="scheduleScrollSpeedPopupHide()">
-  <button class="scroll-speed-control" onclick="changeScrollSpeed(-2)" aria-label="स्क्रोल गति घटाउनुहोस्">−</button>
-  <button class="scroll-speed-control scroll-speed-play" id="scrollPopupModeBtn" onclick="toggleScrollMode()" aria-label="स्क्रोल सुरु गर्नुहोस्">▶</button>
-  <button class="scroll-speed-control" onclick="changeScrollSpeed(2)" aria-label="स्क्रोल गति बढाउनुहोस्">+</button>
+  <button class="scroll-speed-control" onclick="event.stopPropagation(); changeScrollSpeed(-6);" aria-label="स्क्रोल गति घटाउनुहोस्">−</button>
+  <div class="scroll-speed-value" id="scrollSpeedValue" aria-live="polite">12 px/s</div>
+  <button class="scroll-speed-control" onclick="event.stopPropagation(); changeScrollSpeed(6);" aria-label="स्क्रोल गति बढाउनुहोस्">+</button>
 </div>
 
 <!-- TAB JUMP MENU: lists every tab so you can go from tab 1 to tab 16 in one tap -->
@@ -1966,31 +1963,44 @@ let scrollSpeedPopupTimer = null;
 let autoScrollRemainder = 0;    // sub-pixel क्यारी-ओभर (scrollBy ले १px भन्दा सानो चाल बेवास्ता गर्छ)
 let autoScrollSpeed = 12;       // पिक्सेल प्रति सेकेन्ड — प्रयोगकर्ताले बदल्न सक्ने गति
 
+function updateScrollSpeedUI() {
+  const valueEl = document.getElementById('scrollSpeedValue');
+  if (valueEl) valueEl.textContent = `${autoScrollSpeed} px/s`;
+}
+
 function scheduleScrollSpeedPopupHide() {
   clearTimeout(scrollSpeedPopupTimer);
   scrollSpeedPopupTimer = setTimeout(() => {
     const popup = document.getElementById('scrollSpeedPopup');
     popup.classList.remove('open');
-  }, 3000);
+  }, 9000);
 }
 
 function changeScrollSpeed(amount) {
   autoScrollSpeed = Math.max(4, Math.min(60, autoScrollSpeed + Number(amount)));
+  updateScrollSpeedUI();
   scheduleScrollSpeedPopupHide();
 }
 
 function openScrollSpeedPopup() {
   const popup = document.getElementById('scrollSpeedPopup');
   popup.classList.add('open');
+  updateScrollSpeedUI();
   scheduleScrollSpeedPopupHide();
 }
 
-document.addEventListener('touchstart', openScrollSpeedPopup, { passive: true });
+document.addEventListener('touchstart', (event) => {
+  const target = event.target;
+  if (target && target.closest('.tab-btn, .font-btn, .theme-btn, .tab-jump-btn, #scrollModeBtn, .scroll-speed-control, .scroll-speed-value, .scroll-speed-popup')) {
+    return;
+  }
+  openScrollSpeedPopup();
+}, { passive: true });
 
 function handleDesktopTap(event) {
   if (event.pointerType !== 'mouse') return;
   const target = event.target;
-  const isUI = target.closest('.tab-btn, .font-btn, .theme-btn, .tab-jump-btn, #scrollModeBtn, .scroll-speed-popup');
+  const isUI = target.closest('.tab-btn, .font-btn, .theme-btn, .tab-jump-btn, #scrollModeBtn, .scroll-speed-control, .scroll-speed-value, .scroll-speed-popup');
   if (isUI) return;
   openScrollSpeedPopup();
   toggleScrollMode();
@@ -1999,12 +2009,9 @@ function handleDesktopTap(event) {
 document.addEventListener('pointerdown', handleDesktopTap, { passive: true });
 
 function setScrollBtnUI(on) {
-    const btn = document.getElementById('scrollModeBtn');
-  const popupBtn = document.getElementById('scrollPopupModeBtn');
-    btn.innerText = on ? "🟢 आफै चल्न सुरू भयो" : "🔴 आफै चल्न बन्द भयो";
-    btn.style.background = on ? "var(--saffron)" : "#ffffff18";
-  popupBtn.textContent = on ? "⏸" : "▶";
-  popupBtn.setAttribute('aria-label', on ? "स्क्रोल रोक्नुहोस्" : "स्क्रोल सुरु गर्नुहोस्");
+  const btn = document.getElementById('scrollModeBtn');
+  btn.innerText = on ? "🟢 आफै चल्न सुरू भयो" : "🔴 आफै चल्न बन्द भयो";
+  btn.style.background = on ? "var(--saffron)" : "#ffffff18";
 }
 
 function autoScrollStep(ts) {
