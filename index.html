@@ -12,6 +12,7 @@
 <meta name="theme-color" content="#8B1A1A">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<script>function bannerFallback(i,c){i.parentElement.style.background=c;i.style.display="none";}</script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;500;600;700&family=Noto+Serif+Devanagari:wght@400;600;700&family=Rozha+One&display=swap');
 
@@ -620,10 +621,392 @@
   text-align: center; font-size: 0.7rem; color: var(--text-muted);
   letter-spacing: 0.02em; border-top: 1px solid var(--divider);
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   ROYAL / SACRED ENHANCEMENT LAYER
+   (मूल शैलीको माथि थपिएको तह — मूल नियमहरू जस्ताको तस्तै छन्)
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --frame:      #B8780C;
+  --frame-2:    #E2A93A;
+  --gold-soft:  rgba(184,120,12,.40);
+  --glass-a:    rgba(255,251,238,.86);
+  --glass-b:    rgba(246,232,190,.80);
+  --sidebar-w:  240px;
+  --toc-w:      240px;
+  --desk-top:   0px;
+}
+html[data-theme="dark"] {
+  --frame:      #C99530;
+  --frame-2:    #F0C050;
+  --gold-soft:  rgba(224,168,64,.34);
+  --glass-a:    rgba(36,28,16,.88);
+  --glass-b:    rgba(24,18,10,.84);
+}
+
+button { font-family: inherit; }
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 2px;
+}
+
+.skip {
+  position: absolute; left: -999px; top: 0; z-index: 1000;
+  background: var(--deep-red); color: #fff; text-decoration: none;
+  padding: 8px 14px; border-radius: 0 0 8px 0; font-size: .85rem;
+}
+.skip:focus { left: 0; }
+
+/* ── १. शान्त, सुनौलो एनिमेटेड पृष्ठभूमि ───────────────────────
+   सबै एनिमेसन transform/opacity मात्र (GPU-friendly), अत्यन्त कम opacity */
+.bg-fx {
+  position: fixed; inset: 0; z-index: 0;
+  overflow: hidden; pointer-events: none;
+  contain: layout paint;
+}
+.bg-fx::before {            /* बिस्तारै सर्ने सुनौलो/केसरी आभा */
+  content: '';
+  position: absolute; inset: -25%;
+  background:
+    radial-gradient(40% 35% at 20% 25%, rgba(212,98,26,.10), transparent 70%),
+    radial-gradient(45% 40% at 80% 70%, rgba(201,134,10,.12), transparent 70%),
+    radial-gradient(35% 30% at 60% 10%, rgba(139,26,26,.07), transparent 70%);
+  animation: auraDrift 48s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.bg-fx::after {             /* अत्यन्त मन्द घुम्ने मण्डल */
+  content: '';
+  position: absolute; left: 50%; top: 50%;
+  width: min(150vmin, 980px); height: min(150vmin, 980px);
+  background: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%23C9860A' stroke-width='.6'%3E%3Ccircle cx='100' cy='100' r='96'/%3E%3Ccircle cx='100' cy='100' r='88'/%3E%3Ccircle cx='100' cy='100' r='64'/%3E%3Ccircle cx='100' cy='100' r='40'/%3E%3Ccircle cx='100' cy='100' r='14'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(0 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(30 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(60 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(90 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(120 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(150 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(180 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(210 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(240 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(270 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(300 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(330 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(22.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(67.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(112.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(157.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(202.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(247.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(292.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(337.5 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(0 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(15 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(30 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(45 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(60 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(75 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(90 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(105 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(120 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(135 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(150 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(165 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(180 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(195 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(210 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(225 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(240 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(255 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(270 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(285 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(300 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(315 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(330 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(345 100 100)'/%3E%3C/svg%3E" center / contain no-repeat;
+  opacity: .075;
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: mandalaSpin 260s linear infinite;
+  will-change: transform;
+}
+html[data-theme="dark"] .bg-fx::after { opacity: .09; }
+html[data-theme="dark"] .bg-fx::before {
+  background:
+    radial-gradient(40% 35% at 20% 25%, rgba(224,122,53,.10), transparent 70%),
+    radial-gradient(45% 40% at 80% 70%, rgba(224,168,64,.09), transparent 70%),
+    radial-gradient(35% 30% at 60% 10%, rgba(139,26,26,.14), transparent 70%);
+}
+@keyframes auraDrift {
+  from { transform: translate3d(-3%,-2%,0) scale(1); }
+  to   { transform: translate3d(4%,3%,0)  scale(1.08); }
+}
+@keyframes mandalaSpin {
+  from { transform: translate(-50%,-50%) rotate(0deg); }
+  to   { transform: translate(-50%,-50%) rotate(360deg); }
+}
+.gp {                       /* तैरिरहने सुनौला कण */
+  position: absolute; bottom: -12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(226,169,58,.95), rgba(226,169,58,0) 70%);
+  opacity: 0;
+  animation: gpFloat linear infinite;
+  will-change: transform, opacity;
+}
+html[data-theme="dark"] .gp {
+  background: radial-gradient(circle, rgba(245,212,136,.95), rgba(245,212,136,0) 70%);
+}
+@keyframes gpFloat {
+  0%   { transform: translate3d(0,0,0); opacity: 0; }
+  12%  { opacity: var(--po,.25); }
+  88%  { opacity: var(--po,.25); }
+  100% { transform: translate3d(var(--dx,20px), -112vh, 0); opacity: 0; }
+}
+html[data-fx="off"] .bg-fx::before,
+html[data-fx="off"] .bg-fx::after { animation: none; }
+html[data-fx="off"] .gp { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .bg-fx::before, .bg-fx::after { animation: none; }
+  .gp { display: none; }
+  .stotra-section { animation: none; }
+}
+
+.content-area { position: relative; z-index: 1; }
+
+/* ── शीर्ष पट्टीमा परम्परागत किनारा (हीरा-माला) ── */
+.app-header { padding-bottom: 6px; }
+.app-header::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 6px;
+  background: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='6' viewBox='0 0 16 6'%3E%3Cpath d='M8 .5 L13.5 3 L8 5.5 L2.5 3Z' fill='%23F0C050'/%3E%3Ccircle cx='0' cy='3' r='.9' fill='%23D4621A'/%3E%3C/svg%3E" center / 16px 6px repeat-x;
+  opacity: .85; pointer-events: none;
+}
+.deity-banner::after {      /* ब्यानरको फेदमा सुनौलो किनारा */
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; z-index: 2;
+  background: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='6' viewBox='0 0 16 6'%3E%3Cpath d='M8 .5 L13.5 3 L8 5.5 L2.5 3Z' fill='%23F0C050'/%3E%3Ccircle cx='0' cy='3' r='.9' fill='%23D4621A'/%3E%3C/svg%3E" center / 16px 6px repeat-x, rgba(44,10,10,.85);
+  border-top: 1px solid var(--gold-soft);
+  pointer-events: none;
+}
+
+/* ── २. शाही फ्रेममा श्लोक-बक्स ─────────────────────────────── */
+.mantra-block {
+  position: relative;
+  margin: 14px 8px;
+  padding: 22px 14px 16px;
+  border: 1.5px solid var(--frame);
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--glass-a), var(--glass-b));
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  box-shadow: 0 8px 22px var(--shadow);
+  outline: 1px solid var(--gold-soft);
+  outline-offset: -7px;
+}
+.mantra-block:last-child { border-bottom: 1.5px solid var(--frame); }
+.mantra-block::before {     /* मन्दिर-स्तम्भ जस्ता कुना-कोष्ठक */
+  content: ''; position: absolute; inset: 3px; pointer-events: none; border-radius: 5px;
+  --c: var(--frame-2);
+  background:
+    linear-gradient(var(--c),var(--c)) top left     / 22px 2px no-repeat,
+    linear-gradient(var(--c),var(--c)) top left     / 2px 22px no-repeat,
+    linear-gradient(var(--c),var(--c)) top right    / 22px 2px no-repeat,
+    linear-gradient(var(--c),var(--c)) top right    / 2px 22px no-repeat,
+    linear-gradient(var(--c),var(--c)) bottom left  / 22px 2px no-repeat,
+    linear-gradient(var(--c),var(--c)) bottom left  / 2px 22px no-repeat,
+    linear-gradient(var(--c),var(--c)) bottom right / 22px 2px no-repeat,
+    linear-gradient(var(--c),var(--c)) bottom right / 2px 22px no-repeat;
+}
+.mantra-block::after {      /* चार कुनामा रत्न-बिन्दु */
+  content: ''; position: absolute; inset: -5px; pointer-events: none;
+  --j: radial-gradient(circle, var(--frame-2) 0 1.8px, var(--saffron) 2.2px 4px, transparent 4.6px);
+  background:
+    var(--j) top left     / 10px 10px no-repeat,
+    var(--j) top right    / 10px 10px no-repeat,
+    var(--j) bottom left  / 10px 10px no-repeat,
+    var(--j) bottom right / 10px 10px no-repeat;
+}
+.mantra-label { position: relative; z-index: 1; }
+.shloka { position: relative; z-index: 1; }
+
+.jay-item {
+  padding: 10px 2px;
+  line-height: 1.55;
+  border-bottom: 1px dashed var(--divider);
+}
+.jay-item:last-child { border-bottom: none; }
+
+.closing-block {
+  background: linear-gradient(135deg, rgba(139,26,26,.92), rgba(44,26,10,.94));
+  text-align: center;
+}
+.closing-block .shloka {
+  text-align: center; font-size: 1.5rem !important; line-height: 1.7;
+  color: var(--gold-light); font-weight: 700; white-space: normal;
+}
+.closing-block .shloka .om { color: var(--gold-light); }
+
+.app-footer { position: relative; z-index: 1; }
+
+/* ── ३. स्तोत्र द्रुत-सूची (Quick-Index) ─────────────────────── */
+.qi {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 10px 10px 12px;
+  background: linear-gradient(180deg, var(--glass-a), var(--glass-b));
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  border-bottom: 1px solid var(--gold-soft);
+}
+.qi-title {
+  flex-shrink: 0; white-space: nowrap;
+  font-family: 'Noto Serif Devanagari', serif;
+  font-size: .74rem; font-weight: 700; color: var(--saffron); letter-spacing: .04em;
+}
+.qi-row {
+  position: relative;
+  display: flex; gap: 7px; flex: 1; min-width: 0;
+  overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  padding: 2px;
+}
+.qi-row::-webkit-scrollbar { display: none; }
+.qi-chip {
+  flex-shrink: 0; white-space: nowrap; cursor: pointer;
+  font-size: .8rem; padding: 6px 13px; border-radius: 999px;
+  color: var(--text-main);
+  border: 1.3px solid var(--gold-soft);
+  background: rgba(255,255,255,.38);
+  transition: background .2s, color .2s, transform .15s, box-shadow .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
+.qi-chip:hover { border-color: var(--saffron); }
+.qi-chip:active { transform: scale(.96); }
+.qi-chip.on {
+  background: linear-gradient(135deg, var(--saffron), var(--deep-red));
+  border-color: transparent; color: #fff; font-weight: 700;
+  box-shadow: 0 2px 10px rgba(212,98,26,.42);
+}
+
+/* मोबाइल: जुनसुकै ठाउँबाट खोल्न मिल्ने तैरिने बटन */
+.fab {
+  position: fixed; left: 14px; bottom: 18px; z-index: 300;
+  width: 46px; height: 46px; border-radius: 50%;
+  display: none; align-items: center; justify-content: center;
+  font-size: 1.25rem; line-height: 1; color: #fff; cursor: pointer;
+  border: 1px solid rgba(240,192,80,.55);
+  background: linear-gradient(160deg, var(--saffron), var(--deep-red));
+  box-shadow: 0 6px 18px var(--shadow);
+  opacity: .93;
+  -webkit-tap-highlight-color: transparent;
+}
+.fab.show { display: flex; }
+.fab:active { transform: scale(.94); }
+.tab-menu-grid.one { grid-template-columns: 1fr; }
+.fx-menu-btn {
+  margin-left: auto; margin-right: 8px; cursor: pointer;
+  background: none; color: var(--text-main);
+  border: 1px solid var(--gold-soft); border-radius: 14px;
+  padding: 3px 10px; font-size: .74rem;
+}
+
+.desk-only, .sidebar, .toc { display: none; }
+
+/* ── ४. डेस्कटप कार्यक्षेत्र (Desktop Workspace) ─────────────── */
+@media (min-width: 1024px) {
+  :root { --sidebar-w: 240px; --toc-w: 0px; }
+  body {
+    padding-top: var(--desk-top);
+    padding-left: var(--sidebar-w);
+    padding-right: var(--toc-w);
+  }
+  .desk-only { display: inline-block; }
+
+  /* शीर्ष पट्टी: एउटै पङ्क्ति */
+  .app-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px 6px;
+  }
+  .header-inner { padding: 8px 0; justify-content: flex-start; text-align: left; }
+  .header-text h1 { font-size: 1.25rem; }
+  .font-bar { border-top: none; padding: 0; margin-left: auto; }
+  .tab-nav-shell, .fab, .tab-menu-overlay { display: none !important; }
+
+  /* बायाँ साइडबार */
+  .sidebar {
+    display: flex; flex-direction: column;
+    position: fixed; top: var(--desk-top); left: 0; bottom: 0;
+    width: var(--sidebar-w); z-index: 190;
+    padding: 14px 12px 20px; overflow-y: auto;
+    background: linear-gradient(180deg, #3A1A08, #241208 60%, #1a0d05);
+    border-right: 1px solid rgba(201,134,10,.38);
+    box-shadow: 4px 0 18px var(--shadow);
+    scrollbar-width: thin;
+  }
+  .sb-brand {
+    display: flex; align-items: center; gap: 10px;
+    padding: 4px 8px 14px; margin-bottom: 8px;
+    border-bottom: 1px solid rgba(201,134,10,.3);
+    color: var(--gold-light);
+  }
+  .sb-om { font-family: 'Rozha One','Noto Serif Devanagari',serif; font-size: 1.8rem; line-height: 1; color: var(--saffron); }
+  .sb-brand strong { display: block; font-family: 'Noto Serif Devanagari',serif; font-size: .95rem; }
+  .sb-brand small  { display: block; font-size: .68rem; color: #E8C88899; letter-spacing: .05em; }
+  .sb-item {
+    display: flex; align-items: center; gap: 10px;
+    width: 100%; margin: 2px 0; padding: 9px 12px; text-align: left;
+    border: 1px solid transparent; border-radius: 10px;
+    background: transparent; color: #E8C888; cursor: pointer;
+    font-size: .92rem; transition: background .18s, color .18s;
+  }
+  .sb-item .tab-icon { font-size: 1.1rem; width: 1.5em; text-align: center; flex-shrink: 0; }
+  .sb-item:hover { background: #ffffff14; }
+  .sb-item.active {
+    background: linear-gradient(135deg, var(--saffron), var(--deep-red));
+    color: #fff; font-weight: 700; box-shadow: 0 3px 12px rgba(0,0,0,.35);
+  }
+
+  /* मध्यको पढ्ने कार्ड */
+  .content-area {
+    max-width: 860px; margin: 24px auto 40px; padding-bottom: 0;
+    border: 1px solid var(--gold-soft); border-radius: 18px; overflow: hidden;
+    background: linear-gradient(180deg, rgba(255,251,238,.34), rgba(246,232,190,.22));
+    box-shadow: 0 14px 40px var(--shadow);
+  }
+  html[data-theme="dark"] .content-area {
+    background: linear-gradient(180deg, rgba(36,28,16,.40), rgba(24,18,10,.30));
+  }
+  .deity-banner { position: relative; top: auto; height: 250px; }
+  .deity-banner h2 { font-size: 1.6rem; }
+  .mantra-block { margin: 22px 30px; padding: 30px 34px 24px; }
+  .jay-item { padding: 11px 2px; }
+
+  /* १०२४–११९९px: सूची चिप-पट्टी देखाउने, TOC लुकाउने */
+  .qi { display: flex; }
+}
+
+/* दायाँ स्थायी विषय-सूची (TOC) — फराकिलो स्क्रिनमा मात्र */
+@media (min-width: 1200px) {
+  :root { --toc-w: 250px; }
+  .qi { display: none; }
+  .toc {
+    display: block;
+    position: fixed; top: var(--desk-top); right: 0; bottom: 0;
+    width: var(--toc-w); z-index: 190;
+    padding: 22px 16px; overflow-y: auto;
+    background: linear-gradient(180deg, var(--glass-a), var(--glass-b));
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    border-left: 1px solid var(--gold-soft);
+    scrollbar-width: thin;
+  }
+  .toc-head { padding: 0 6px 12px; margin-bottom: 8px; border-bottom: 1px solid var(--gold-soft); }
+  .toc-kicker { display: block; font-size: .68rem; letter-spacing: .08em; color: var(--text-muted); }
+  .toc-head strong {
+    display: block; margin-top: 2px;
+    font-family: 'Noto Serif Devanagari', serif; font-size: 1.02rem; color: var(--saffron);
+  }
+  .toc-list { list-style: none; }
+  .toc-item {
+    display: flex; gap: 9px; align-items: baseline;
+    width: 100%; text-align: left; cursor: pointer;
+    padding: 8px 10px; margin: 1px 0;
+    border: none; border-left: 3px solid transparent; border-radius: 0 8px 8px 0;
+    background: none; color: var(--text-muted); font-size: .88rem; line-height: 1.4;
+    transition: background .18s, color .18s, border-color .18s;
+  }
+  .toc-item:hover { background: rgba(212,98,26,.08); color: var(--text-main); }
+  .toc-item.on {
+    border-left-color: var(--saffron); background: rgba(212,98,26,.14);
+    color: var(--text-main); font-weight: 600;
+  }
+  .toc-n { flex-shrink: 0; min-width: 1.4em; color: var(--saffron); font-weight: 700; }
+  .toc-empty { padding: 8px 10px; font-size: .82rem; color: var(--text-muted); }
+  .toc-empty[hidden] { display: none; }
+}
+
 </style>
 </head>
 <body>
-  <h3 class="main-title">दैनिक स्तोत्र पाठ</h3>
+<a class="skip" href="#contentArea">सामग्रीमा जानुहोस्</a>
+<div class="bg-fx" id="bgFx" aria-hidden="true"></div>
+
+<!-- डेस्कटप: बायाँ साइडबार -->
+<aside class="sidebar" id="sidebar" aria-label="देवता तथा साधना सूची">
+  <div class="sb-brand"><span class="sb-om">ॐ</span><div><strong>दैनिक स्तोत्र पाठ</strong><small>शिव-इष्ट साधना</small></div></div>
+  <nav class="sb-nav" id="sidebarNav"></nav>
+</aside>
+
+<!-- डेस्कटप: दायाँ स्थायी विषय-सूची -->
+<aside class="toc" id="toc" aria-label="यस ट्याबका स्तोत्र">
+  <div class="toc-head"><span class="toc-kicker">यस ट्याबमा</span><strong id="tocTab"></strong></div>
+  <ol class="toc-list" id="tocList"></ol>
+  <p class="toc-empty" id="tocEmpty" hidden>यस ट्याबमा एउटै स्तोत्र छ।</p>
+</aside>
+
+<!-- मोबाइल: तैरिने सूची-बटन र तल-पाना -->
+<button class="fab" id="qiFab" type="button" onclick="openIndexSheet()" aria-label="स्तोत्र सूची खोल्नुहोस्" title="स्तोत्र सूची">📜</button>
+<div class="tab-menu-overlay" id="qiSheetOverlay" onclick="if(event.target.id==='qiSheetOverlay') closeIndexSheet()">
+  <div class="tab-menu-sheet">
+    <div class="tab-menu-header">
+      <span id="qiSheetTitle">स्तोत्र छान्नुहोस्</span>
+      <button class="tab-menu-close" onclick="closeIndexSheet()" aria-label="बन्द गर्नुहोस्">✕</button>
+    </div>
+    <div class="tab-menu-grid one" id="qiSheetGrid"></div>
+  </div>
+</div>
+
 <!-- FIXED STICKY TOP: header + tabs -->
 <div class="sticky-top" id="stickyTop">
   <header class="app-header">
@@ -640,6 +1023,7 @@
       <span class="font-label" id="fontLabel">100%</span>
       <button class="font-btn" onclick="changeFont(1)">अ+</button>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="उज्यालो/अँध्यारो मोड">🌙</button>
+      <button class="theme-btn desk-only" id="fxBtn" onclick="toggleFx()" title="पृष्ठभूमि प्रभाव चालु/बन्द" aria-pressed="true">✨</button>
       <button class="font-btn" id="scrollModeBtn" onclick="toggleScrollMode()" style="margin-left: 8px;">आफै स्क्रोल गर्न यहाँ थिच्नुहोस्</button>
     </div>
   </header>
@@ -657,9 +1041,9 @@
       <button class="tab-btn" data-tab="tandava" onclick="showTab('tandava',this)"><span class="tab-icon">💃</span>ताण्डव</button>
       <button class="tab-btn" data-tab="devi-prarthana" onclick="showTab('devi-prarthana',this)"><span class="tab-icon">🌺</span>देवी प्रार्थना</button>
       <button class="tab-btn" data-tab="anandalahari" onclick="showTab('anandalahari',this)"><span class="tab-icon">🌊</span>आनन्दलहरी</button>
+      <button class="tab-btn" data-tab="devyaparadha" onclick="showTab('devyaparadha',this)"><span class="tab-icon">🙏</span>देव्यपराध</button>
       <button class="tab-btn" data-tab="saraswati" onclick="showTab('saraswati',this)"><span class="tab-icon">🎵</span>सरस्वती</button>
       <button class="tab-btn" data-tab="lakshmi" onclick="showTab('lakshmi',this)"><span class="tab-icon">🌸</span>लक्ष्मी</button>
-      <button class="tab-btn" data-tab="devyaparadha" onclick="showTab('devyaparadha',this)"><span class="tab-icon">🙏</span>देव्यपराध</button>
       <button class="tab-btn" data-tab="kshama" onclick="showTab('kshama',this)"><span class="tab-icon">🙏</span>क्षमा–समर्पण</button>
       <button class="tab-btn" data-tab="jay" onclick="showTab('jay',this)"><span class="tab-icon">🚩</span>जयजयकार</button>
       <button class="tab-btn" data-tab="shanti" onclick="showTab('shanti',this)"><span class="tab-icon">🕉️</span>शान्ति</button>
@@ -681,6 +1065,7 @@
   <div class="tab-menu-sheet">
     <div class="tab-menu-header">
       <span>ट्याब छान्नुहोस्</span>
+      <button class="fx-menu-btn" id="fxMenuBtn" onclick="toggleFx()">✨ प्रभाव</button>
       <button class="tab-menu-close" onclick="closeTabMenu()">✕</button>
     </div>
     <div class="tab-menu-grid" id="tabMenuGrid"></div>
@@ -757,13 +1142,6 @@
             <h2>🐘 श्री गणेशाय नमः</h2>
         </div>
     </div> <!-- 👈 यहाँ ब्यानर सही रूपमा बन्द भयो -->
-  <div class="mantra-block">
-        <div class="mantra-label">स्तुति मन्त्र</div>
-        <div class="shloka">गजाननं भूतगणादिसेवितं 
-          कपित्थजम्बूफलचारुभक्षणम्।
-उमासुतं शोकविनाशकारकं
-          नमामि विघनेश्वरपादपङ्कजम्॥</div>
-    </div>
     <div class="mantra-block">
         <div class="mantra-label">विघ्ननाशक मंत्र</div>
         <div class="shloka">वक्रतुण्ड महाकाय सूर्यकोटि समप्रभ।
@@ -851,14 +1229,18 @@
     <div class="shloka">यं ब्रह्मावरुणेन्द्ररुद्रमरुतः स्तुन्वन्ति दिव्यैः स्तवैः।
 वेदैः साङ्ग पदक्रमोपनिषदैः गायन्ति यं सामगाः।
 ध्यानावस्थित तद्गतेन मनसा पश्यन्ति यं योगिनो
-यस्यान्तं न विदुः सुरासुरगणा देवाय तस्मै नमः॥
-
-<div class="mantra-label">विष्णु वन्दना</div>मूकं करोति वाचालं पङ्गुं लङ्घयते गिरिम्।
+यस्यान्तं न विदुः सुरासुरगणा देवाय तस्मै नमः॥</div>
+  </div>
+  <div class="mantra-block">
+    <div class="mantra-label">विष्णु वन्दना</div>
+    <div class="shloka">मूकं करोति वाचालं पङ्गुं लङ्घयते गिरिम्।
 यत्कृपा तमहं वन्दे परमानन्द माधवम्॥
 व्यासाय विष्णुरूपाय व्यासरूपाय विष्णवे।
-नमो वै ब्रह्मनिधये वासिष्ठाय नमो नमः॥
-
-<div class="mantra-label">विष्णु ध्यान श्लोक</div>शान्ताकारं भुजगशयनं पद्मनाभं सुरेशं
+नमो वै ब्रह्मनिधये वासिष्ठाय नमो नमः॥</div>
+  </div>
+  <div class="mantra-block">
+    <div class="mantra-label">विष्णु ध्यान श्लोक</div>
+    <div class="shloka">शान्ताकारं भुजगशयनं पद्मनाभं सुरेशं
 विश्वाधारं गगनसदृशं मेघवर्णं शुभाङ्गम्।
 लक्ष्मीकान्तं कमलनयनं योगिभिर्ध्यानगम्यं
 वन्दे विष्णुं भवभयहरं सर्वलोकैकनाथम्॥</div>
@@ -919,6 +1301,7 @@
     </div>
   </div>
   <div class="mantra-block">
+    <div class="mantra-label">शिव पञ्चाक्षर स्तोत्रम्</div>
     <div class="shloka">नागेन्द्रहाराय त्रिलोचनाय
       भस्माङ्गरागाय महेश्वराय।
 नित्याय शुद्धाय दिगम्बराय
@@ -1211,7 +1594,7 @@
 
 विराजन्मन्दारद्रुमकुसुमहारस्तनतटी-
 नदद्वीणानादश्रवणविलसत्कुण्डलगुणा ।
-नताङ्गी मातङ्गी रुचिरगतिभङ्गी</span> भगवती
+नताङ्गी मातङ्गी रुचिरगतिभङ्गी भगवती
 सती शंभोरंभोरुहचटुकचक्षुर्विजयते॥ <span class="verse-num">४॥</span>
 
 नवीनार्कभ्राजन्मणिकनकभूषापरिकरै-
@@ -1221,7 +1604,7 @@
 
 हिमाद्रेः संभूता सुललितकरैः पल्लवयुता
 सुपुष्पा मुक्ताभिर्भ्रमरकलिता चालकभरैः ।
-कृतस्थाणुस्थाना कुचफलनता सुक्तिसरसा</span>
+कृतस्थाणुस्थाना कुचफलनता सुक्तिसरसा
 रुजां हन्त्री गन्त्री विलसति चिदानन्दलतिका॥ <span class="verse-num">६॥</span>
 
 सपर्णामाकीर्णां कतिपयगुणैः सादरमिह
@@ -1297,7 +1680,7 @@
 <span style="color:red;">न ध्यातं पदपङ्कजं तव धिया न चापि स्तुतं
 न वा मन्त्रं जप्तं तव विविधपूजापि न कृता ।
 तथापि त्वं स्नेहात् मयि निरुपमं हन्त कुरुषे
-कृपां केवल्यैका जननि जगदम्बेति करुणा॥</span> <span class="verse-num">२१॥</span>
+कृपां केवल्यैका जननि जगदम्बेति करुणा॥</span> <span class="verse-num">२१॥</span></div>
   </div>
 </section>
 
@@ -1368,8 +1751,8 @@
 न हि माता समुपेक्षते सुतम् ॥ <span class="verse-num">११॥</span>
 
 मत्समः पातकी नास्ति पापघ्नी त्वत्समा न हि ।
-एवं ज्ञात्वा महादेवि यथायोग्यं तथा कुरु ॥ <span class="verse-num">१२॥</span></dev>
-    </dev>
+एवं ज्ञात्वा महादेवि यथायोग्यं तथा कुरु ॥ <span class="verse-num">१२॥</span></div>
+    </div>
     </section>
 
 <section class="stotra-section" id="tab-saraswati">
@@ -1393,9 +1776,10 @@
 वीणापुस्तकधारिणीमभयदां जाड्यान्धकारापहाम्।
 हस्ते स्फाटिकमालिकां च दधतीं पद्मासने संस्थितां
 वन्दे तां परमेश्वरीं भगवतीं बुद्धिप्रदां शारदाम्॥</div>
-<div class="mantra-block"></div>
-<div class="mantra-label">सरस्वती द्वादश नाम</div>
-<div class="shloka">सरस्वती मया दृष्टा वीणापुस्तकधारिणी।
+  </div>
+  <div class="mantra-block">
+    <div class="mantra-label">सरस्वती द्वादश नाम</div>
+    <div class="shloka">सरस्वती मया दृष्टा वीणापुस्तकधारिणी।
         हंसवाहनसंयुक्ता विद्यादानं करोतु मे॥
 प्रथमं भारती नाम द्वितीयञ्च सरस्वती।
         तृतीयं शारदा देवी चतुर्थं हंसवाहिनी॥
@@ -1405,6 +1789,7 @@
         एकादशं चन्द्रघण्टा द्वादशं भुवनेश्वरी॥
 द्वादशैतानि नामानि त्रिसन्ध्यं य पठेन्नरः।
         जिह्वाग्रे वसते तस्य ब्रह्मरूपा सरस्वती॥</div>
+  </div>
 </section>
 
 <section class="stotra-section" id="tab-lakshmi">
@@ -1622,17 +2007,21 @@
     </div>
   </div>
 
-  <div class="mantra-block">
-
- <div>
-  <!-- मंगलाचरण तथा पञ्चायतन -->
-<div class="mantra-label">मङ्गलाचरण र पञ्चायतन</div>
+    <div class="mantra-block">
+<div class="mantra-label">मङ्गलाचरण</div>
 <div class="jay-item">
-  <span class="jay-text">विघ्नविनाशक रिद्धि–सिद्धिसहितका श्री गणेशजी भगवानको</span>
+  <span class="jay-text">विघ्नविनाशक रिद्धि–सिद्धिसहितका श्री गणेश भगवानको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
   <span class="jay-text">गुरूणां गुरुः, मङ्गलस्वरूप श्री साम्ब सदाशिव भगवानको</span>
+  <span class="jai">— जय</span>
+</div>
+  </div>
+  <div class="mantra-block">
+<div class="mantra-label">पञ्चायतन</div>
+<div class="jay-item">
+  <span class="jay-text">श्री गणेश भगवानको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
@@ -1644,10 +2033,15 @@
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
-  <span class="jay-text">जगतपालक श्री लक्ष्मीनारायण भगवानको</span>
+  <span class="jay-text">श्री लक्ष्मीनारायण भगवानको</span>
   <span class="jai">— जय</span>
 </div>
-<!-- परमतत्त्व शिव -->
+<div class="jay-item">
+  <span class="jay-text">सृष्टि–स्थिति–लयस्वरूप ब्रह्मा, विष्णु तथा महेश्वर भगवानको</span>
+  <span class="jai">— जय</span>
+</div>
+  </div>
+  <div class="mantra-block">
 <div class="mantra-label">परमतत्त्व शिव</div>
 <div class="jay-item">
   <span class="jay-text">गुरुहरूको गुरु आदि गुरु दक्षिणामूर्ति भगवानको</span>
@@ -1662,7 +2056,7 @@
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
-  <span class="jay-text">अष्टमूर्ति तथा एकादश रुद्रस्वरूप भगवान सदाशिवको</span>
+  <span class="jay-text">अष्टमूर्ति तथा एकादश रुद्रस्वरूप भगवानको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
@@ -1673,9 +2067,8 @@
   <span class="jay-text">नन्दीश्वर, भृङ्गी तथा सम्पूर्ण शिवगणको</span>
   <span class="jai">— जय</span>
 </div>
-
-
-<!-- गुरु–ऋषि परम्परा -->
+  </div>
+  <div class="mantra-block">
 <div class="mantra-label">गुरु–ऋषि परम्परा</div>
 <div class="jay-item">
   <span class="jay-text">महर्षि वेदव्यास भगवानको</span>
@@ -1693,9 +2086,8 @@
   <span class="jay-text">सम्पूर्ण सिद्ध, योगी, तपस्वी तथा सन्त–महात्माहरूको</span>
   <span class="jai">— जय</span>
 </div>
-
-
-<!-- वैदिक–शास्त्रीय परम्परा -->
+  </div>
+  <div class="mantra-block">
 <div class="mantra-label">वैदिक–शास्त्रीय परम्परा</div>
 <div class="jay-item">
   <span class="jay-text">चारै वेद तथा सम्पूर्ण वेदाङ्गहरूको</span>
@@ -1710,24 +2102,22 @@
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
-  <span class="jay-text">अमोघ पञ्चाक्षरी महामन्त्रको</span>
+  <span class="jay-text">अमोघ पञ्चाक्षरी महामन्त्र “ॐ नमः शिवाय” को</span>
   <span class="jai">— जय</span>
 </div>
-
-
-<!-- देवशक्ति -->
+  </div>
+  <div class="mantra-block">
 <div class="mantra-label">देवशक्ति</div>
 <div class="jay-item">
-  <span class="jay-text">सम्पूर्ण देवी–देवता तथा नवग्रहदि देवताहरूको</span>
+  <span class="jay-text">सम्पूर्ण देवी–देवता तथा नवग्रह देवताहरूको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
   <span class="jay-text">दशदिक्पाल, अष्टमातृका, अष्टभैरव तथा क्षेत्रपालहरूको</span>
   <span class="jai">— जय</span>
 </div>
-
-
-<!-- शिवधाम -->
+  </div>
+  <div class="mantra-block">
 <div class="mantra-label">पावन शिवधाम</div>
 <div class="jay-item">
   <span class="jay-text">श्री कैलाश मानसरोवर धामको</span>
@@ -1745,34 +2135,33 @@
   <span class="jay-text">राष्ट्रदेव श्री पशुपतिनाथ भगवानको</span>
   <span class="jai">— जय</span>
 </div>
-
-
-<!-- समष्टि -->
+  </div>
+  <div class="mantra-block">
 <div class="mantra-label">समष्टि</div>
 <div class="jay-item">
-  <span class="jay-text">सम्पूर्ण तीर्थ, देवक्षेत्र तथा शक्तिपीठको</span>
+  <span class="jay-text">सम्पूर्ण तीर्थ, देवक्षेत्र तथा शक्तिपीठहरूको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
-  <span class="jay-text">सम्पूर्ण इष्टदेवता, कुलदेवता तथा ग्रामदेवताको</span>
+  <span class="jay-text">सम्पूर्ण इष्टदेवता, कुलदेवता तथा ग्रामदेवताहरूको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
-  <span class="jay-text">सम्पूर्ण पितृदेवता, मातृदेवता तथा गौमाताको</span>
+  <span class="jay-text">सम्पूर्ण पितृ, मातृदेवता तथा गौमाताको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
-  <span class="jay-text">सत्य सनातन वैदिक धर्म तथा समस्त भक्तजन–साधकको</span>
+  <span class="jay-text">सत्य सनातन वैदिक धर्म तथा समस्त भक्तजन–साधकहरूको</span>
   <span class="jai">— जय</span>
 </div>
-
-
-<!-- परम समापन -->
+  </div>
+  <div class="mantra-block">
 <div class="mantra-label">परम समापन</div>
 <div class="jay-item">
   <span class="jay-text">अखण्ड सच्चिदानन्द परब्रह्म परमेश्वर श्री साम्ब सदाशिव भगवानको</span>
   <span class="jai">— जय</span>
 </div>
+  </div>
 </section>
 
 <section class="stotra-section" id="tab-shanti">
@@ -1811,20 +2200,21 @@
 पृथ्वी शान्तिरापः शान्तिरोषधयः शान्तिः ।
 वनस्पतयः शान्तिर्विश्वे देवाः शान्तिर्ब्रह्म शान्तिः
 सर्वं शान्तिः शान्तिरेव शान्तिः सा मा शान्तिरेधि ॥
+
 ॐ शान्तिः शान्तिः शान्तिः।
-      
 सुशान्तिर्भवतु।
 सर्वारिष्टशान्तिर्भवतु॥
+
 श्रीरस्तु कल्याणमस्तु शुभं भूयात्॥
 <span class="shanti-tag">ॐ शान्तिः शान्तिः शान्तिः</span></div>
   </div>
-  <div class="mantra-block" style="background:linear-gradient(135deg,#212121,#f0efed);text-align:center;padding:28px 16px;">
-    <div class="shloka" style="font-size:1.35rem;color:var(--deep-red);font-weight:700;text-align:center;line-height:0.0;">
-<span class="om" style="display:block;font-size:1.55rem;margin-top:6px;">ॐ नमः शिवाय | हरहर महादेव </span>
-    </div>
+  <div class="mantra-block closing-block">
+    <div class="shloka"><span class="om">ॐ नमः शिवाय | हरहर महादेव</span></div>
   </div>
-  <div class="app-footer">© 2026 Saroj Baral. All rights reserved.</div>
 </section>
+
+<div class="app-footer">© 2026 Saroj Baral. All rights reserved.</div>
+</div><!-- /#contentArea -->
 
 <script>
 // ── Image fallback for deity banners (shared, instead of repeating inline JS per <img>) ──
@@ -1854,6 +2244,9 @@ function toggleTheme() {
 })();
 
 // ── Measure header/nav heights & set content padding (debounced on resize) ──
+// डेस्कटप (≥१०२४px) मा कार्यक्षेत्र लेआउट, नत्र मोबाइल लेआउट
+const desktopMQ = window.matchMedia('(min-width: 1024px)');
+function isDesktop() { return desktopMQ.matches; }
 const appHeaderEl    = document.querySelector('.app-header');
 const tabNavShellEl  = document.getElementById('tabNavShell');
 const tabNavEl       = document.getElementById('tabNav');
@@ -1870,6 +2263,13 @@ let headerHideAmt = 0; // 0..headerH
 function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
 function applyHeaderNavTransform() {
+  if (isDesktop()) {   // डेस्कटपमा हेडर स्थिर रहन्छ, लुक्दैन
+    appHeaderEl.style.transform = '';
+    tabNavShellEl.style.transform = '';
+    document.documentElement.style.setProperty('--header-h', headerH + 'px');
+    document.documentElement.style.setProperty('--desk-top', headerH + 'px');
+    return;
+  }
   appHeaderEl.style.transform = `translateY(${-headerHideAmt}px)`;
   const navY = Math.max(0, headerH - headerHideAmt);
   tabNavShellEl.style.transform = `translateY(${navY}px)`;
@@ -1886,7 +2286,7 @@ function adjustPadding() {
   headerHideAmt = clamp(headerHideAmt, 0, headerH);
   // Content padding stays fixed to the fully-expanded height so the initial
   // layout never starts underneath either fixed bar.
-  contentAreaEl.style.paddingTop = (headerH + navH) + 'px';
+  contentAreaEl.style.paddingTop = isDesktop() ? '' : (headerH + navH) + 'px';
   applyHeaderNavTransform();
 }
 adjustPadding();
@@ -1937,6 +2337,7 @@ function onScroll() {
       headerHideAmt = clamp(headerHideAmt + dy, 0, headerH);
     }
     applyHeaderNavTransform();
+    if (typeof updateSpy === 'function') updateSpy();
   });
 }
 window.addEventListener('scroll', onScroll, { passive: true });
@@ -1981,24 +2382,17 @@ function openScrollSpeedPopup() {
   scheduleScrollSpeedPopupHide();
 }
 
+// यी तत्वहरूमा छुँदा अटो-स्क्रोल टगल/गति-पाना/ट्याब-स्वाइप सक्रिय हुँदैन
+const UI_SEL = '.app-header, .tab-nav-shell, .qi, .fab, .sidebar, .toc, .tab-menu-overlay, .scroll-speed-popup';
+let touchStartTarget = null;
 document.addEventListener('touchstart', (event) => {
   const target = event.target;
-  if (target && target.closest('.tab-btn, .font-btn, .theme-btn, .tab-jump-btn, #scrollModeBtn, .scroll-speed-control, .scroll-speed-value, .scroll-speed-popup')) {
-    return;
-  }
+  if (target && target.closest && target.closest(UI_SEL)) return;
   openScrollSpeedPopup();
 }, { passive: true });
 
-function handleDesktopTap(event) {
-  if (event.pointerType !== 'mouse') return;
-  const target = event.target;
-  const isUI = target.closest('.tab-btn, .font-btn, .theme-btn, .tab-jump-btn, #scrollModeBtn, .scroll-speed-control, .scroll-speed-value, .scroll-speed-popup');
-  if (isUI) return;
-  openScrollSpeedPopup();
-  toggleScrollMode();
-}
-
-document.addEventListener('pointerdown', handleDesktopTap, { passive: true });
+// डेस्कटप: पाठ चुन्न/कपी गर्दा अटो-स्क्रोल नछेडियोस् भनेर क्लिक-टगल हटाइयो;
+// हेडरको बटन वा गति-पानाबाट नियन्त्रण गर्नुहोस्।
 
 function setScrollBtnUI(on) {
   const btn = document.getElementById('scrollModeBtn');
@@ -2049,7 +2443,7 @@ function toggleScrollMode() {
     isSmoothScrollOn = !isSmoothScrollOn;
     userDisabledAutoScroll = !isSmoothScrollOn; // प्रयोगकर्ताले आफैं थिचेर अफ गरेको हो भने सम्झिने
     setScrollBtnUI(isSmoothScrollOn);
-    if (isSmoothScrollOn) startAutoScroll(); else stopAutoScroll();
+    if (isSmoothScrollOn) { startAutoScroll(); if (isDesktop()) openScrollSpeedPopup(); } else stopAutoScroll();
 }
 
 // प्रयोगकर्ताले औंलाले छोइ/स्क्रोल गरेको बेला अटो-स्क्रोल केही बेर रोक्ने, त्यसपछि फेरि सुरु गर्ने
@@ -2087,6 +2481,7 @@ function showTab(name, btn) {
     // Lock the header/font-bar hidden before any scrollIntoView or restoration
     // callback can run, while the tab navigation remains at the top.
     headerHiddenByTab = true;
+    const wasAutoOn = isSmoothScrollOn;
     headerHideAmt = headerH;
     applyHeaderNavTransform();
 
@@ -2107,6 +2502,7 @@ function showTab(name, btn) {
 
     currentActiveTab = name;
     if (typeof syncTabMenuActive === 'function') syncTabMenuActive(name);
+    if (typeof onTabChanged === 'function') onTabChanged(name);
 
     // ब्राउजरलाई ट्याब रेन्डर गर्न पर्याप्त समय (150ms) दिइएको छ
     setTimeout(() => {
@@ -2118,7 +2514,7 @@ function showTab(name, btn) {
         applyHeaderNavTransform();
         // ट्याब बदलिनासाथ अटो-स्क्रोल आफैं सुरु हुन्छ, प्रयोगकर्ताले
         // आफैं बटन थिचेर बन्द नगरेसम्म (अघिल्लो ट्याबको स्क्रोल अवस्था जे भए पनि)
-        if (!userDisabledAutoScroll) {
+        if (isDesktop() ? wasAutoOn : !userDisabledAutoScroll) {
             isSmoothScrollOn = true;
             setScrollBtnUI(true);
             startAutoScroll();
@@ -2183,6 +2579,7 @@ document.addEventListener('touchstart', e => {
     touchstartX    = e.changedTouches[0].screenX;
     touchstartY    = e.changedTouches[0].screenY;
     touchstartTime = Date.now();
+    touchStartTarget = e.target;
 }, { passive: true });
 
 // On touch devices, release the lock only when the user deliberately swipes
@@ -2210,16 +2607,14 @@ function handleGesture() {
     const MAX_TAP   = 200;  // ms — छोटो tap मात्र count हुन्छ
     const MAX_MOVE  = 15;   // px — tap मा धेरै नसर्ने
 
-    // ── Short tap (pause / resume) ──
-    // Tab buttons र font buttons थिच्दा trigger नहोस् भनेर check
-    const tgt = document.elementFromPoint(touchendX - window.pageXOffset, touchendY - window.pageYOffset);
-    const isUI = tgt && (tgt.closest('.tab-btn') || tgt.closest('.font-btn') || tgt.closest('#scrollModeBtn') || tgt.closest('.scroll-speed-popup'));
+    // हेडर/ट्याब-पट्टी/चिप/सूची आदिबाट सुरु भएको स्पर्शलाई यहाँ गनिँदैन
+    const inUI = !!(touchStartTarget && touchStartTarget.closest && touchStartTarget.closest(UI_SEL));
+    if (inUI) return;
 
-    if (!isUI && duration < MAX_TAP && absDx < MAX_MOVE && absDy < MAX_MOVE) {
-        // Reuse the single source of truth for the toggle instead of duplicating it here.
+    // ── Short tap (pause / resume) ──
+    if (duration < MAX_TAP && absDx < MAX_MOVE && absDy < MAX_MOVE) {
         toggleScrollMode();
         if (isSmoothScrollOn) {
-            // Brief visual flash to confirm (tap-specific feedback only)
             const flashColor = document.documentElement.getAttribute('data-theme') === 'dark' ? '#3A2A10' : '#FFF8E7';
             document.body.style.transition = 'background 0.15s';
             document.body.style.background = flashColor;
@@ -2235,12 +2630,10 @@ function handleGesture() {
         const currentIndex = allTabBtns.indexOf(activeBtn);
 
         if (dx < 0 && currentIndex < allTabBtns.length - 1) {
-            // Left swipe → next tab
             const next = allTabBtns[currentIndex + 1];
             next.click();
             next.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         } else if (dx > 0 && currentIndex > 0) {
-            // Right swipe → previous tab
             const prev = allTabBtns[currentIndex - 1];
             prev.click();
             prev.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
@@ -2274,9 +2667,9 @@ async function requestWakeLock() {
   if ('wakeLock' in navigator) {
     try {
       wakeLock = await navigator.wakeLock.request('screen');
-      document.getElementById('wakeDot').classList.add('on');
+      const wd = document.getElementById('wakeDot'); if (wd) wd.classList.add('on');
       wakeLock.addEventListener('release', () => {
-        document.getElementById('wakeDot').classList.remove('on');
+        const wd = document.getElementById('wakeDot'); if (wd) wd.classList.remove('on');
       });
     } catch(e) {}
   }
@@ -2293,6 +2686,223 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => {});
   });
 }
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// ROYAL ENHANCEMENT LAYER — द्रुत-सूची, साइडबार, TOC, पृष्ठभूमि प्रभाव
+// (माथिको मूल स्क्रिप्टका let/const चरहरू यहाँ साझा छन्)
+// ═══════════════════════════════════════════════════════════════
+(function () {
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const toDev = n => String(n).replace(/\d/g, d => '०१२३४५६७८९'[d]);
+
+  // ── पृष्ठभूमि प्रभाव (चालु/बन्द) ──
+  const fxBtn = $('#fxBtn'), fxMenuBtn = $('#fxMenuBtn');
+  function setFx(v) {
+    document.documentElement.setAttribute('data-fx', v);
+    try { localStorage.setItem('stotra-fx', v); } catch (e) {}
+    if (fxBtn) { fxBtn.style.opacity = v === 'off' ? '.45' : '1'; fxBtn.setAttribute('aria-pressed', v !== 'off'); }
+    if (fxMenuBtn) fxMenuBtn.textContent = v === 'off' ? '✦ प्रभाव: बन्द' : '✨ प्रभाव: चालु';
+  }
+  window.toggleFx = function () {
+    setFx(document.documentElement.getAttribute('data-fx') === 'off' ? 'on' : 'off');
+  };
+  let savedFx = null;
+  try { savedFx = localStorage.getItem('stotra-fx'); } catch (e) {}
+  setFx(savedFx === 'off' ? 'off' : 'on');
+
+  // ── तैरिने सुनौला कण (थोरै र हल्का) ──
+  (function buildParticles() {
+    const bg = $('#bgFx');
+    if (!bg) return;
+    const count = isDesktop() ? 24 : 14;
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('span');
+      const size = 2 + Math.random() * 3.5;
+      p.className = 'gp';
+      p.style.left = (Math.random() * 100) + '%';
+      p.style.width = p.style.height = size + 'px';
+      p.style.animationDuration = (22 + Math.random() * 24) + 's';
+      p.style.animationDelay = (-Math.random() * 46) + 's';
+      p.style.setProperty('--dx', ((Math.random() - .5) * 90) + 'px');
+      p.style.setProperty('--po', (.14 + Math.random() * .2).toFixed(2));
+      frag.appendChild(p);
+    }
+    bg.appendChild(frag);
+  })();
+
+  // ── सुलभता: लेबल र भाषा ──
+  document.querySelectorAll('.shloka').forEach(el => el.setAttribute('lang', 'sa'));
+  tabNavEl.setAttribute('role', 'tablist');
+  allTabBtns.forEach(b => b.setAttribute('role', 'tab'));
+
+  // ── प्रत्येक ट्याबका स्तोत्र (.mantra-label) बाट सूची बनाउने ──
+  // नयाँ स्तोत्र थप्दा केवल <div class="mantra-block"> भित्र .mantra-label राख्नुहोस् —
+  // चिप, साइडबार TOC र मोबाइल सूची आफैं बन्छन्।
+  const sections = Array.from(document.querySelectorAll('.stotra-section'));
+  const QI = {};
+  sections.forEach(sec => {
+    const name = sec.id.replace(/^tab-/, '');
+    const items = [];
+    sec.querySelectorAll('.mantra-label').forEach(lb => {
+      const block = lb.closest('.mantra-block') || lb;
+      if (!block.id) block.id = name + '-s' + (items.length + 1);
+      items.push({ text: lb.textContent.trim(), el: block });
+    });
+    QI[name] = items;
+    if (items.length >= 2) {
+      const nav = document.createElement('nav');
+      nav.className = 'qi';
+      nav.setAttribute('aria-label', 'स्तोत्र द्रुत-सूची');
+      const title = document.createElement('span');
+      title.className = 'qi-title'; title.textContent = '📜 स्तोत्र';
+      const row = document.createElement('div');
+      row.className = 'qi-row';
+      items.forEach((it, i) => {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'qi-chip'; b.textContent = it.text;
+        b.addEventListener('click', () => jumpTo(i));
+        row.appendChild(b);
+      });
+      nav.append(title, row);
+      const banner = sec.querySelector('.deity-banner, .section-header');
+      if (banner) banner.after(nav); else sec.prepend(nav);
+    }
+  });
+
+  const activeItems = () => QI[currentActiveTab] || [];
+  const activeSection = () => document.getElementById('tab-' + currentActiveTab);
+
+  // बाँकी (sticky) बारबाट ढाकिएको भाग घटाएर ठ्याक्कै लक्ष्यमा पुग्ने दूरी
+  function jumpOffset() {
+    if (isDesktop()) return headerH + 16;
+    const sec = activeSection();
+    const b = sec && sec.querySelector('.deity-banner, .section-header');
+    return navH + (b ? b.offsetHeight : 0) + 12;
+  }
+
+  function jumpTo(i) {
+    const it = activeItems()[i];
+    if (!it) return;
+    // ट्याब थिच्दा जस्तै हेडर लुकेको अवस्थामा लक गर्ने, ताकि गणना ठीक रहोस्
+    headerHiddenByTab = true;
+    headerHideAmt = headerH;
+    applyHeaderNavTransform();
+    pauseAutoScrollTemporarily();
+    const y = it.el.getBoundingClientRect().top + window.scrollY - jumpOffset();
+    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+    setActive(i, true);
+  }
+  window.jumpTo = jumpTo;
+
+  // ── सक्रिय स्तोत्र चिन्ह (चिप, TOC, मोबाइल सूची) ──
+  let curIdx = -1, curTab = '';
+  function setActive(i, force) {
+    if (!force && i === curIdx && curTab === currentActiveTab) return;
+    curIdx = i; curTab = currentActiveTab;
+    const sec = activeSection();
+    const chips = sec ? Array.from(sec.querySelectorAll('.qi-chip')) : [];
+    chips.forEach((c, k) => c.classList.toggle('on', k === i));
+    document.querySelectorAll('#tocList .toc-item').forEach((c, k) => {
+      c.classList.toggle('on', k === i);
+      if (k === i) c.setAttribute('aria-current', 'true'); else c.removeAttribute('aria-current');
+    });
+    document.querySelectorAll('#qiSheetGrid .tab-menu-item').forEach((c, k) => c.classList.toggle('active', k === i));
+    const chip = chips[i], row = chip && chip.parentElement;
+    if (row && row.offsetParent) {
+      row.scrollTo({ left: chip.offsetLeft - (row.clientWidth - chip.offsetWidth) / 2, behavior: 'smooth' });
+    }
+  }
+
+  // स्क्रोल गर्दा अहिले कुन स्तोत्र पढिँदैछ भनी पहिचान गर्ने (onScroll बाट बोलाइन्छ)
+  window.updateSpy = function () {
+    const items = activeItems();
+    if (items.length < 2) return;
+    const th = jumpOffset() + 40;
+    let idx = 0;
+    for (let k = 0; k < items.length; k++) {
+      if (items[k].el.getBoundingClientRect().top <= th) idx = k; else break;
+    }
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 6) idx = items.length - 1;
+    setActive(idx);
+  };
+
+  // ── डेस्कटप साइडबार (देवता/ट्याब सूची) ──
+  const sbNav = $('#sidebarNav');
+  allTabBtns.forEach(btn => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'sb-item';
+    b.dataset.tab = btn.dataset.tab;
+    b.innerHTML = btn.innerHTML;
+    b.addEventListener('click', () => showTab(btn.dataset.tab, btn));
+    sbNav.appendChild(b);
+  });
+
+  // ── दायाँ TOC (डेस्कटप) ──
+  function buildToc() {
+    const items = activeItems();
+    const list = $('#tocList');
+    list.textContent = '';
+    items.forEach((it, i) => {
+      const li = document.createElement('li');
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'toc-item';
+      const n = document.createElement('span'); n.className = 'toc-n'; n.textContent = toDev(i + 1) + '.';
+      const t = document.createElement('span'); t.textContent = it.text;
+      b.append(n, t);
+      b.addEventListener('click', () => jumpTo(i));
+      li.appendChild(b); list.appendChild(li);
+    });
+    $('#tocEmpty').hidden = items.length >= 2;
+    const activeBtn = allTabBtns.find(b => b.dataset.tab === currentActiveTab);
+    $('#tocTab').textContent = activeBtn ? activeBtn.textContent.trim() : '';
+  }
+
+  // ── मोबाइल: तल-पाना सूची + तैरिने बटन ──
+  const sheetOverlay = $('#qiSheetOverlay'), sheetGrid = $('#qiSheetGrid'), fab = $('#qiFab');
+  function buildSheet() {
+    const items = activeItems();
+    sheetGrid.textContent = '';
+    items.forEach((it, i) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'tab-menu-item'; b.textContent = it.text;
+      b.addEventListener('click', () => { closeIndexSheet(); jumpTo(i); });
+      sheetGrid.appendChild(b);
+    });
+    fab.classList.toggle('show', items.length >= 2);
+  }
+  window.openIndexSheet = function () {
+    $('#qiSheetTitle').textContent = '📜 ' + ($('#tocTab').textContent || 'स्तोत्र') + ' — स्तोत्र छान्नुहोस्';
+    sheetOverlay.classList.add('open');
+  };
+  window.closeIndexSheet = function () { sheetOverlay.classList.remove('open'); };
+
+  // ── ट्याब परिवर्तन हुँदा (showTab भित्रबाट बोलाइन्छ) ──
+  window.onTabChanged = function (name) {
+    curIdx = -1;
+    buildToc();
+    buildSheet();
+    sbNav.querySelectorAll('.sb-item').forEach(el => {
+      const on = el.dataset.tab === name;
+      el.classList.toggle('active', on);
+      if (on) el.setAttribute('aria-current', 'page'); else el.removeAttribute('aria-current');
+      if (on && isDesktop()) el.scrollIntoView({ block: 'nearest' });
+    });
+    allTabBtns.forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+    setTimeout(window.updateSpy, 200);
+  };
+
+  // स्क्रिन-चौडाइ मोबाइल/डेस्कटपबीच बदलिँदा पुनःगणना
+  desktopMQ.addEventListener('change', () => {
+    adjustPadding();
+    if (!isDesktop()) closeIndexSheet();
+    window.updateSpy();
+  });
+
+  window.onTabChanged(currentActiveTab);
+})();
 </script>
 </body>
 </html>
