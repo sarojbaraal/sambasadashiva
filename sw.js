@@ -1,5 +1,5 @@
 // ── Service Worker for Daily Stotra Path PWA ──
-const CACHE_NAME = 'stotra-app-v1'; // जब पनि HTML/CSS मा ठूलो परिवर्तन गर्नुहुन्छ, यो 'v2', 'v3' मा बदल्नुहोस्
+const CACHE_NAME = 'stotra-app-v2'; // जब पनि HTML/CSS मा ठूलो परिवर्तन गर्नुहुन्छ, यो 'v2', 'v3' मा बदल्नुहोस्
 
 // पहिले नै क्यास गर्न चाहिने मुख्य फाइलहरू
 const PRECACHE_ASSETS = [
