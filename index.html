@@ -152,55 +152,78 @@
     text-align: center;
   }
 
+  /* ── SCROLL-SPEED PILL ──
+     Compact floating pill: [ − ]  12 px/s  [ + ]. Sits right above the QI FAB
+     (bottom-right thumb zone), fades/slides in and out, never blocks text. */
   .scroll-speed-popup {
     position: fixed;
     right: 14px;
-    bottom: 18px;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
     z-index: 300;
-    color: var(--gold-light);
-    background: rgba(139, 26, 26, 0.32);
-    border: 1px solid rgba(240, 192, 80, 0.34);
-    box-shadow: 0 4px 14px rgba(44, 26, 10, 0.08);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-  }
-
-  .scroll-speed-control:active { background: rgba(212, 98, 26, 0.62); }
-
-  .scroll-speed-popup {
-    display: none;
-    right: 14px;
-    bottom: 18px;
+    display: flex;
     align-items: center;
-    flex-direction: row;
-    gap: 8px;
-    padding: 9px 10px;
-    border-radius: 10px;
+    gap: 2px;
+    padding: 3px;
+    border-radius: 999px;
+    color: var(--gold-light);
+    background: rgba(44, 16, 8, 0.58);
+    border: 1px solid rgba(240, 192, 80, 0.38);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+    -webkit-backdrop-filter: blur(10px) saturate(1.3);
+    backdrop-filter: blur(10px) saturate(1.3);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none; -webkit-user-select: none;
+    /* hidden state (kept in layout so it can animate) */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(8px) scale(0.94);
+    transform-origin: bottom right;
+    transition: opacity .22s ease, transform .22s ease, visibility 0s linear .22s;
   }
-
-  .scroll-speed-popup.open { display: flex; }
+  .scroll-speed-popup.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+    transition: opacity .22s ease, transform .22s ease, visibility 0s;
+  }
 
   .scroll-speed-control {
-    min-width: 34px;
-    height: 30px;
-    padding: 0 8px;
-    border: 1px solid #ffffff38;
-    border-radius: 5px;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: none;
+    border-radius: 50%;
     color: var(--gold-light);
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.10);
     font: inherit;
-    font-size: 0.9rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1;
     cursor: pointer;
+    touch-action: manipulation;
+    transition: background .15s, transform .12s, opacity .15s;
   }
+  .scroll-speed-control:active { background: rgba(212, 98, 26, 0.75); transform: scale(.9); }
+  .scroll-speed-control:disabled { opacity: .35; pointer-events: none; }
 
   .scroll-speed-value {
-    min-width: 48px;
+    min-width: 54px;
+    padding: 0 2px;
     color: var(--gold-light);
-    font-size: 0.72rem;
+    font-size: 0.74rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
     text-align: center;
     white-space: nowrap;
-    letter-spacing: 0.04em;
-    padding: 0 2px;
+    letter-spacing: 0.02em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-speed-popup, .scroll-speed-popup.open { transition: opacity .01s, visibility 0s; transform: none; }
   }
 
   /* Theme (light/dark) toggle button */
@@ -400,7 +423,7 @@
      only the mantra-block content scrolls underneath it. */
   .deity-banner {
     position: sticky;
-    top: var(--header-h);
+    top: calc(var(--header-h) + var(--qi-h, 0px));
     z-index: 150;
     width: 100%;
     height: 200px;
@@ -449,7 +472,7 @@
     padding: 18px 16px 14px;
     text-align: center;
     position: sticky;
-    top: var(--header-h);
+    top: calc(var(--header-h) + var(--qi-h, 0px));
     z-index: 150;
     overflow: hidden;
   }
@@ -530,7 +553,6 @@
   #tab-shiva .grp-rudra   .shloka { --fs: 1.40rem; }
   #tab-shiva .grp-tandava .shloka { --fs: 1.48rem; }
   #tab-devi-prarthana .shloka { --fs: 1.40rem; }
-  #tab-anandalahari   .shloka { --fs: 1.40rem; }
   #tab-saraswati-lakshmi .grp-saraswati .shloka { --fs: 1.30rem; }
   #tab-saraswati-lakshmi .grp-lakshmi   .shloka { --fs: 1.40rem; }
   #tab-devyaparadha   .shloka { --fs: 1.45rem; }
@@ -806,8 +828,8 @@ html[data-fx="off"] .gp { display: none; }
 /* स्थिर (frozen) द्रुत-सूची: माथिको हेडर/ट्याब र (sticky भए) ब्यानरको ठीक मुनि अडिन्छ */
 .qi {
   position: -webkit-sticky; position: sticky;
-  top: calc(var(--header-h, 0px) + var(--banner-h, 0px));
-  z-index: 140;
+  top: var(--header-h, 0px);   /* सधैं हेडर/ट्याबको ठीक मुनि; ब्यानर QI मुनि */
+  z-index: 160;
   display: flex; align-items: center; gap: 8px;
   padding: 10px 10px 10px 12px;
   box-shadow: 0 4px 12px var(--shadow);
@@ -828,27 +850,44 @@ html[data-fx="off"] .gp { display: none; }
   padding: 2px;
 }
 .qi-row::-webkit-scrollbar { display: none; }
+/* QI चिप: मुख्य ट्याब (.tab-btn: गोलो पिल, गाढा पृष्ठभूमि) भन्दा फरक — पातको आकार,
+   सुनौलो पङ्क्ति-रेखा र क्रमसङ्ख्या-बिल्ला भएको "श्लोक-चिह्न" शैली */
 .qi-chip {
   flex-shrink: 0; white-space: nowrap; cursor: pointer;
-  font-size: .8rem; padding: 6px 13px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: 'Noto Serif Devanagari', serif;
+  font-size: .8rem; font-weight: 600; line-height: 1.2;
+  padding: 5px 14px 5px 6px;
+  border-radius: 4px 18px 4px 18px;          /* पात/पत्र आकार — पिल होइन */
   color: var(--text-main);
-  border: 1.3px solid var(--gold-soft);
-  background: rgba(255,255,255,.38);
-  transition: background .2s, color .2s, transform .15s, box-shadow .2s;
+  border: 1.5px dashed var(--frame);          /* ट्याबमा नभएको धर्सा-किनारा */
+  background: linear-gradient(135deg, rgba(255,251,238,.95), rgba(240,192,80,.30));
+  transition: background .2s, color .2s, transform .15s, box-shadow .2s, border-color .2s;
   -webkit-tap-highlight-color: transparent;
 }
-html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
-.qi-chip:hover { border-color: var(--saffron); }
+.qi-chip::before {                            /* क्रमसङ्ख्या-बिल्ला */
+  content: attr(data-n);
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 1.45em; height: 1.45em; padding: 0 .2em;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--saffron), var(--deep-red));
+  color: #fff; font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: .68rem; font-weight: 700;
+}
+html[data-theme="dark"] .qi-chip { background: linear-gradient(135deg, rgba(240,192,80,.14), rgba(139,26,26,.28)); }
+.qi-chip:hover { border-style: solid; border-color: var(--saffron); }
 .qi-chip:active { transform: scale(.96); }
 .qi-chip.on {
-  background: linear-gradient(135deg, var(--saffron), var(--deep-red));
-  border-color: transparent; color: #fff; font-weight: 700;
-  box-shadow: 0 2px 10px rgba(212,98,26,.42);
+  background: linear-gradient(135deg, var(--deep-red), #5A0D0D);
+  color: var(--gold-light);
+  border: 1.5px solid var(--gold-light);
+  box-shadow: 0 0 0 2px rgba(240,192,80,.30), 0 3px 10px rgba(139,26,26,.45);
 }
+.qi-chip.on::before { background: var(--gold-light); color: var(--deep-red); }
 
 /* मोबाइल: जुनसुकै ठाउँबाट खोल्न मिल्ने तैरिने बटन */
 .fab {
-  position: fixed; left: 14px; bottom: 18px; z-index: 300;
+  position: fixed; right: 14px; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 300;
   width: 46px; height: 46px; border-radius: 50%;
   display: none; align-items: center; justify-content: center;
   font-size: 1.25rem; line-height: 1; color: #fff; cursor: pointer;
@@ -936,7 +975,6 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
   }
   .deity-banner { position: relative; top: auto; height: 250px; }
   .deity-banner h2 { font-size: 1.6rem; }
-  .group-banner { height: 150px; }
   .mantra-block { margin: 22px 30px; padding: 30px 34px 24px; }
   .jay-item { padding: 11px 2px; }
 
@@ -985,25 +1023,6 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
 
 /* ── समूह-ब्यानर (एउटै ट्याबभित्रका स्तोत्र-समूह) ── */
 .stotra-group { position: relative; }
-.group-banner {
-  position: relative; width: 100%; height: 120px; overflow: hidden;
-  background: var(--deep-red); margin-top: 6px;
-  border-top: 1px solid var(--gold-soft); border-bottom: 1px solid var(--gold-soft);
-}
-.group-banner img {
-  width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;
-  filter: brightness(0.82) saturate(1.1);
-}
-.group-banner .banner-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(44,10,10,0.92) 0%, rgba(44,10,10,0.2) 60%, transparent 100%);
-  display: flex; flex-direction: column; justify-content: flex-end; padding: 10px 16px;
-}
-.group-banner h2 {
-  font-family: 'Noto Serif Devanagari', serif; font-size: 1.15rem; font-weight: 700;
-  color: var(--gold-light); line-height: 1.3; text-shadow: 0 2px 10px #000000aa;
-}
-.stotra-group:first-of-type .group-banner { margin-top: 0; }
 
 /* ── मोबाइल: श्लोक कहिल्यै बाहिर ननिस्कियोस् (क्षैतिज स्क्रोल हुँदैन) ── */
 .shloka, .mantra-label, .jay-item {
@@ -1018,6 +1037,19 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
   .mantra-block { margin: 12px 5px; padding: 20px 11px 14px; }
   .qi { padding: 8px 8px 8px 10px; }
   .qi-title { display: none; }
+}
+
+/* ── समूह (एउटै ट्याबमा धेरै देवता-ब्यानर) ──
+   हरेक .stotra-group भित्र आफ्नै sticky .deity-banner छ; समूह सकिएपछि त्यो ब्यानर बाहिरिन्छ र
+   अर्को समूहको ब्यानर ठ्याक्कै त्यही ठाउँमा आएर अडिन्छ। QI तल्लो ब्यानरभन्दा माथि (हेडर/ट्याबको मुनि) बस्छ। */
+.stotra-group { position: relative; }
+
+/* ── तैरिने बटनहरू (मोबाइल): QI-बटन दायाँ-तल; गति-पिल त्यसको ठीक माथि ── */
+@media (max-width: 1023.98px) {
+  html[data-fab="on"] .scroll-speed-popup {
+    right: 14px;
+    bottom: calc(18px + 46px + 10px + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 </style>
@@ -1081,7 +1113,6 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
       <button class="tab-btn" data-tab="vishnu" onclick="showTab('vishnu',this)"><span class="tab-icon">🪷</span>विष्णु</button>
       <button class="tab-btn" data-tab="shiva" onclick="showTab('shiva',this)"><span class="tab-icon">🔱</span>शिव</button>
       <button class="tab-btn" data-tab="devi-prarthana" onclick="showTab('devi-prarthana',this)"><span class="tab-icon">🌺</span>देवी प्रार्थना</button>
-      <button class="tab-btn" data-tab="anandalahari" onclick="showTab('anandalahari',this)"><span class="tab-icon">🌊</span>आनन्दलहरी</button>
       <button class="tab-btn" data-tab="saraswati-lakshmi" onclick="showTab('saraswati-lakshmi',this)"><span class="tab-icon">🎵</span>सरस्वती–लक्ष्मी</button>
       <button class="tab-btn" data-tab="devyaparadha" onclick="showTab('devyaparadha',this)"><span class="tab-icon">🙏</span>देव्यपराध</button>
       <button class="tab-btn" data-tab="kshama" onclick="showTab('kshama',this)"><span class="tab-icon">🙏</span>क्षमा–समर्पण</button>
@@ -1094,10 +1125,10 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
   </div>
 </div>
 
-<div class="scroll-speed-popup" id="scrollSpeedPopup" role="dialog" aria-label="स्क्रोल गति नियन्त्रण" onpointerdown="scheduleScrollSpeedPopupHide()">
-  <button class="scroll-speed-control" onclick="event.stopPropagation(); changeScrollSpeed(-6);" aria-label="स्क्रोल गति घटाउनुहोस्">−</button>
+<div class="scroll-speed-popup" id="scrollSpeedPopup" role="group" aria-label="स्क्रोल गति नियन्त्रण" onpointerdown="scheduleScrollSpeedPopupHide()">
+  <button type="button" class="scroll-speed-control" id="scrollSpeedDec" onclick="event.stopPropagation(); changeScrollSpeed(-SCROLL_SPEED_STEP);" aria-label="स्क्रोल गति घटाउनुहोस्">−</button>
   <div class="scroll-speed-value" id="scrollSpeedValue" aria-live="polite">12 px/s</div>
-  <button class="scroll-speed-control" onclick="event.stopPropagation(); changeScrollSpeed(6);" aria-label="स्क्रोल गति बढाउनुहोस्">+</button>
+  <button type="button" class="scroll-speed-control" id="scrollSpeedInc" onclick="event.stopPropagation(); changeScrollSpeed(SCROLL_SPEED_STEP);" aria-label="स्क्रोल गति बढाउनुहोस्">+</button>
 </div>
 
 <!-- TAB JUMP MENU: lists every tab so you can go from tab 1 to tab 16 in one tap -->
@@ -1287,9 +1318,9 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
   </div>
 </section>
 
-<section class="stotra-section" id="tab-shiva">
+<section class="stotra-section has-groups" id="tab-shiva">
   <div class="stotra-group grp-manas">
-  <div class="group-banner">
+  <div class="deity-banner">
     <img src="deity-photo-manas.png"
          onerror="bannerFallback(this,'#1a0a00')" alt="Shiva parvati">
     <div class="banner-overlay">
@@ -1334,7 +1365,7 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
   </div>
 
   <div class="stotra-group grp-pancha">
-  <div class="group-banner">
+  <div class="deity-banner">
     <img src="deity-photo-panchakshar.png"
          onerror="bannerFallback(this,'#1a0a2a')" alt="Shiva">
     <div class="banner-overlay">
@@ -1427,7 +1458,7 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
   </div>
 
   <div class="stotra-group grp-rudra">
-  <div class="group-banner">
+  <div class="deity-banner">
     <img src="deity-photo-rudrastakam.png"
          onerror="bannerFallback(this,'#1a0a2a')" alt="Shiva Nataraja">
     <div class="banner-overlay">
@@ -1480,7 +1511,7 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
   </div>
 
   <div class="stotra-group grp-tandava">
-  <div class="group-banner">
+  <div class="deity-banner">
     <img src="deity-photo-tandav.png"
          onerror="bannerFallback(this,'#0a001a')" alt="Nataraja">
     <div class="banner-overlay">
@@ -1571,7 +1602,8 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
 
 
 
-<section class="stotra-section" id="tab-devi-prarthana">
+<section class="stotra-section has-groups" id="tab-devi-prarthana">
+  <div class="stotra-group grp-devi">
     <div class="deity-banner">
         <img src="deity-photo-devi-prarthana.png" onerror="bannerFallback(this,'#1a0010')" alt="Devi Prarthana">
         <div class="banner-overlay">
@@ -1609,9 +1641,9 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
 नमस्तस्यै नमस्तस्यै नमस्तस्यै नमो नमः ॥
         </div>
     </div>
-</section>
+  </div>
 
-<section class="stotra-section" id="tab-anandalahari">
+  <div class="stotra-group grp-anandalahari">
   <div class="deity-banner">
     <img src="deity-photo-anandalahari.png"
          onerror="bannerFallback(this,'#1a0010')" alt="Anandalahari">
@@ -1728,16 +1760,14 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
 तथापि त्वं स्नेहात् मयि निरुपमं हन्त कुरुषे
 कृपां केवल्यैका जननि जगदम्बेति करुणा॥</span> <span class="verse-num">२१॥</span></div>
   </div>
+  </div>
 </section>
 
-<section class="stotra-section" id="tab-saraswati-lakshmi">
-  <div class="section-header">
-    <h2>🎵🌸 सरस्वती • लक्ष्मी</h2>
-    <div class="subtitle">विद्या र ऐश्वर्यका स्तुति</div>
-  </div>
 
-  <div class="stotra-group grp-saraswati">
-  <div class="group-banner">
+<section class="stotra-section has-groups" id="tab-saraswati-lakshmi">
+
+<div class="stotra-group grp-saraswati">
+  <div class="deity-banner">
     <img src="deity-photo-saraswati.png"
          onerror="bannerFallback(this,'#001a2a')" alt="Saraswati">
     <div class="banner-overlay">
@@ -1774,7 +1804,7 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
   </div>
 
   <div class="stotra-group grp-lakshmi">
-  <div class="group-banner">
+  <div class="deity-banner">
     <img src="deity-photo-laxmi.png"
          onerror="bannerFallback(this,'#1a1000')" alt="Lakshmi">
     <div class="banner-overlay">
@@ -2064,7 +2094,7 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
   <div class="mantra-block">
 <div class="mantra-label">पञ्चायतन</div>
 <div class="jay-item">
-  <span class="jay-text">विघ्नविनाशक रिद्धि–सिद्धिसहितका श्री गणेश भगवानको</span>
+  <span class="jay-text">बिघ्नविनाशक रिद्धि–सिद्धिसहितका श्री गणेश भगवानको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
@@ -2080,7 +2110,20 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
-  <span class="jay-text">गुरूणां गुरुः श्री साम्ब सदाशिव भगवानको</span>
+  <span class="jay-text">पञ्चब्रह्म तथा पञ्चभूतस्वरूप भगवान शिवको</span>
+  <span class="jai">— जय</span>
+</div>
+  </div>
+<div class="jay-item">
+  <span class="jay-text">अष्टमूर्ति तथा एकादश रुद्रस्वरूप भगवानको</span>
+  <span class="jai">— जय</span>
+</div>
+<div class="jay-item">
+  <span class="jay-text">महाकाल, कालभैरव तथा सर्वव्यापक लिङ्गस्वरूप भगवानको</span>
+  <span class="jai">— जय</span>
+</div>
+<div class="jay-item">
+  <span class="jay-text">नन्दीश्वर, भृङ्गी तथा सम्पूर्ण शिवगणको</span>
   <span class="jai">— जय</span>
 </div>
   </div>
@@ -2106,7 +2149,7 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
   <div class="mantra-block">
 <div class="mantra-label">वैदिक–शास्त्रीय परम्परा</div>
 <div class="jay-item">
-  <span class="jay-text">चारै वेद तथा सम्पूर्ण वेदाङ्गको</span>
+  <span class="jay-text">चारै वेद तथा वेदाङ्गहरूको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
@@ -2114,18 +2157,18 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
-  <span class="jay-text">सम्पूर्ण उपनिषद्, आगम तथा पुराण शास्त्रको</span>
+  <span class="jay-text">सम्पूर्ण उपनिषद्, आगम तथा पुराण शास्त्रहरूको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
-  <span class="jay-text">अमोघ पञ्चाक्षरी महामन्त्र को</span>
+  <span class="jay-text">अमोघ पञ्चाक्षरी महामन्त्र “ॐ नमः शिवाय” को</span>
   <span class="jai">— जय</span>
 </div>
   </div>
   <div class="mantra-block">
 <div class="mantra-label">देवशक्ति</div>
 <div class="jay-item">
-  <span class="jay-text">सम्पूर्ण देवी–देवता तथा नवग्रह देवताको</span>
+  <span class="jay-text">सम्पूर्ण देवी–देवता तथा नवग्रहादि देवताहरुको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
@@ -2140,7 +2183,7 @@ html[data-theme="dark"] .qi-chip { background: rgba(255,255,255,.06); }
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
-  <span class="jay-text">द्वादश ज्योतिर्लिङ्ग तथा सम्पूर्ण पावन शिवधामहरूको</span>
+  <span class="jay-text">द्वादश ज्योतिर्लिङ्ग तथा सम्पूर्ण पावन शिवधामको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
@@ -2375,20 +2418,28 @@ let autoScrollSpeed = 12;       // पिक्सेल प्रति से�
 function updateScrollSpeedUI() {
   const valueEl = document.getElementById('scrollSpeedValue');
   if (valueEl) valueEl.textContent = `${autoScrollSpeed} px/s`;
+  const dec = document.getElementById('scrollSpeedDec'), inc = document.getElementById('scrollSpeedInc');
+  if (dec) dec.disabled = autoScrollSpeed <= SCROLL_SPEED_MIN;
+  if (inc) inc.disabled = autoScrollSpeed >= SCROLL_SPEED_MAX;
 }
+
+const SCROLL_SPEED_MIN = 4, SCROLL_SPEED_MAX = 60, SCROLL_SPEED_STEP = 4;
+const SCROLL_SPEED_HIDE_MS = 3500;   // निष्क्रियता पछि पिल आफैं लुक्ने समय
 
 function scheduleScrollSpeedPopupHide() {
   clearTimeout(scrollSpeedPopupTimer);
-  scrollSpeedPopupTimer = setTimeout(() => {
-    const popup = document.getElementById('scrollSpeedPopup');
-    popup.classList.remove('open');
-  }, 9000);
+  scrollSpeedPopupTimer = setTimeout(closeScrollSpeedPopup, SCROLL_SPEED_HIDE_MS);
+}
+
+function closeScrollSpeedPopup() {
+  clearTimeout(scrollSpeedPopupTimer);
+  const popup = document.getElementById('scrollSpeedPopup');
+  if (popup) popup.classList.remove('open');
 }
 
 function changeScrollSpeed(amount) {
-  autoScrollSpeed = Math.max(4, Math.min(60, autoScrollSpeed + Number(amount)));
-  updateScrollSpeedUI();
-  scheduleScrollSpeedPopupHide();
+  autoScrollSpeed = Math.max(SCROLL_SPEED_MIN, Math.min(SCROLL_SPEED_MAX, autoScrollSpeed + Number(amount)));
+  openScrollSpeedPopup();   // समायोजन गर्दा खुला राख्ने र टाइमर नवीकरण गर्ने
 }
 
 function openScrollSpeedPopup() {
@@ -2404,7 +2455,7 @@ let touchStartTarget = null;
 document.addEventListener('touchstart', (event) => {
   const target = event.target;
   if (target && target.closest && target.closest(UI_SEL)) return;
-  openScrollSpeedPopup();
+  if (isSmoothScrollOn) openScrollSpeedPopup();   // अटो-स्क्रोल चलेको बेला मात्र
 }, { passive: true });
 
 // डेस्कटप: पाठ चुन्न/कपी गर्दा अटो-स्क्रोल नछेडियोस् भनेर क्लिक-टगल हटाइयो;
@@ -2425,6 +2476,7 @@ function autoScrollStep(ts) {
         stopAutoScroll();
         isSmoothScrollOn = false;
         setScrollBtnUI(false);
+        closeScrollSpeedPopup();
         return;
     }
 
@@ -2459,7 +2511,7 @@ function toggleScrollMode() {
     isSmoothScrollOn = !isSmoothScrollOn;
     userDisabledAutoScroll = !isSmoothScrollOn; // प्रयोगकर्ताले आफैं थिचेर अफ गरेको हो भने सम्झिने
     setScrollBtnUI(isSmoothScrollOn);
-    if (isSmoothScrollOn) { startAutoScroll(); if (isDesktop()) openScrollSpeedPopup(); } else stopAutoScroll();
+    if (isSmoothScrollOn) { startAutoScroll(); openScrollSpeedPopup(); } else { stopAutoScroll(); closeScrollSpeedPopup(); }
 }
 
 // प्रयोगकर्ताले औंलाले छोइ/स्क्रोल गरेको बेला अटो-स्क्रोल केही बेर रोक्ने, त्यसपछि फेरि सुरु गर्ने
@@ -2757,12 +2809,13 @@ if ('serviceWorker' in navigator) {
     sec.querySelectorAll('.mantra-label').forEach(lb => {
       const block = lb.closest('.mantra-block') || lb;
       if (!block.id) block.id = name + '-s' + (items.length + 1);
-      // समूहको पहिलो स्तोत्र भए समूह-ब्यानरसम्मै जाने/पहिचान गर्ने
-      const prev = block.previousElementSibling;
-      const target = (prev && prev.classList && prev.classList.contains('group-banner')) ? prev : block;
-      items.push({ text: lb.textContent.trim(), el: target });
+      // समूहको पहिलो स्तोत्र भए चिप थिच्दा समूहको माथिल्लो छेउ (ब्यानरसहित) मा जाने
+      const grp = block.closest('.stotra-group');
+      const isFirst = !!grp && grp.querySelector('.mantra-block') === block;
+      items.push({ text: lb.textContent.trim(), el: block, jumpEl: isFirst ? grp : null });
     });
     QI[name] = items;
+    sec.classList.toggle('has-groups', !!sec.querySelector('.stotra-group'));
     if (items.length >= 2) {
       const nav = document.createElement('nav');
       nav.className = 'qi';
@@ -2773,13 +2826,13 @@ if ('serviceWorker' in navigator) {
       row.className = 'qi-row';
       items.forEach((it, i) => {
         const b = document.createElement('button');
-        b.type = 'button'; b.className = 'qi-chip'; b.textContent = it.text;
+        b.type = 'button'; b.className = 'qi-chip'; b.textContent = it.text; b.dataset.n = toDev(i + 1);
         b.addEventListener('click', () => jumpTo(i));
         row.appendChild(b);
       });
       nav.append(title, row);
-      const banner = sec.querySelector('.deity-banner, .section-header');
-      if (banner) banner.after(nav); else sec.prepend(nav);
+      // सबै ट्याबमा QI सबैभन्दा माथि (ब्यानर/मन्त्र-ब्लकभन्दा अघि)
+      sec.prepend(nav);
     }
   });
 
@@ -2791,12 +2844,16 @@ if ('serviceWorker' in navigator) {
   function updateBannerH() {
     const sec = activeSection();
     const b = sec && sec.querySelector('.deity-banner, .section-header');
+    const q = sec && sec.querySelector('.qi');
     bannerStickyH = (b && getComputedStyle(b).position === 'sticky') ? Math.ceil(b.getBoundingClientRect().height) : 0;
-    document.documentElement.style.setProperty('--banner-h', bannerStickyH + 'px');
+    // सबै ट्याब: QI हेडर/ट्याबको मुनि; ब्यानर QI को मुनि (--qi-h)
+    document.documentElement.style.setProperty('--banner-h', '0px');
+    document.documentElement.style.setProperty('--qi-h', qiHeight() + 'px');
     if (window.ResizeObserver) {
       if (!bannerRO) bannerRO = new ResizeObserver(() => requestAnimationFrame(updateBannerH));
       bannerRO.disconnect();
       if (b) bannerRO.observe(b);
+      if (q) bannerRO.observe(q);
     }
   }
   window.addEventListener('resize', () => requestAnimationFrame(updateBannerH), { passive: true });
@@ -2808,9 +2865,12 @@ if ('serviceWorker' in navigator) {
     return (q && q.offsetParent) ? Math.ceil(q.getBoundingClientRect().height) : 0;
   }
 
-  // sticky बारहरू (हेडर/ट्याब + ब्यानर + QI) ले ढाकेको भाग घटाएर ठ्याक्कै लक्ष्यमा पुग्ने दूरी
-  function jumpOffset() {
-    return (isDesktop() ? headerH : navH) + bannerStickyH + qiHeight() + 12;
+  // sticky बारहरू (हेडर/ट्याब + ब्यानर + QI) ले ढाकेको भाग घटाएर ठ्याक्कै लक्ष्यमा पुग्ने दूरी।
+  // समूहको सुरुमा जाँदा नयाँ समूहको ब्यानर आफैं QI मुनि अडिने ठाउँमा (ब्यानरको उचाइ नजोडी) पुग्छ।
+  function jumpOffset(it) {
+    const nav = isDesktop() ? headerH : navH;
+    if (it && it.jumpEl) return nav + qiHeight();
+    return nav + qiHeight() + bannerStickyH + 12;
   }
 
   // ── स्पाई-लक: चिप थिचेर जाँदा स्मूथ स्क्रोलका बेला स्पाईले चिप फेर्न नपाओस् ──
@@ -2829,7 +2889,8 @@ if ('serviceWorker' in navigator) {
     pauseAutoScrollTemporarily();
     spyLock = true; pinnedIdx = i;
     clearTimeout(spyTimer); spyTimer = setTimeout(releaseSpyLock, 500);
-    const y = it.el.getBoundingClientRect().top + window.scrollY - jumpOffset();
+    const tgt = it.jumpEl || it.el;
+    const y = tgt.getBoundingClientRect().top + window.scrollY - jumpOffset(it);
     window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
     setActive(i, true);
   }
@@ -2864,7 +2925,7 @@ if ('serviceWorker' in navigator) {
       spyTimer = setTimeout(releaseSpyLock, 160);
       return;
     }
-    const th = jumpOffset() + 40;
+    const th = jumpOffset(null) + 40;
     let idx = 0;
     for (let k = 0; k < items.length; k++) {
       if (items[k].el.getBoundingClientRect().top <= th) idx = k; else break;
@@ -2917,6 +2978,7 @@ if ('serviceWorker' in navigator) {
       sheetGrid.appendChild(b);
     });
     fab.classList.toggle('show', items.length >= 2);
+    document.documentElement.setAttribute('data-fab', items.length >= 2 ? 'on' : 'off');
   }
   window.openIndexSheet = function () {
     $('#qiSheetTitle').textContent = '📜 ' + ($('#tocTab').textContent || 'स्तोत्र') + ' — स्तोत्र छान्नुहोस्';
