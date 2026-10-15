@@ -124,6 +124,7 @@
   .font-bar {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     padding: 5px 16px 8px;
     border-top: 1px solid #ffffff18;
@@ -152,79 +153,75 @@
     text-align: center;
   }
 
-  /* ── SCROLL-SPEED PILL ──
-     Compact floating pill: [ − ]  12 px/s  [ + ]. Sits right above the QI FAB
-     (bottom-right thumb zone), fades/slides in and out, never blocks text. */
-  .scroll-speed-popup {
-    position: fixed;
-    right: 14px;
-    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
-    z-index: 300;
+  /* ── बैनरभित्रका स्थायी तैरिने नियन्त्रण (अक्षर-आकार बायाँ-तल · स्क्रोल-गति दायाँ-तल) ── */
+  .banner-ctl-row {
+    position: absolute;
+    left: 10px; right: 10px;
+    bottom: 14px;                 /* ब्यानरको फेदे सुनौलो किनाराभन्दा माथि */
+    z-index: 3;
     display: flex;
     align-items: center;
-    gap: 2px;
+    justify-content: space-between;
+    gap: 8px;
+    pointer-events: none;         /* खाली ठाउँमा छुँदा स्क्रोल/ट्याप सामान्य चल्छ */
+  }
+  .banner-ctl {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
     padding: 3px;
     border-radius: 999px;
     color: var(--gold-light);
-    background: rgba(44, 16, 8, 0.58);
-    border: 1px solid rgba(240, 192, 80, 0.38);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
-    -webkit-backdrop-filter: blur(10px) saturate(1.3);
-    backdrop-filter: blur(10px) saturate(1.3);
-    -webkit-tap-highlight-color: transparent;
+    background: linear-gradient(180deg, rgba(70, 30, 10, 0.62), rgba(34, 14, 4, 0.66));
+    border: 1px solid rgba(240, 192, 80, 0.55);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 236, 170, 0.18);
     touch-action: manipulation;
-    user-select: none; -webkit-user-select: none;
-    /* hidden state (kept in layout so it can animate) */
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateY(8px) scale(0.94);
-    transform-origin: bottom right;
-    transition: opacity .22s ease, transform .22s ease, visibility 0s linear .22s;
+    -webkit-user-select: none; user-select: none;
   }
-  .scroll-speed-popup.open {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: none;
-    transition: opacity .22s ease, transform .22s ease, visibility 0s;
-  }
-
-  .scroll-speed-control {
-    width: 34px;
-    height: 34px;
-    padding: 0;
+  .bc-btn {
+    position: relative;
+    width: 30px; height: 30px;
+    padding: 0; border: 0; border-radius: 50%;
     display: inline-flex; align-items: center; justify-content: center;
-    border: none;
-    border-radius: 50%;
     color: var(--gold-light);
     background: rgba(255, 255, 255, 0.10);
-    font: inherit;
-    font-size: 1.15rem;
-    font-weight: 700;
-    line-height: 1;
+    font: inherit; font-size: 0.86rem; font-weight: 700; line-height: 1;
     cursor: pointer;
     touch-action: manipulation;
-    transition: background .15s, transform .12s, opacity .15s;
+    -webkit-tap-highlight-color: transparent;
   }
-  .scroll-speed-control:active { background: rgba(212, 98, 26, 0.75); transform: scale(.9); }
-  .scroll-speed-control:disabled { opacity: .35; pointer-events: none; }
-
-  .scroll-speed-value {
-    min-width: 54px;
+  .bc-btn.sym { font-size: 1.25rem; }
+  .bc-btn::after { content: ''; position: absolute; inset: -7px -3px; }   /* देखिने ३०px, छुने ४४px */
+  .bc-btn:active { background: rgba(212, 98, 26, 0.85); color: #fff; }
+  .bc-btn:disabled { opacity: 0.35; }
+  .bc-val {
+    min-width: 40px;
     padding: 0 2px;
-    color: var(--gold-light);
-    font-size: 0.74rem;
-    font-weight: 600;
+    text-align: center; white-space: nowrap;
+    font-size: 0.72rem; font-weight: 700;
     font-variant-numeric: tabular-nums;
-    text-align: center;
-    white-space: nowrap;
-    letter-spacing: 0.02em;
+    color: var(--gold-light);
   }
+  .banner-ctl-speed .bc-val { min-width: 54px; }
 
-  @media (prefers-reduced-motion: reduce) {
-    .scroll-speed-popup, .scroll-speed-popup.open { transition: opacity .01s, visibility 0s; transform: none; }
+  /* हेडरको अटो-स्क्रोल आइकन बटन */
+  .icon-btn {
+    width: 36px; height: 28px; padding: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: #ffffff18; border: 1px solid #ffffff28;
+    color: var(--gold-light); border-radius: 999px; cursor: pointer;
+    transition: background .2s, box-shadow .2s, color .2s;
+    -webkit-tap-highlight-color: transparent;
   }
+  .icon-btn svg { width: 15px; height: 15px; fill: currentColor; display: block; }
+  .icon-btn:active { background: #ffffff35; }
+  .icon-btn.on {
+    background: var(--saffron); border-color: var(--gold-light); color: #fff;
+    box-shadow: 0 0 0 3px rgba(212, 98, 26, 0.30);
+  }
+  .hb-group { display: none; align-items: center; gap: 6px; }
+  .hb-val { font-size: .7rem; color: var(--gold-light); min-width: 36px; text-align: center; font-variant-numeric: tabular-nums; }
 
   /* Theme (light/dark) toggle button */
   .theme-btn {
@@ -447,7 +444,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 14px 16px 12px;
+    padding: 14px 16px 54px;
   }
 
   .deity-banner h2 {
@@ -510,10 +507,13 @@
     font-size: 1.34rem;
     font-weight: 700;
     letter-spacing: 0.035em;
-    margin-bottom: 10px;
+    line-height: 1.35;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;      /* शीर्षक बीचमा, दुवै तिर अलङ्कार */
+    text-align: center;
+    gap: 10px;
     background: linear-gradient(120deg, var(--gold) 0%, var(--gold-light) 45%, var(--saffron) 100%);
     -webkit-background-clip: text;
     background-clip: text;
@@ -521,14 +521,24 @@
     color: var(--gold); /* fallback for browsers without background-clip:text */
     text-shadow: 0 1px 1px rgba(0,0,0,0.06);
   }
-  .mantra-label::before {
-    content: '❖';
-    flex-shrink: 0;
-    font-size: 0.8em;
-    -webkit-text-fill-color: var(--saffron);
-    color: var(--saffron);
+  .mantra-label::before,
+  .mantra-label::after {
+    content: '';
+    flex: 1 1 16px;
+    min-width: 16px;
+    height: 14px;
+    -webkit-text-fill-color: initial;
   }
-  .mantra-label::after { content:''; flex:1; height:1px; background: linear-gradient(to right, var(--divider), transparent); }
+  .mantra-label::before {
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'%3E%3Cpath d='M7 1L13 7L7 13L1 7Z' fill='%23E2A93A' stroke='%23B8780C' stroke-width='.8'/%3E%3Ccircle cx='7' cy='7' r='1.6' fill='%23D4621A'/%3E%3C/svg%3E") right center / 14px 14px no-repeat,
+      linear-gradient(to right, transparent, var(--frame-2)) left center / calc(100% - 18px) 1px no-repeat;
+  }
+  .mantra-label::after {
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'%3E%3Cpath d='M7 1L13 7L7 13L1 7Z' fill='%23E2A93A' stroke='%23B8780C' stroke-width='.8'/%3E%3Ccircle cx='7' cy='7' r='1.6' fill='%23D4621A'/%3E%3C/svg%3E") left center / 14px 14px no-repeat,
+      linear-gradient(to left, transparent, var(--frame-2)) right center / calc(100% - 18px) 1px no-repeat;
+  }
 
   .shloka {
     font-family: 'Noto Serif Devanagari', serif;
@@ -659,6 +669,9 @@
   --sidebar-w:  240px;
   --toc-w:      240px;
   --desk-top:   0px;
+  --metal:      linear-gradient(135deg, #8A5A08 0%, #F0C050 22%, #B8780C 48%, #F6D675 72%, #9A6410 100%);
+  --halo-in:    rgba(240,192,80,.30);
+  --halo-out:   rgba(240,192,80,.20);
 }
 html[data-theme="dark"] {
   --frame:      #C99530;
@@ -666,6 +679,9 @@ html[data-theme="dark"] {
   --gold-soft:  rgba(224,168,64,.34);
   --glass-a:    rgba(36,28,16,.88);
   --glass-b:    rgba(24,18,10,.84);
+  --metal:      linear-gradient(135deg, #7A4E08 0%, #E0A840 22%, #A8700C 48%, #F0C050 72%, #8A5A0C 100%);
+  --halo-in:    rgba(240,192,80,.10);
+  --halo-out:   rgba(240,192,80,.08);
 }
 
 button { font-family: inherit; }
@@ -683,18 +699,27 @@ button:focus-visible, a:focus-visible {
 
 /* ── १. शान्त, सुनौलो एनिमेटेड पृष्ठभूमि ───────────────────────
    सबै एनिमेसन transform/opacity मात्र (GPU-friendly), अत्यन्त कम opacity */
+html { background: var(--cream); min-height: 100%; }
 .bg-fx {
-  position: fixed; inset: 0; z-index: 0;
+  /* viewport मा स्थिर; ठाडो-अगाडि 100lvh (ठूलो viewport) ले मोबाइलको ब्राउजर-पट्टी
+     घटबढ हुँदा पनि फेदमा खाली ठाउँ छुट्दैन। पेज जति लामो भए पनि स्क्रोलसँगै पूरै ढाक्छ। */
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%; height: 100vh; height: 100lvh; min-height: 100%;
+  z-index: 0;
   overflow: hidden; pointer-events: none;
-  contain: layout paint;
+  contain: strict;
+  transform: translateZ(0);
 }
 .bg-fx::before {            /* बिस्तारै सर्ने सुनौलो/केसरी आभा */
   content: '';
-  position: absolute; inset: -25%;
+  position: absolute; inset: -28%;
   background:
     radial-gradient(40% 35% at 20% 25%, rgba(212,98,26,.10), transparent 70%),
     radial-gradient(45% 40% at 80% 70%, rgba(201,134,10,.12), transparent 70%),
-    radial-gradient(35% 30% at 60% 10%, rgba(139,26,26,.07), transparent 70%);
+    radial-gradient(35% 30% at 60% 10%, rgba(139,26,26,.07), transparent 70%),
+    radial-gradient(40% 32% at 14% 86%, rgba(201,134,10,.11), transparent 70%),
+    radial-gradient(34% 30% at 88% 30%, rgba(212,98,26,.08), transparent 70%),
+    radial-gradient(50% 38% at 50% 52%, rgba(240,192,80,.07), transparent 72%);
   animation: auraDrift 48s ease-in-out infinite alternate;
   will-change: transform;
 }
@@ -702,7 +727,7 @@ button:focus-visible, a:focus-visible {
   content: '';
   position: absolute; left: 50%; top: 50%;
   width: min(150vmin, 980px); height: min(150vmin, 980px);
-  background: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%23C9860A' stroke-width='.6'%3E%3Ccircle cx='100' cy='100' r='96'/%3E%3Ccircle cx='100' cy='100' r='88'/%3E%3Ccircle cx='100' cy='100' r='64'/%3E%3Ccircle cx='100' cy='100' r='40'/%3E%3Ccircle cx='100' cy='100' r='14'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(0 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(30 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(60 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(90 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(120 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(150 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(180 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(210 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(240 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(270 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(300 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(330 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(22.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(67.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(112.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(157.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(202.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(247.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(292.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(337.5 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(0 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(15 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(30 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(45 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(60 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(75 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(90 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(105 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(120 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(135 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(150 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(165 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(180 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(195 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(210 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(225 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(240 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(255 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(270 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(285 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(300 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(315 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(330 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(345 100 100)'/%3E%3C/svg%3E" center / contain no-repeat;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%23C9860A' stroke-width='.6'%3E%3Ccircle cx='100' cy='100' r='96'/%3E%3Ccircle cx='100' cy='100' r='88'/%3E%3Ccircle cx='100' cy='100' r='64'/%3E%3Ccircle cx='100' cy='100' r='40'/%3E%3Ccircle cx='100' cy='100' r='14'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(0 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(30 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(60 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(90 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(120 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(150 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(180 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(210 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(240 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(270 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(300 100 100)'/%3E%3Cellipse cx='100' cy='36' rx='9' ry='26' transform='rotate(330 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(22.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(67.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(112.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(157.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(202.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(247.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(292.5 100 100)'/%3E%3Cellipse cx='100' cy='66' rx='6' ry='15' transform='rotate(337.5 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(0 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(15 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(30 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(45 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(60 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(75 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(90 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(105 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(120 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(135 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(150 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(165 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(180 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(195 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(210 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(225 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(240 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(255 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(270 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(285 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(300 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(315 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(330 100 100)'/%3E%3Cline x1='100' y1='14' x2='100' y2='4' transform='rotate(345 100 100)'/%3E%3C/svg%3E") center / contain no-repeat;
   opacity: .075;
   transform: translate(-50%, -50%) rotate(0deg);
   animation: mandalaSpin 260s linear infinite;
@@ -713,7 +738,10 @@ html[data-theme="dark"] .bg-fx::before {
   background:
     radial-gradient(40% 35% at 20% 25%, rgba(224,122,53,.10), transparent 70%),
     radial-gradient(45% 40% at 80% 70%, rgba(224,168,64,.09), transparent 70%),
-    radial-gradient(35% 30% at 60% 10%, rgba(139,26,26,.14), transparent 70%);
+    radial-gradient(35% 30% at 60% 10%, rgba(139,26,26,.14), transparent 70%),
+    radial-gradient(40% 32% at 14% 86%, rgba(224,168,64,.08), transparent 70%),
+    radial-gradient(34% 30% at 88% 30%, rgba(224,122,53,.08), transparent 70%),
+    radial-gradient(50% 38% at 50% 52%, rgba(245,212,136,.05), transparent 72%);
 }
 @keyframes auraDrift {
   from { transform: translate3d(-3%,-2%,0) scale(1); }
@@ -755,52 +783,50 @@ html[data-fx="off"] .gp { display: none; }
 .app-header { padding-bottom: 6px; }
 .app-header::after {
   content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 6px;
-  background: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='6' viewBox='0 0 16 6'%3E%3Cpath d='M8 .5 L13.5 3 L8 5.5 L2.5 3Z' fill='%23F0C050'/%3E%3Ccircle cx='0' cy='3' r='.9' fill='%23D4621A'/%3E%3C/svg%3E" center / 16px 6px repeat-x;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='6' viewBox='0 0 16 6'%3E%3Cpath d='M8 .5 L13.5 3 L8 5.5 L2.5 3Z' fill='%23F0C050'/%3E%3Ccircle cx='0' cy='3' r='.9' fill='%23D4621A'/%3E%3C/svg%3E") center / 16px 6px repeat-x;
   opacity: .85; pointer-events: none;
 }
 .deity-banner::after {      /* ब्यानरको फेदमा सुनौलो किनारा */
   content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; z-index: 2;
-  background: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='6' viewBox='0 0 16 6'%3E%3Cpath d='M8 .5 L13.5 3 L8 5.5 L2.5 3Z' fill='%23F0C050'/%3E%3Ccircle cx='0' cy='3' r='.9' fill='%23D4621A'/%3E%3C/svg%3E" center / 16px 6px repeat-x, rgba(44,10,10,.85);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='6' viewBox='0 0 16 6'%3E%3Cpath d='M8 .5 L13.5 3 L8 5.5 L2.5 3Z' fill='%23F0C050'/%3E%3Ccircle cx='0' cy='3' r='.9' fill='%23D4621A'/%3E%3C/svg%3E") center / 16px 6px repeat-x, rgba(44,10,10,.85);
   border-top: 1px solid var(--gold-soft);
   pointer-events: none;
 }
 
-/* ── २. शाही फ्रेममा श्लोक-बक्स ─────────────────────────────── */
+/* ── २. अति-शाही सुनौलो फ्रेममा श्लोक-बक्स ───────────────────────
+   धातुजस्तो सुनौलो ग्रेडियन्ट किनारा + भित्री पातलो रेखा + कुनामा बेलबुट्टा + माथि/तल रत्न-चिह्न।
+   backdrop-filter जानाजानी हटाइएको (धेरै बक्स × blur = स्क्रोल ढिलो हुन्थ्यो)। */
 .mantra-block {
   position: relative;
-  margin: 14px 8px;
-  padding: 22px 14px 16px;
-  border: 1.5px solid var(--frame);
-  border-radius: 8px;
-  background: linear-gradient(180deg, var(--glass-a), var(--glass-b));
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
-  box-shadow: 0 8px 22px var(--shadow);
-  outline: 1px solid var(--gold-soft);
-  outline-offset: -7px;
-}
-.mantra-block:last-child { border-bottom: 1.5px solid var(--frame); }
-.mantra-block::before {     /* मन्दिर-स्तम्भ जस्ता कुना-कोष्ठक */
-  content: ''; position: absolute; inset: 3px; pointer-events: none; border-radius: 5px;
-  --c: var(--frame-2);
+  margin: 16px 8px;
+  padding: 30px 16px 22px;
+  border: 2px solid transparent;
+  border-radius: 10px;
   background:
-    linear-gradient(var(--c),var(--c)) top left     / 22px 2px no-repeat,
-    linear-gradient(var(--c),var(--c)) top left     / 2px 22px no-repeat,
-    linear-gradient(var(--c),var(--c)) top right    / 22px 2px no-repeat,
-    linear-gradient(var(--c),var(--c)) top right    / 2px 22px no-repeat,
-    linear-gradient(var(--c),var(--c)) bottom left  / 22px 2px no-repeat,
-    linear-gradient(var(--c),var(--c)) bottom left  / 2px 22px no-repeat,
-    linear-gradient(var(--c),var(--c)) bottom right / 22px 2px no-repeat,
-    linear-gradient(var(--c),var(--c)) bottom right / 2px 22px no-repeat;
+    radial-gradient(90% 64px at 50% 0,   var(--halo-in), transparent 78%) padding-box,
+    radial-gradient(90% 64px at 50% 100%, var(--halo-in), transparent 78%) padding-box,
+    linear-gradient(180deg, var(--glass-a), var(--glass-b)) padding-box,
+    var(--metal) border-box;
+  box-shadow:
+    0 10px 24px var(--shadow),
+    0 0 0 1px rgba(184,120,12,.16),
+    0 0 28px var(--halo-out);
 }
-.mantra-block::after {      /* चार कुनामा रत्न-बिन्दु */
-  content: ''; position: absolute; inset: -5px; pointer-events: none;
-  --j: radial-gradient(circle, var(--frame-2) 0 1.8px, var(--saffron) 2.2px 4px, transparent 4.6px);
+.mantra-block:last-child { border-bottom: 2px solid transparent; }
+.mantra-block::before {     /* भित्री पातलो रेखा + चार कुनाका बेलबुट्टा */
+  content: ''; position: absolute; inset: 5px; pointer-events: none;
+  border: 1px solid var(--gold-soft); border-radius: 6px;
   background:
-    var(--j) top left     / 10px 10px no-repeat,
-    var(--j) top right    / 10px 10px no-repeat,
-    var(--j) bottom left  / 10px 10px no-repeat,
-    var(--j) bottom right / 10px 10px no-repeat;
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='translate(0 0)' fill='none' stroke='%23E2A93A' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M2 32V12Q2 2 12 2H32'/%3E%3Cpath d='M7 28V14Q7 7 14 7H28' stroke-width='.8' opacity='.75'/%3E%3Cpath d='M2 19Q9 19 9 12' stroke-width='.9'/%3E%3Ccircle cx='13' cy='13' r='2.3' fill='%23C9860A' stroke='none'/%3E%3C/g%3E%3C/svg%3E") top left     / 34px 34px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='translate(34 0) scale(-1 1)' fill='none' stroke='%23E2A93A' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M2 32V12Q2 2 12 2H32'/%3E%3Cpath d='M7 28V14Q7 7 14 7H28' stroke-width='.8' opacity='.75'/%3E%3Cpath d='M2 19Q9 19 9 12' stroke-width='.9'/%3E%3Ccircle cx='13' cy='13' r='2.3' fill='%23C9860A' stroke='none'/%3E%3C/g%3E%3C/svg%3E") top right    / 34px 34px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='translate(0 34) scale(1 -1)' fill='none' stroke='%23E2A93A' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M2 32V12Q2 2 12 2H32'/%3E%3Cpath d='M7 28V14Q7 7 14 7H28' stroke-width='.8' opacity='.75'/%3E%3Cpath d='M2 19Q9 19 9 12' stroke-width='.9'/%3E%3Ccircle cx='13' cy='13' r='2.3' fill='%23C9860A' stroke='none'/%3E%3C/g%3E%3C/svg%3E") bottom left  / 34px 34px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg transform='translate(34 34) scale(-1 -1)' fill='none' stroke='%23E2A93A' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M2 32V12Q2 2 12 2H32'/%3E%3Cpath d='M7 28V14Q7 7 14 7H28' stroke-width='.8' opacity='.75'/%3E%3Cpath d='M2 19Q9 19 9 12' stroke-width='.9'/%3E%3Ccircle cx='13' cy='13' r='2.3' fill='%23C9860A' stroke='none'/%3E%3C/g%3E%3C/svg%3E") bottom right / 34px 34px no-repeat;
+}
+.mantra-block::after {      /* माथि र तल बीचमा रत्न-चिह्न (किनारामा बसेको) */
+  content: ''; position: absolute; inset: -8px 0; pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='14' viewBox='0 0 46 14'%3E%3Cpath d='M0 7H14M32 7H46' stroke='%23E2A93A' stroke-width='1'/%3E%3Cpath d='M23 0L30 7L23 14L16 7Z' fill='%23E2A93A' stroke='%238B5A0A' stroke-width='.8'/%3E%3Ccircle cx='23' cy='7' r='2.2' fill='%238B1A1A'/%3E%3C/svg%3E") top center    / 46px 14px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='14' viewBox='0 0 46 14'%3E%3Cpath d='M0 7H14M32 7H46' stroke='%23E2A93A' stroke-width='1'/%3E%3Cpath d='M23 0L30 7L23 14L16 7Z' fill='%23E2A93A' stroke='%238B5A0A' stroke-width='.8'/%3E%3Ccircle cx='23' cy='7' r='2.2' fill='%238B1A1A'/%3E%3C/svg%3E") bottom center / 46px 14px no-repeat;
 }
 .mantra-label { position: relative; z-index: 1; }
 .shloka { position: relative; z-index: 1; }
@@ -813,7 +839,9 @@ html[data-fx="off"] .gp { display: none; }
 .jay-item:last-child { border-bottom: none; }
 
 .closing-block {
-  background: linear-gradient(135deg, rgba(139,26,26,.92), rgba(44,26,10,.94));
+  background:
+    linear-gradient(135deg, rgba(139,26,26,.94), rgba(44,26,10,.96)) padding-box,
+    var(--metal) border-box;
   text-align: center;
 }
 .closing-block .shloka {
@@ -824,25 +852,40 @@ html[data-fx="off"] .gp { display: none; }
 
 .app-footer { position: relative; z-index: 1; }
 
-/* ── ३. स्तोत्र द्रुत-सूची (Quick-Index) ─────────────────────── */
-/* स्थिर (frozen) द्रुत-सूची: माथिको हेडर/ट्याब र (sticky भए) ब्यानरको ठीक मुनि अडिन्छ */
+/* ── ३. स्तोत्र द्रुत-सूची (Quick-Index) — सक्रिय मुख्य ट्याबको "उप-मेनु" ───────────
+   हेडर → ट्याब-पट्टी → QI → ब्यानर → श्लोक। QI ट्याब-पट्टीकै गाढा रङमा, माथि केसरी रेखा र
+   सक्रिय ट्याब ठीक मुनि तल देखाउने केसरी त्रिभुज (--qi-notch-x, JS ले सेट गर्छ);
+   QI को शीर्षकमा "सक्रिय ट्याबको नाम ›" देखिन्छ। */
 .qi {
   position: -webkit-sticky; position: sticky;
-  top: var(--header-h, 0px);   /* सधैं हेडर/ट्याबको ठीक मुनि; ब्यानर QI मुनि */
+  top: calc(var(--header-h, 0px) - 1px);
   z-index: 160;
   display: flex; align-items: center; gap: 8px;
-  padding: 10px 10px 10px 12px;
-  box-shadow: 0 4px 12px var(--shadow);
-  background: linear-gradient(180deg, var(--glass-a), var(--glass-b)), var(--cream);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
-  border-bottom: 1px solid var(--gold-soft);
+  padding: 13px 10px 9px 10px;
+  background: linear-gradient(180deg, #4A2410 0%, #35200E 55%, #2C1A0A 100%);
+  border-top: 2px solid var(--saffron);
+  border-bottom: 1px solid rgba(240,192,80,.40);
+  box-shadow: 0 6px 14px var(--shadow);
+}
+.qi::before {               /* सक्रिय ट्याबबाट झर्ने जोड्ने त्रिभुज */
+  content: '';
+  position: absolute; top: -2px; left: var(--qi-notch-x, 50%);
+  width: 0; height: 0; transform: translateX(-50%);
+  border-left: 9px solid transparent; border-right: 9px solid transparent;
+  border-top: 8px solid var(--saffron);
+  pointer-events: none;
 }
 .qi-title {
   flex-shrink: 0; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 5px;
+  max-width: 34vw; overflow: hidden; text-overflow: ellipsis;
+  padding-right: 9px;
+  border-right: 1px solid rgba(240,192,80,.32);
   font-family: 'Noto Serif Devanagari', serif;
-  font-size: .74rem; font-weight: 700; color: var(--saffron); letter-spacing: .04em;
+  font-size: .74rem; font-weight: 700; color: var(--gold-light); letter-spacing: .02em;
 }
+.qi-title .tab-icon { font-size: .9rem; line-height: 1; }
+.qi-title .qi-sep { color: var(--saffron); font-size: .95rem; line-height: 1; }
 .qi-row {
   position: relative;
   display: flex; gap: 7px; flex: 1; min-width: 0;
@@ -850,40 +893,38 @@ html[data-fx="off"] .gp { display: none; }
   padding: 2px;
 }
 .qi-row::-webkit-scrollbar { display: none; }
-/* QI चिप: मुख्य ट्याब (.tab-btn: गोलो पिल, गाढा पृष्ठभूमि) भन्दा फरक — पातको आकार,
-   सुनौलो पङ्क्ति-रेखा र क्रमसङ्ख्या-बिल्ला भएको "श्लोक-चिह्न" शैली */
+/* QI चिप: मुख्य ट्याबको गोलो पिलभन्दा फरक पात-आकार + क्रमसङ्ख्या-बिल्ला, तर सोही गाढा/केसरी परिवारको */
 .qi-chip {
   flex-shrink: 0; white-space: nowrap; cursor: pointer;
   display: inline-flex; align-items: center; gap: 7px;
   font-family: 'Noto Serif Devanagari', serif;
   font-size: .8rem; font-weight: 600; line-height: 1.2;
   padding: 5px 14px 5px 6px;
-  border-radius: 4px 18px 4px 18px;          /* पात/पत्र आकार — पिल होइन */
-  color: var(--text-main);
-  border: 1.5px dashed var(--frame);          /* ट्याबमा नभएको धर्सा-किनारा */
-  background: linear-gradient(135deg, rgba(255,251,238,.95), rgba(240,192,80,.30));
+  border-radius: 4px 18px 4px 18px;
+  color: #F6E6BF;
+  border: 1.5px dashed rgba(240,192,80,.55);
+  background: rgba(255,255,255,.06);
   transition: background .2s, color .2s, transform .15s, box-shadow .2s, border-color .2s;
   -webkit-tap-highlight-color: transparent;
 }
-.qi-chip::before {                            /* क्रमसङ्ख्या-बिल्ला */
+.qi-chip::before {
   content: attr(data-n);
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 1.45em; height: 1.45em; padding: 0 .2em;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--saffron), var(--deep-red));
-  color: #fff; font-family: 'Noto Sans Devanagari', sans-serif;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: var(--deep-red); font-family: 'Noto Sans Devanagari', sans-serif;
   font-size: .68rem; font-weight: 700;
 }
-html[data-theme="dark"] .qi-chip { background: linear-gradient(135deg, rgba(240,192,80,.14), rgba(139,26,26,.28)); }
-.qi-chip:hover { border-style: solid; border-color: var(--saffron); }
+.qi-chip:hover { border-style: solid; border-color: var(--saffron); background: rgba(212,98,26,.16); }
 .qi-chip:active { transform: scale(.96); }
 .qi-chip.on {
-  background: linear-gradient(135deg, var(--deep-red), #5A0D0D);
-  color: var(--gold-light);
+  background: linear-gradient(135deg, var(--saffron), #B8460E);
+  color: #fff;
   border: 1.5px solid var(--gold-light);
-  box-shadow: 0 0 0 2px rgba(240,192,80,.30), 0 3px 10px rgba(139,26,26,.45);
+  box-shadow: 0 0 0 2px rgba(240,192,80,.28), 0 3px 10px rgba(212,98,26,.5);
 }
-.qi-chip.on::before { background: var(--gold-light); color: var(--deep-red); }
+.qi-chip.on::before { background: #fff; color: var(--saffron); }
 
 /* मोबाइल: जुनसुकै ठाउँबाट खोल्न मिल्ने तैरिने बटन */
 .fab {
@@ -980,6 +1021,8 @@ html[data-theme="dark"] .qi-chip { background: linear-gradient(135deg, rgba(240,
 
   /* १०२४–११९९px: सूची चिप-पट्टी देखाउने, TOC लुकाउने */
   .qi { display: flex; }
+  .qi::before { display: none; }    /* डेस्कटपमा ट्याब-पट्टी छैन (साइडबार) */
+  .hb-group.desk-only { display: inline-flex; }
 }
 
 /* दायाँ स्थायी विषय-सूची (TOC) — फराकिलो स्क्रिनमा मात्र */
@@ -1022,8 +1065,6 @@ html[data-theme="dark"] .qi-chip { background: linear-gradient(135deg, rgba(240,
 }
 
 /* ── समूह-ब्यानर (एउटै ट्याबभित्रका स्तोत्र-समूह) ── */
-.stotra-group { position: relative; }
-
 /* ── मोबाइल: श्लोक कहिल्यै बाहिर ननिस्कियोस् (क्षैतिज स्क्रोल हुँदैन) ── */
 .shloka, .mantra-label, .jay-item {
   max-width: 100%;
@@ -1034,23 +1075,20 @@ html[data-theme="dark"] .qi-chip { background: linear-gradient(135deg, rgba(240,
 .jay-item { font-size: calc(clamp(1rem, 5vw, 1.3rem) * var(--font-scale, 1)); }
 .mantra-label { font-size: clamp(1.1rem, 5.2vw, 1.34rem); }
 @media (max-width: 400px) {
-  .mantra-block { margin: 12px 5px; padding: 20px 11px 14px; }
-  .qi { padding: 8px 8px 8px 10px; }
-  .qi-title { display: none; }
+  .mantra-block { margin: 14px 5px; padding: 28px 12px 18px; }
+  .qi { padding: 12px 8px 8px 8px; }
+  .qi-title { max-width: 30vw; font-size: .7rem; }
 }
 
 /* ── समूह (एउटै ट्याबमा धेरै देवता-ब्यानर) ──
-   हरेक .stotra-group भित्र आफ्नै sticky .deity-banner छ; समूह सकिएपछि त्यो ब्यानर बाहिरिन्छ र
-   अर्को समूहको ब्यानर ठ्याक्कै त्यही ठाउँमा आएर अडिन्छ। QI तल्लो ब्यानरभन्दा माथि (हेडर/ट्याबको मुनि) बस्छ। */
-.stotra-group { position: relative; }
-
-/* ── तैरिने बटनहरू (मोबाइल): QI-बटन दायाँ-तल; गति-पिल त्यसको ठीक माथि ── */
-@media (max-width: 1023.98px) {
-  html[data-fab="on"] .scroll-speed-popup {
-    right: 14px;
-    bottom: calc(18px + 46px + 10px + env(safe-area-inset-bottom, 0px));
-  }
-}
+   सेक्सन र समूह दुवै display:contents — सबै sticky ब्यानरको सीमा-बक्स पूरै .content-area बन्छ।
+   फलस्वरूप: अर्को समूहको ब्यानर आएर अघिल्लोलाई ढाक्छ (कार्ड-स्ट्याक), र अन्तिम ब्यानर
+   पृष्ठको अन्त्यसम्म माथि टाँसिइरहन्छ — माथि स्क्रोल गर्दा/ट्याब फेर्दा मात्र हट्छ।
+   हरेक समूहको सुरुमा शून्य-उचाइको .grp-anchor छ (QI-जम्प त्यसैमा गरिन्छ)। */
+.stotra-section.active { display: contents; animation: none; }
+.stotra-group { display: contents; }
+.grp-anchor { display: block; height: 0; margin: 0; padding: 0; border: 0; pointer-events: none; }
+.deity-banner { z-index: 150; }
 
 </style>
 </head>
@@ -1094,13 +1132,20 @@ html[data-theme="dark"] .qi-chip { background: linear-gradient(135deg, rgba(240,
       <!--<div class="wake-dot" id="wakeDot" title="Screen awake"></div>-->
     </div>
     <div class="font-bar">
-      <!--<span>अक्षर</span>-->
-      <button class="font-btn" onclick="changeFont(-1)">अ−</button>
-      <span class="font-label" id="fontLabel">100%</span>
-      <button class="font-btn" onclick="changeFont(1)">अ+</button>
+      <!-- डेस्कटप मात्र: (मोबाइलमा यी बैनरभित्रै स्थायी रूपमा देखिन्छन्) -->
+      <div class="hb-group desk-only" role="group" aria-label="अक्षर आकार">
+        <button class="font-btn" type="button" data-font-step="-1" aria-label="अक्षर घटाउनुहोस्">अ−</button>
+        <span class="hb-val js-font-val" id="fontLabel">100%</span>
+        <button class="font-btn" type="button" data-font-step="1" aria-label="अक्षर बढाउनुहोस्">अ+</button>
+      </div>
+      <div class="hb-group desk-only" role="group" aria-label="स्क्रोल गति">
+        <button class="font-btn" type="button" data-speed-step="-2" aria-label="स्क्रोल गति घटाउनुहोस्">−</button>
+        <span class="hb-val js-speed-val" style="min-width:52px">12 px/s</span>
+        <button class="font-btn" type="button" data-speed-step="2" aria-label="स्क्रोल गति बढाउनुहोस्">+</button>
+      </div>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="उज्यालो/अँध्यारो मोड">🌙</button>
       <button class="theme-btn desk-only" id="fxBtn" onclick="toggleFx()" title="पृष्ठभूमि प्रभाव चालु/बन्द" aria-pressed="true">✨</button>
-      <button class="font-btn" id="scrollModeBtn" onclick="toggleScrollMode()" style="margin-left: 8px;">आफै स्क्रोल गर्न यहाँ थिच्नुहोस्</button>
+      <button class="icon-btn" id="scrollModeBtn" type="button" onclick="toggleScrollMode()" aria-pressed="false" aria-label="स्वतः स्क्रोल सुरु गर्न थिच्नुहोस्" title="स्वतः स्क्रोल सुरु गर्न थिच्नुहोस्"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z"/></svg></button>
     </div>
   </header>
 
@@ -1123,12 +1168,6 @@ html[data-theme="dark"] .qi-chip { background: linear-gradient(135deg, rgba(240,
     <div class="tab-fade tab-fade-right" id="fadeRight"></div>
     <button class="tab-jump-btn" id="tabJumpBtn" onclick="openTabMenu()" title="सबै ट्याब हेर्नुहोस्">☰</button>
   </div>
-</div>
-
-<div class="scroll-speed-popup" id="scrollSpeedPopup" role="group" aria-label="स्क्रोल गति नियन्त्रण" onpointerdown="scheduleScrollSpeedPopupHide()">
-  <button type="button" class="scroll-speed-control" id="scrollSpeedDec" onclick="event.stopPropagation(); changeScrollSpeed(-SCROLL_SPEED_STEP);" aria-label="स्क्रोल गति घटाउनुहोस्">−</button>
-  <div class="scroll-speed-value" id="scrollSpeedValue" aria-live="polite">12 px/s</div>
-  <button type="button" class="scroll-speed-control" id="scrollSpeedInc" onclick="event.stopPropagation(); changeScrollSpeed(SCROLL_SPEED_STEP);" aria-label="स्क्रोल गति बढाउनुहोस्">+</button>
 </div>
 
 <!-- TAB JUMP MENU: lists every tab so you can go from tab 1 to tab 16 in one tap -->
@@ -2091,12 +2130,20 @@ html[data-theme="dark"] .qi-chip { background: linear-gradient(135deg, rgba(240,
     <!----  <p class="subtitle">समापन — Jay Jayakar</p>---->
     </div>
   </div>
-  <div class="mantra-block">
-<div class="mantra-label">पञ्चायतन</div>
+
+    <div class="mantra-block">
+<div class="mantra-label">मङ्गलाचरण</div>
 <div class="jay-item">
-  <span class="jay-text">बिघ्नविनाशक रिद्धि–सिद्धिसहितका श्री गणेश भगवानको</span>
+  <span class="jay-text">विघ्नविनाशक रिद्धि–सिद्धिसहितका श्री गणेश भगवानको</span>
   <span class="jai">— जय</span>
 </div>
+<div class="jay-item">
+  <span class="jay-text">गुरूणां गुरुः, मङ्गलस्वरूप श्री साम्ब सदाशिव भगवानको</span>
+  <span class="jai">— जय</span>
+</div>
+  </div>
+    <div class="mantra-block">
+<div class="mantra-label">पञ्चायतन</div>
 <div class="jay-item">
   <span class="jay-text">जगत्साक्षी श्री सूर्यनारायण भगवानको</span>
   <span class="jai">— जय</span>
@@ -2106,20 +2153,26 @@ html[data-theme="dark"] .qi-chip { background: linear-gradient(135deg, rgba(240,
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
-  <span class="jay-text">जगतपालक श्री लक्ष्मीनारायण भगवानको</span>
+  <span class="jay-text">श्री लक्ष्मीनारायण भगवानको</span>
+  <span class="jai">— जय</span>
+</div>
+<div class="jay-item">
+  <span class="jay-text">सृष्टि–स्थिति–लयस्वरूप ब्रह्मा, विष्णु तथा महेश्वर भगवानको</span>
+  <span class="jai">— जय</span>
+</div>
+  </div>
+    <div class="mantra-block">
+<div class="mantra-label">परमतत्त्व शिव</div>
+<div class="jay-item">
+  <span class="jay-text">गुरुहरूको गुरु आदि गुरु दक्षिणामूर्ति भगवानको</span>
+  <span class="jai">— जय</span>
+</div>
+<div class="jay-item">
+  <span class="jay-text">अर्धनारीश्वर स्वरूप भगवान शङ्करको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
   <span class="jay-text">पञ्चब्रह्म तथा पञ्चभूतस्वरूप भगवान शिवको</span>
-  <span class="jai">— जय</span>
-</div>
-  </div>
-<div class="jay-item">
-  <span class="jay-text">अष्टमूर्ति तथा एकादश रुद्रस्वरूप भगवानको</span>
-  <span class="jai">— जय</span>
-</div>
-<div class="jay-item">
-  <span class="jay-text">महाकाल, कालभैरव तथा सर्वव्यापक लिङ्गस्वरूप भगवानको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
@@ -2127,8 +2180,8 @@ html[data-theme="dark"] .qi-chip { background: linear-gradient(135deg, rgba(240,
   <span class="jai">— जय</span>
 </div>
   </div>
-  <div class="mantra-block">
-<div class="mantra-label">गुरु–ऋषि परम्परा</div>
+    <div class="mantra-block">
+<div class="mantra-label">गुरु–शास्त्र परम्परा</div>
 <div class="jay-item">
   <span class="jay-text">महर्षि वेदव्यास भगवानको</span>
   <span class="jai">— जय</span>
@@ -2138,26 +2191,11 @@ html[data-theme="dark"] .qi-chip { background: linear-gradient(135deg, rgba(240,
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
-  <span class="jay-text">सनक, सनन्दन, सनातन, सनत्कुमार तथा मार्कण्डेयादि शिवभक्त ऋषि–मुनिहरूको</span>
+  <span class="jay-text">सम्पूर्ण सिद्ध, योगी, तपस्वी तथा सन्त–महात्माहरूको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
-  <span class="jay-text">सम्पूर्ण सिद्ध, योगी, तपस्वी तथा सन्त–महात्माको</span>
-  <span class="jai">— जय</span>
-</div>
-  </div>
-  <div class="mantra-block">
-<div class="mantra-label">वैदिक–शास्त्रीय परम्परा</div>
-<div class="jay-item">
-  <span class="jay-text">चारै वेद तथा वेदाङ्गहरूको</span>
-  <span class="jai">— जय</span>
-</div>
-<div class="jay-item">
-  <span class="jay-text">श्रीरुद्रम्, रुद्राध्याय तथा सम्पूर्ण वैदिक मन्त्रपरम्पराको</span>
-  <span class="jai">— जय</span>
-</div>
-<div class="jay-item">
-  <span class="jay-text">सम्पूर्ण उपनिषद्, आगम तथा पुराण शास्त्रहरूको</span>
+  <span class="jay-text">चारै वेद, उपनिषद् तथा सम्पूर्ण शास्त्रहरूको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
@@ -2165,29 +2203,14 @@ html[data-theme="dark"] .qi-chip { background: linear-gradient(135deg, rgba(240,
   <span class="jai">— जय</span>
 </div>
   </div>
-  <div class="mantra-block">
-<div class="mantra-label">देवशक्ति</div>
-<div class="jay-item">
-  <span class="jay-text">सम्पूर्ण देवी–देवता तथा नवग्रहादि देवताहरुको</span>
-  <span class="jai">— जय</span>
-</div>
-<div class="jay-item">
-  <span class="jay-text">दशदिक्पाल, अष्टमातृका, अष्टभैरव तथा क्षेत्रपालहरूको</span>
-  <span class="jai">— जय</span>
-</div>
-  </div>
-  <div class="mantra-block">
+    <div class="mantra-block">
 <div class="mantra-label">पावन शिवधाम</div>
 <div class="jay-item">
   <span class="jay-text">श्री कैलाश मानसरोवर धामको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
-  <span class="jay-text">द्वादश ज्योतिर्लिङ्ग तथा सम्पूर्ण पावन शिवधामको</span>
-  <span class="jai">— जय</span>
-</div>
-<div class="jay-item">
-  <span class="jay-text">श्री काशी विश्वनाथ तथा श्री केदारनाथ धामको</span>
+  <span class="jay-text">द्वादश ज्योतिर्लिङ्ग तथा सम्पूर्ण पावन शिवधामहरूको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
@@ -2195,14 +2218,10 @@ html[data-theme="dark"] .qi-chip { background: linear-gradient(135deg, rgba(240,
   <span class="jai">— जय</span>
 </div>
   </div>
-  <div class="mantra-block">
+    <div class="mantra-block">
 <div class="mantra-label">समष्टि</div>
 <div class="jay-item">
-  <span class="jay-text">सम्पूर्ण तीर्थ, देवक्षेत्र तथा शक्तिपीठहरूको</span>
-  <span class="jai">— जय</span>
-</div>
-<div class="jay-item">
-  <span class="jay-text">सम्पूर्ण इष्टदेवता, कुलदेवता तथा ग्रामदेवताहरूको</span>
+  <span class="jay-text">सम्पूर्ण देवी–देवता, इष्टदेवता, कुलदेवता तथा ग्रामदेवताहरूको</span>
   <span class="jai">— जय</span>
 </div>
 <div class="jay-item">
@@ -2214,7 +2233,7 @@ html[data-theme="dark"] .qi-chip { background: linear-gradient(135deg, rgba(240,
   <span class="jai">— जय</span>
 </div>
   </div>
-  <div class="mantra-block">
+    <div class="mantra-block">
 <div class="mantra-label">परम समापन</div>
 <div class="jay-item">
   <span class="jay-text">अखण्ड सच्चिदानन्द परब्रह्म परमेश्वर श्री साम्ब सदाशिव भगवानको</span>
@@ -2411,60 +2430,102 @@ let userDisabledAutoScroll = false; // प्रयोगकर्ताले �
 let autoScrollRAF = null;       // requestAnimationFrame ID
 let autoScrollLastTs = null;
 let autoScrollPauseTimer = null;
-let scrollSpeedPopupTimer = null;
 let autoScrollRemainder = 0;    // sub-pixel क्यारी-ओभर (scrollBy ले १px भन्दा सानो चाल बेवास्ता गर्छ)
 let autoScrollSpeed = 12;       // पिक्सेल प्रति सेकेन्ड — प्रयोगकर्ताले बदल्न सक्ने गति
 
+const SPEED_MIN = 4, SPEED_MAX = 60, SPEED_STEP = 2;
+let speedHoldDelay = null, speedHoldTimer = null;
+
+// ── हरेक देवता-ब्यानरभित्र स्थायी नियन्त्रण (अक्षर-आकार बायाँ · गति दायाँ) ──
+// एउटै HTML टुक्रा सबै .banner-overlay मा थपिन्छ; मान/स्थिति सबैतिर एकैसाथ सिङ्क हुन्छ।
+(function injectBannerControls() {
+  const html =
+    '<div class="banner-ctl banner-ctl-font" role="group" aria-label="अक्षर आकार">' +
+      '<button type="button" class="bc-btn" data-font-step="-1" aria-label="अक्षर घटाउनुहोस्">अ−</button>' +
+      '<span class="bc-val js-font-val" aria-live="polite">100%</span>' +
+      '<button type="button" class="bc-btn" data-font-step="1" aria-label="अक्षर बढाउनुहोस्">अ+</button>' +
+    '</div>' +
+    '<div class="banner-ctl banner-ctl-speed" role="group" aria-label="स्क्रोल गति नियन्त्रण">' +
+      '<button type="button" class="bc-btn sym" data-speed-step="-2" aria-label="स्क्रोल गति घटाउनुहोस्">−</button>' +
+      '<span class="bc-val js-speed-val" aria-live="polite">12 px/s</span>' +
+      '<button type="button" class="bc-btn sym" data-speed-step="2" aria-label="स्क्रोल गति बढाउनुहोस्">+</button>' +
+    '</div>';
+  document.querySelectorAll('.deity-banner .banner-overlay').forEach(ov => {
+    const row = document.createElement('div');
+    row.className = 'banner-ctl-row';
+    row.innerHTML = html;
+    ov.appendChild(row);
+  });
+})();
+
 function updateScrollSpeedUI() {
-  const valueEl = document.getElementById('scrollSpeedValue');
-  if (valueEl) valueEl.textContent = `${autoScrollSpeed} px/s`;
-  const dec = document.getElementById('scrollSpeedDec'), inc = document.getElementById('scrollSpeedInc');
-  if (dec) dec.disabled = autoScrollSpeed <= SCROLL_SPEED_MIN;
-  if (inc) inc.disabled = autoScrollSpeed >= SCROLL_SPEED_MAX;
-}
-
-const SCROLL_SPEED_MIN = 4, SCROLL_SPEED_MAX = 60, SCROLL_SPEED_STEP = 4;
-const SCROLL_SPEED_HIDE_MS = 3500;   // निष्क्रियता पछि पिल आफैं लुक्ने समय
-
-function scheduleScrollSpeedPopupHide() {
-  clearTimeout(scrollSpeedPopupTimer);
-  scrollSpeedPopupTimer = setTimeout(closeScrollSpeedPopup, SCROLL_SPEED_HIDE_MS);
-}
-
-function closeScrollSpeedPopup() {
-  clearTimeout(scrollSpeedPopupTimer);
-  const popup = document.getElementById('scrollSpeedPopup');
-  if (popup) popup.classList.remove('open');
+  document.querySelectorAll('.js-speed-val').forEach(el => { el.textContent = `${autoScrollSpeed} px/s`; });
+  document.querySelectorAll('[data-speed-step]').forEach(btn => {
+    const step = Number(btn.dataset.speedStep);
+    btn.disabled = step < 0 ? autoScrollSpeed <= SPEED_MIN : autoScrollSpeed >= SPEED_MAX;
+  });
 }
 
 function changeScrollSpeed(amount) {
-  autoScrollSpeed = Math.max(SCROLL_SPEED_MIN, Math.min(SCROLL_SPEED_MAX, autoScrollSpeed + Number(amount)));
-  openScrollSpeedPopup();   // समायोजन गर्दा खुला राख्ने र टाइमर नवीकरण गर्ने
+  autoScrollSpeed = Math.max(SPEED_MIN, Math.min(SPEED_MAX, autoScrollSpeed + Number(amount)));
+  updateScrollSpeedUI();
+  // सीमामा पुगेपछि बटन disabled हुन्छ (pointerup नपुग्न सक्छ) — थिचिराख्ने दोहोरिने क्रम रोक्ने
+  if (autoScrollSpeed <= SPEED_MIN || autoScrollSpeed >= SPEED_MAX) stopSpeedHold();
 }
 
-function openScrollSpeedPopup() {
-  const popup = document.getElementById('scrollSpeedPopup');
-  popup.classList.add('open');
-  updateScrollSpeedUI();
-  scheduleScrollSpeedPopupHide();
+// −/+ थिचिराख्दा गति लगातार बदलिन्छ (छोटो ढिलाइपछि दोहोरिने)
+function startSpeedHold(amount) {
+  changeScrollSpeed(amount);
+  stopSpeedHold();
+  speedHoldDelay = setTimeout(() => {
+    speedHoldTimer = setInterval(() => changeScrollSpeed(amount), 90);
+  }, 380);
 }
+function stopSpeedHold() {
+  clearTimeout(speedHoldDelay); clearInterval(speedHoldTimer);
+  speedHoldDelay = speedHoldTimer = null;
+}
+(function wireControls() {
+  // event delegation — बैनर/हेडर जहाँ भए पनि काम गर्छ
+  document.addEventListener('pointerdown', e => {
+    const btn = e.target.closest && e.target.closest('[data-speed-step]');
+    if (!btn || btn.disabled) return;
+    e.preventDefault(); e.stopPropagation();
+    startSpeedHold(Number(btn.dataset.speedStep));
+  });
+  ['pointerup', 'pointercancel'].forEach(ev => document.addEventListener(ev, stopSpeedHold));
+  window.addEventListener('blur', stopSpeedHold);
+  // किबोर्ड (Enter/Space) बाट थिच्दा मात्र click ले बदल्छ; माउस/टच pointerdown ले गरिसक्छ
+  document.addEventListener('click', e => {
+    const sp = e.target.closest && e.target.closest('[data-speed-step]');
+    if (sp) { e.stopPropagation(); if (e.detail === 0) changeScrollSpeed(Number(sp.dataset.speedStep)); return; }
+    const ft = e.target.closest && e.target.closest('[data-font-step]');
+    if (ft) { e.stopPropagation(); changeFont(Number(ft.dataset.fontStep)); }
+  });
+  document.addEventListener('contextmenu', e => {
+    if (e.target.closest && e.target.closest('.banner-ctl, [data-speed-step]')) e.preventDefault();
+  });
+  updateScrollSpeedUI();
+})();
 
 // यी तत्वहरूमा छुँदा अटो-स्क्रोल टगल/गति-पाना/ट्याब-स्वाइप सक्रिय हुँदैन
-const UI_SEL = '.app-header, .tab-nav-shell, .qi, .fab, .sidebar, .toc, .tab-menu-overlay, .scroll-speed-popup';
+const UI_SEL = '.app-header, .tab-nav-shell, .qi, .fab, .sidebar, .toc, .tab-menu-overlay, .banner-ctl';
 let touchStartTarget = null;
-document.addEventListener('touchstart', (event) => {
-  const target = event.target;
-  if (target && target.closest && target.closest(UI_SEL)) return;
-  if (isSmoothScrollOn) openScrollSpeedPopup();   // अटो-स्क्रोल चलेको बेला मात्र
-}, { passive: true });
 
 // डेस्कटप: पाठ चुन्न/कपी गर्दा अटो-स्क्रोल नछेडियोस् भनेर क्लिक-टगल हटाइयो;
 // हेडरको बटन वा गति-पानाबाट नियन्त्रण गर्नुहोस्।
 
+const ICON_PLAY  = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z"/></svg>';
+const ICON_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h3.5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm6.5 0H17a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-3.5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/></svg>';
 function setScrollBtnUI(on) {
   const btn = document.getElementById('scrollModeBtn');
-  btn.innerText = on ? "🟢 आफै चल्न सुरू भयो" : "🔴 आफै चल्न बन्द भयो";
-  btn.style.background = on ? "var(--saffron)" : "#ffffff18";
+  if (!btn) return;
+  btn.innerHTML = on ? ICON_PAUSE : ICON_PLAY;
+  btn.classList.toggle('on', on);
+  btn.setAttribute('aria-pressed', String(on));
+  const label = on ? 'स्वतः स्क्रोल चलिरहेको छ — रोक्न थिच्नुहोस्' : 'स्वतः स्क्रोल सुरु गर्न थिच्नुहोस्';
+  btn.title = label;
+  btn.setAttribute('aria-label', label);
 }
 
 function autoScrollStep(ts) {
@@ -2476,7 +2537,6 @@ function autoScrollStep(ts) {
         stopAutoScroll();
         isSmoothScrollOn = false;
         setScrollBtnUI(false);
-        closeScrollSpeedPopup();
         return;
     }
 
@@ -2511,7 +2571,7 @@ function toggleScrollMode() {
     isSmoothScrollOn = !isSmoothScrollOn;
     userDisabledAutoScroll = !isSmoothScrollOn; // प्रयोगकर्ताले आफैं थिचेर अफ गरेको हो भने सम्झिने
     setScrollBtnUI(isSmoothScrollOn);
-    if (isSmoothScrollOn) { startAutoScroll(); openScrollSpeedPopup(); } else { stopAutoScroll(); closeScrollSpeedPopup(); }
+    if (isSmoothScrollOn) startAutoScroll(); else stopAutoScroll();
 }
 
 // प्रयोगकर्ताले औंलाले छोइ/स्क्रोल गरेको बेला अटो-स्क्रोल केही बेर रोक्ने, त्यसपछि फेरि सुरु गर्ने
@@ -2712,13 +2772,12 @@ function handleGesture() {
 // ── Font size (हरेक ट्याबको आफ्नै default साइजको सापेक्षमा zoom गर्ने) ──
 const steps = [70, 85, 100, 115, 130, 150, 170];
 let fIdx = 2; // 100% = ट्याबको आफ्नै CSS मा तोकिएको default साइज (कुनै परिवर्तन छैन)
-const fontLabelEl = document.getElementById('fontLabel');
 // zoom --font-scale CSS चरबाट हुन्छ; यसले clamp() को fluid साइजसँग सँगै काम गर्छ
 function changeFont(dir) {
   fIdx = Math.max(0, Math.min(steps.length - 1, fIdx + dir));
   const pct = steps[fIdx];
   document.documentElement.style.setProperty('--font-scale', String(pct / 100));
-  fontLabelEl.textContent = pct + '%';
+  document.querySelectorAll('.js-font-val').forEach(el => { el.textContent = pct + '%'; });
 }
 
 // ── Wake Lock (screen stays on) ──
@@ -2806,22 +2865,34 @@ if ('serviceWorker' in navigator) {
   sections.forEach(sec => {
     const name = sec.id.replace(/^tab-/, '');
     const items = [];
+    sec.querySelectorAll('.stotra-group').forEach(g => {
+      if (!g.querySelector(':scope > .grp-anchor')) {
+        const a = document.createElement('div');
+        a.className = 'grp-anchor'; a.setAttribute('aria-hidden', 'true');
+        g.prepend(a);
+      }
+    });
     sec.querySelectorAll('.mantra-label').forEach(lb => {
       const block = lb.closest('.mantra-block') || lb;
       if (!block.id) block.id = name + '-s' + (items.length + 1);
       // समूहको पहिलो स्तोत्र भए चिप थिच्दा समूहको माथिल्लो छेउ (ब्यानरसहित) मा जाने
       const grp = block.closest('.stotra-group');
       const isFirst = !!grp && grp.querySelector('.mantra-block') === block;
-      items.push({ text: lb.textContent.trim(), el: block, jumpEl: isFirst ? grp : null });
+      // .stotra-group अब display:contents (आफ्नै बक्स छैन) — त्यसैले समूहको सुरुको शून्य-उचाइ .grp-anchor मा जम्प
+      items.push({ text: lb.textContent.trim(), el: block, jumpEl: isFirst ? grp.querySelector('.grp-anchor') : null });
     });
     QI[name] = items;
     sec.classList.toggle('has-groups', !!sec.querySelector('.stotra-group'));
-    if (items.length >= 2) {
+    if (items.length >= 1) {
       const nav = document.createElement('nav');
       nav.className = 'qi';
       nav.setAttribute('aria-label', 'स्तोत्र द्रुत-सूची');
       const title = document.createElement('span');
-      title.className = 'qi-title'; title.textContent = '📜 स्तोत्र';
+      title.className = 'qi-title';
+      // QI = सक्रिय मुख्य ट्याबको उप-मेनु: शीर्षकमा त्यही ट्याबको आइकन+नाम देखाउँछ
+      const ownBtn = allTabBtns.find(b => b.dataset.tab === name);
+      title.innerHTML = (ownBtn ? ownBtn.innerHTML : '📜 स्तोत्र') + '<span class="qi-sep" aria-hidden="true">›</span>';
+      title.title = (ownBtn ? ownBtn.textContent.trim() + ' — ' : '') + 'स्तोत्र सूची';
       const row = document.createElement('div');
       row.className = 'qi-row';
       items.forEach((it, i) => {
@@ -2831,7 +2902,7 @@ if ('serviceWorker' in navigator) {
         row.appendChild(b);
       });
       nav.append(title, row);
-      // सबै ट्याबमा QI सबैभन्दा माथि (ब्यानर/मन्त्र-ब्लकभन्दा अघि)
+      // सबै ट्याबमा QI सबैभन्दा माथि — ब्यानर/समूह-ब्यानरभन्दा अघि
       sec.prepend(nav);
     }
   });
@@ -2846,9 +2917,10 @@ if ('serviceWorker' in navigator) {
     const b = sec && sec.querySelector('.deity-banner, .section-header');
     const q = sec && sec.querySelector('.qi');
     bannerStickyH = (b && getComputedStyle(b).position === 'sticky') ? Math.ceil(b.getBoundingClientRect().height) : 0;
-    // सबै ट्याब: QI हेडर/ट्याबको मुनि; ब्यानर QI को मुनि (--qi-h)
-    document.documentElement.style.setProperty('--banner-h', '0px');
-    document.documentElement.style.setProperty('--qi-h', qiHeight() + 'px');
+    // हरेक ट्याबमा क्रम: हेडर → ट्याब-पट्टी → QI → ब्यानर → श्लोक-ब्लक
+    // --qi-h: ब्यानर (.deity-banner/.section-header) को sticky top मा QI को उचाइ जोडिन्छ
+    const qh = qiHeight();
+    document.documentElement.style.setProperty('--qi-h', (qh ? qh - 2 : 0) + 'px');   // ब्यानरले QI को फेद २px ओझेल पार्छ — बीचमा चिर्का हुँदैन
     if (window.ResizeObserver) {
       if (!bannerRO) bannerRO = new ResizeObserver(() => requestAnimationFrame(updateBannerH));
       bannerRO.disconnect();
@@ -2918,6 +2990,7 @@ if ('serviceWorker' in navigator) {
   // स्क्रोल गर्दा अहिले कुन स्तोत्र पढिँदैछ भनी पहिचान गर्ने (onScroll बाट बोलाइन्छ)
   window.updateSpy = function () {
     const items = activeItems();
+    if (items.length === 1) { setActive(0); return; }
     if (items.length < 2) return;
     // चिप-क्लिकपछिको स्मूथ स्क्रोल चलुन्जेल स्पाई रोकिन्छ; स्क्रोल थामिएपछि फेरि चल्छ
     if (spyLock) {
@@ -2987,7 +3060,22 @@ if ('serviceWorker' in navigator) {
   window.closeIndexSheet = function () { sheetOverlay.classList.remove('open'); };
 
   // ── ट्याब परिवर्तन हुँदा (showTab भित्रबाट बोलाइन्छ) ──
+  // ── QI को त्रिभुज-सूचक: सक्रिय ट्याब-बटनको ठीक तलतिर ──
+  function updateNotch() {
+    if (isDesktop()) return;
+    const btn = document.querySelector('.tab-btn.active');
+    if (!btn) return;
+    const r = btn.getBoundingClientRect();
+    const x = Math.min(Math.max(r.left + r.width / 2, 24), window.innerWidth - 24);
+    document.documentElement.style.setProperty('--qi-notch-x', x.toFixed(1) + 'px');
+  }
+  tabNavEl.addEventListener('scroll', updateNotch, { passive: true });
+  window.addEventListener('resize', updateNotch, { passive: true });
+
   window.onTabChanged = function (name) {
+    updateNotch();
+    setTimeout(updateNotch, 120);
+    setTimeout(updateNotch, 380);   // scrollIntoView(smooth) थामिएपछि
     curIdx = -1;
     spyLock = false; pinnedIdx = -1; clearTimeout(spyTimer);
     updateBannerH();
