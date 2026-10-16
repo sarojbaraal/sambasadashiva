@@ -31,6 +31,7 @@
         },
 
       • क्रम: Array मा जुन क्रममा राख्नुभयो, ट्याबभित्र त्यही क्रममा देखिन्छ।
+      • fsMobile: '1.50rem' मोबाइलको अक्षर-आकार (नराखे fs को fluid आकार प्रयोग हुन्छ)
       • text: backtick ( ` ) भित्र लेख्नुहोस्; नयाँ पङ्क्ति जस्ताको तस्तै देखिन्छ। चाहिए
         <br> वा <span class="pause">शब्द</span> (रातो), <span class="om">ॐ</span> (केसरी),
         <span class="verse-num">॥१॥</span> जस्ता HTML ट्याग पनि चल्छन्।
@@ -85,11 +86,11 @@ const shlokasData = [
     bannerTitle: '🔱 ॐ नमः शिवाय • ॐ गुरवे नमः',
     fallback: '#1a0a2a',
     alt: 'Shiva',
+    fs: '1.5rem',
+    fsMobile: '1.25rem',
     text: `<span class="om">   हरि: ॐ</span>
-स्वस्ति न इन्द्रो वृद्धश्रवाः ।
-    स्वस्ति नः पूषा विश्ववेदाः ॥
-स्वस्ति नस्तार्क्ष्यो अरिष्टनेमिः ।
-    स्वस्ति नो बृहस्पतिर्दधातु ॥
+स्वस्ति न इन्द्रो वृद्धश्रवाः स्वस्ति नः पूषा विश्ववेदाः ।
+स्वस्ति नस्तार्क्ष्यो अरिष्टनेमिः स्वस्ति नो बृहस्पतिर्दधातु॥
 <span class="shanti-tag">ॐ शान्तिः शान्तिः शान्तिः</span>`
   },
   {
@@ -136,9 +137,10 @@ const shlokasData = [
     tab: 'shivaguru',
     id: 'shivaguru-5',
     title: 'त्वमेव माता',
+    fsMobile: '1.25rem',
     image: 'deity-photo/mahadev.png',
     text: `त्वमेव माता च पिता त्वमेव,त्वमेव बन्धुश्च सखा त्वमेव
-    त्वमेव विद्या द्रविणम् त्वमेव, त्वमेव सर्वम् मम देव देव॥`
+त्वमेव विद्या द्रविणम् त्वमेव, त्वमेव सर्वम् मम देव देव॥`
   },
   {
     tab: 'shivaguru',
@@ -234,6 +236,7 @@ const shlokasData = [
     id: 'surya-2',
     title: 'सूर्याष्टकम्',
     image: 'deity-photo/surya.png',
+    fsMobile: '1.35rem',
     text: `आदिदेव नमस्तुभ्यं प्रसीद मम भास्कर।
     दिवाकर नमस्तुभ्यं प्रभाकर नमोऽस्तु ते॥<span class="verse-num">१॥</span>
 
@@ -265,7 +268,7 @@ const shlokasData = [
     सप्तजन्म भवेद्रोगी प्रतिजन्म दरिद्रता ॥<span class="verse-num">१०॥</span>
 
 स्त्रीतैलमधुमांसानि यस्त्यजेत्तु रवेर्दिने ।
-    न व्याधिः शोकदारिद्र्यं सूर्यलोकं स गच्छति॥<span class="verse-num">११॥</span>
+  न व्याधिः शोकदारिद्र्यं सूर्यलोकं स गच्छति॥<span class="verse-num">११॥</span>
   <p style="text-align: center; margin-top: 0px; font-weight: bold;">
     इति श्रीसूर्याष्टकस्तोत्रं सम्पूर्णम् </p>
 `
@@ -1728,6 +1731,12 @@ const shlokasData = [
     white-space: pre-wrap;
   }
 
+  @media (max-width: 600px) {
+    .shloka {
+      font-size: calc(var(--fs-mobile, clamp(1rem, 5vw, var(--fs))) * var(--font-scale, 1));
+    }
+  }
+
   /* ── हरेक ट्याब/स्तोत्रको अक्षर-आकार ──
      अब CSS मा होइन, डाटामा तोकिन्छ: tabsData[].fs (ट्याबको) र shlokasData[].fs (स्तोत्रको)।
      रेन्डररले हरेक .shloka मा --fs चर राख्छ। नतोकिए तलको .shloka को 1.30rem प्रयोग हुन्छ। */
@@ -2424,6 +2433,7 @@ html[data-fx="off"] .gp { display: none; }
       const sh = mk('div', 'shloka');
       const fs = s.fs || tab.fs;
       if (fs) sh.style.setProperty('--fs', fs);
+      if (s.fsMobile) sh.style.setProperty('--fs-mobile', s.fsMobile);
       sh.innerHTML = s.text || '';
       blk.appendChild(sh);
     }
