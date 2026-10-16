@@ -1,7 +1,5 @@
 // ── Service Worker for Daily Stotra Path PWA ──
-const CACHE_NAME = 'stotra-app-v2'; // जब पनि HTML/CSS मा ठूलो परिवर्तन गर्नुहुन्छ, यो 'v2', 'v3' मा बदल्नुहोस्
-
-// पहिले नै क्यास गर्न चाहिने मुख्य फाइलहरू
+const CACHE_NAME = 'stotra-app-v3'; 
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
@@ -10,7 +8,6 @@ const PRECACHE_ASSETS = [
   // यदि icon-512.png छ भने त्यो पनि थप्नुहोस्: '/icon-512.png'
 ];
 
-// १. INSTALL: एप लोड हुँदा मुख्य फाइलहरू क्यास गर्ने
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -20,7 +17,7 @@ self.addEventListener('install', (event) => {
       console.warn('[Service Worker] Pre-caching failed:', err);
     })
   );
-  // पुरानो Service Worker लाई तुरुन्तै सक्रिय गर्न बाध्य पार्ने
+  
   self.skipWaiting();
 });
 
