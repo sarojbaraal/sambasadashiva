@@ -2246,6 +2246,15 @@ html[data-fx="off"] .gp { display: none; }
   .qi-title { max-width: 30vw; font-size: .7rem; }
 }
 
+/* ── मोबाइल (≤600px): पढ्ने ठाउँ बढाउन ट्याब-पट्टी र QI अलि कम्प्याक्ट; ब्यानर (देवताको फोटो) जस्ताको तस्तै ── */
+@media (max-width: 600px) {
+  .tab-nav { padding: 5px 42px 6px 10px; }
+  .tab-jump-btn { top: 4px; bottom: 4px; }
+  .qi { padding: 10px 8px 6px 8px; }
+  .qi-chip { padding: 4px 13px 4px 5px; }
+  .shloka { line-height: 1.85; }      /* देवनागरीका मात्रा-चिह्न नकाटिने गरी ठीक; ~८% बढी पङ्क्ति एकै स्क्रिनमा */
+}
+
 /* ── समूह (एउटै ट्याबमा धेरै देवता-ब्यानर) ──
    सेक्सन र समूह दुवै display:contents — सबै sticky ब्यानरको सीमा-बक्स पूरै .content-area बन्छ।
    फलस्वरूप: अर्को समूहको ब्यानर आएर अघिल्लोलाई ढाक्छ (कार्ड-स्ट्याक), र अन्तिम ब्यानर
@@ -2816,7 +2825,9 @@ function showTab(name, btn) {
         const savedTarget = tabScrollPositions[name] || 0;
         // Restore the content position without changing the persistent
         // tab-click header lock.
-        window.scrollTo(0, savedTarget);
+        // मोबाइलमा ट्याब थिचेपछि हेडर लुक्छ; माथिको headerH जति भाग खाली क्रीम पट्टी मात्र हुन्छ —
+        // त्यसैले QI/ब्यानर ट्याब-पट्टीको ठीक मुनि देखिने गरी कम्तीमा headerH मा पुर्‍याउने
+        window.scrollTo(0, isDesktop() ? savedTarget : Math.max(savedTarget, headerH));
         headerHideAmt = headerH;
         applyHeaderNavTransform();
         // ट्याब बदलिनासाथ अटो-स्क्रोल आफैं सुरु हुन्छ, प्रयोगकर्ताले
@@ -3279,13 +3290,14 @@ if ('serviceWorker' in navigator) {
 
   window.onTabChanged(currentActiveTab);
 })();
-// ── श्लोक-फिट (मोबाइल, जस्तै ३९३px चौडाइ): सबैभन्दा लामो पङ्क्ति एकै लाइनमा नअटे मात्र
-//    त्यो स्तोत्रको अक्षर घटाइन्छ (न्यूनतम १५.५px)। अटेको स्तोत्रको साइज जस्ताको तस्तै रहन्छ।
-//    नाप फोनमा वास्तविक लोड भएको फन्टले लिइन्छ, त्यसैले फन्ट फरक भए पनि सही हुन्छ।
+// ── श्लोक-फिट (मोबाइल, जस्तै ३९३px चौडाइ): हरेक स्तोत्रको सबैभन्दा लामो पङ्क्ति ठ्याक्कै स्क्रिनको
+//    चौडाइमा अट्ने साइज छानिन्छ — सानो अक्षर भएकाको ठूलो (MAX_PX सम्म), लामो पङ्क्ति भएकाको सानो
+//    (MIN_PX सम्म)। नाप फोनमा वास्तविक लोड भएको फन्टले लिइन्छ, त्यसैले फन्ट फरक भए पनि सही हुन्छ।
 //    A−/A+ को ज़ूम यसको माथि लाग्छ (प्रयोगकर्ताले बढाएमा बढ्छ)। ──
 (function shlokaFit() {
   const MIN_PX = 15.5;
-  const SAFE = 0.98;                          // २% सुरक्षा-मार्जिन
+  const MAX_PX = 23;
+  const SAFE = 0.985;                         // १.५% सुरक्षा-मार्जिन (किनारामा नठोक्कियोस्)
   const mq = window.matchMedia('(max-width: 600px)');
   window.fitShlokas = function () {
     const sec = document.querySelector('.stotra-section.active');
@@ -3293,22 +3305,29 @@ if ('serviceWorker' in navigator) {
     const els = Array.from(sec.querySelectorAll('.shloka')).filter(el => !el.closest('.closing-block'));
     els.forEach(el => el.style.removeProperty('--fit'));
     if (!mq.matches) return;                  // डेस्कटप/ट्याब्लेटमा यथावत्
-    // वास्तविक रेन्डर भएको नाप: पङ्क्ति नभाँचिने (white-space:pre) बनाएर scrollWidth = सबैभन्दा लामो पङ्क्ति
-    // (श्लोक-सङ्ख्या ॥१॥ जस्ता बोल्ड/स्टाइल गरिएका अंशसहित)। सबै एकैपटक लेखेर, एकैपटक पढेर, फेरि फर्काउने।
-    els.forEach(el => { el.dataset.ws = el.style.whiteSpace; el.style.whiteSpace = 'pre'; });
+    const scale = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-scale')) || 1;
+    // १) उपलब्ध चौडाइ र आधार-साइज पढ्ने
     const jobs = els.map(el => {
       const cs = getComputedStyle(el);
-      const pad = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
-      return { el, avail: el.clientWidth - pad, need: el.scrollWidth - pad,
-               base: parseFloat(cs.fontSize) / (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-scale')) || 1) };
+      return { el, base: parseFloat(cs.fontSize) / scale,
+               avail: el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) };
     });
-    els.forEach(el => { el.style.whiteSpace = el.dataset.ws || ''; delete el.dataset.ws; });
-    jobs.forEach(({ el, avail, need, base }) => {
+    // २) पङ्क्ति नभाँचिने, सामग्री जति चौडा उति (inline-block + max-content + pre) बनाएर वास्तविक चौडाइ पढ्ने
+    //    (श्लोक-सङ्ख्या ॥१॥ जस्ता बोल्ड/स्टाइल गरिएका अंशसहित); अनि सबै फर्काउने
+    const saved = els.map(el => el.getAttribute('style'));
+    els.forEach(el => {
+      el.style.display = 'inline-block'; el.style.width = 'max-content';
+      el.style.maxWidth = 'none'; el.style.whiteSpace = 'pre';
+    });
+    jobs.forEach(j => { j.need = j.el.getBoundingClientRect().width; });
+    els.forEach((el, i) => { if (saved[i] === null) el.removeAttribute('style'); else el.setAttribute('style', saved[i]); });
+    // ३) साइज छान्ने
+    jobs.forEach(({ el, base, avail, need }) => {
       if (!avail || !need || !base) return;
-      // scrollWidth कहिल्यै clientWidth भन्दा सानो हुँदैन — बराबर/सानो भए पङ्क्ति अटिहाल्छ, नछुने
-      if (need <= avail) return;
-      const px = Math.max(MIN_PX, base * (avail * SAFE) / need);
-      el.style.setProperty('--fit', (px / base).toFixed(4));
+      const px = Math.min(MAX_PX, Math.max(MIN_PX, base * (avail * SAFE) / need));
+      const fit = px / base;
+      if (Math.abs(fit - 1) < 0.01) return;   // पहिले नै ठीक छ
+      el.style.setProperty('--fit', fit.toFixed(4));
     });
   };
 
