@@ -59,18 +59,31 @@
       कुनै स्तोत्र नभएको ट्याब देखाइँदैन।
    ═══════════════════════════════════════════════════════════════════════ */
 
-/* ── ट्याबहरू (क्रम, आइकन, नाम, पूर्वनिर्धारित अक्षर-आकार) ── */
+/* ── ट्याबहरू (क्रम, आइकन, नाम, पूर्वनिर्धारित अक्षर-आकार) ──
+   पाठ-क्रम: गणेश आराधना → सूर्य प्रार्थना → विष्णु स्तुति → पार्वती/शक्ति स्तुति → मुख्य शिव आराधना →
+            अन्य पूरक देवी स्तुति → क्षमायाचना र समर्पण → जयजयकार → शान्ति */
 const tabsData = [
-  { key: 'shivaguru', icon: '📿', label: 'शिव-गुरु', fs: '1.30rem' },
+  /* १. गणेश आराधना */
   { key: 'ganesh', icon: '🐘', label: 'गणेश', fs: '1.40rem' },
+  /* २. सूर्य प्रार्थना */
   { key: 'surya', icon: '☀️', label: 'सूर्य', fs: '1.40rem' },
+  /* ३. विष्णु स्तुति */
   { key: 'vishnu', icon: '𖣐', label: 'विष्णु', fs: '1.30rem' },
-  { key: 'shiva', icon: '🔱', label: 'शिव', fs: '1.40rem' },
+  /* ४. पार्वती / शक्ति स्तुति */
   { key: 'devi-prarthana', icon: '🌺', label: 'देवी प्रार्थना', fs: '1.40rem' },
+  /* ५. मुख्य शिव आराधना (शिव-गुरु वन्दनाबाट सुरु) */
+  { key: 'shivaguru', icon: '📿', label: 'शिव-गुरु', fs: '1.30rem' },
+  /*    …मुख्य शिव आराधना (मानस, पञ्चाक्षर, रुद्राष्टक, ताण्डव) */
+  { key: 'shiva', icon: '🔱', label: 'शिव', fs: '1.40rem' },
+  /* ६. अन्य पूरक देवी स्तुति */
   { key: 'saraswati-lakshmi', icon: '🌷', label: 'सरस्वती–लक्ष्मी', fs: '1.30rem' },
+  /* ७. क्षमायाचना र समर्पण (देवी क्षमा प्रार्थनाबाट सुरु) */
   { key: 'devyaparadha', icon: '🙏', label: 'देव्यपराध', fs: '1.45rem' },
+  /*    …क्षमा–समर्पण */
   { key: 'kshama', icon: '🙇', label: 'क्षमा–समर्पण', fs: '1.30rem' },
+  /* ८. जयजयकार */
   { key: 'jay', icon: '🚩', label: 'जयजयकार', fs: '1.30rem' },
+  /* ९. शान्ति */
   { key: 'shanti', icon: '🐚', label: 'शान्ति', fs: '1.40rem' },
 ];
 
@@ -1714,7 +1727,8 @@ const shlokasData = [
 
   @media (max-width: 600px) {
     .shloka {
-      font-size: calc(var(--fs-mobile, clamp(1rem, 5vw, var(--fs))) * var(--font-scale, 1));
+      /* --fit: JS (fitShlokas) ले सबैभन्दा लामो पङ्क्ति एकै लाइनमा अट्न जरुरी परे मात्र (<1) राख्छ */
+      font-size: calc(var(--fs-mobile, clamp(1rem, 5vw, var(--fs))) * var(--font-scale, 1) * var(--fit, 1));
     }
   }
 
@@ -2292,7 +2306,7 @@ html[data-fx="off"] .gp { display: none; }
       </div>
       <div class="hb-group desk-only" role="group" aria-label="स्क्रोल गति">
         <button class="font-btn" type="button" data-speed-step="-2" aria-label="स्क्रोल गति घटाउनुहोस्">−</button>
-        <span class="hb-val js-speed-val" style="min-width:52px">12 px/s</span>
+        <span class="hb-val js-speed-val" style="min-width:52px">16 px/s</span>
         <button class="font-btn" type="button" data-speed-step="2" aria-label="स्क्रोल गति बढाउनुहोस्">+</button>
       </div>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="उज्यालो/अँध्यारो मोड">🌙</button>
@@ -2596,7 +2610,7 @@ let autoScrollRAF = null;       // requestAnimationFrame ID
 let autoScrollLastTs = null;
 let autoScrollPauseTimer = null;
 let autoScrollRemainder = 0;    // sub-pixel क्यारी-ओभर (scrollBy ले १px भन्दा सानो चाल बेवास्ता गर्छ)
-let autoScrollSpeed = 12;       // पिक्सेल प्रति सेकेन्ड — प्रयोगकर्ताले बदल्न सक्ने गति
+let autoScrollSpeed = 16;       // पिक्सेल प्रति सेकेन्ड — प्रयोगकर्ताले बदल्न सक्ने गति
 
 const SPEED_MIN = 4, SPEED_MAX = 60, SPEED_STEP = 2;
 let speedHoldDelay = null, speedHoldTimer = null;
@@ -2612,7 +2626,7 @@ let speedHoldDelay = null, speedHoldTimer = null;
     '</div>' +
     '<div class="banner-ctl banner-ctl-speed" role="group" aria-label="स्क्रोल गति नियन्त्रण">' +
       '<button type="button" class="bc-btn sym" data-speed-step="-2" aria-label="स्क्रोल गति घटाउनुहोस्">−</button>' +
-      '<span class="bc-val js-speed-val" aria-live="polite">12 px/s</span>' +
+      '<span class="bc-val js-speed-val" aria-live="polite">16 px/s</span>' +
       '<button type="button" class="bc-btn sym" data-speed-step="2" aria-label="स्क्रोल गति बढाउनुहोस्">+</button>' +
     '</div>';
   document.querySelectorAll('.deity-banner .banner-overlay').forEach(ov => {
@@ -3264,6 +3278,55 @@ if ('serviceWorker' in navigator) {
   });
 
   window.onTabChanged(currentActiveTab);
+})();
+// ── श्लोक-फिट (मोबाइल, जस्तै ३९३px चौडाइ): सबैभन्दा लामो पङ्क्ति एकै लाइनमा नअटे मात्र
+//    त्यो स्तोत्रको अक्षर घटाइन्छ (न्यूनतम १५.५px)। अटेको स्तोत्रको साइज जस्ताको तस्तै रहन्छ।
+//    नाप फोनमा वास्तविक लोड भएको फन्टले लिइन्छ, त्यसैले फन्ट फरक भए पनि सही हुन्छ।
+//    A−/A+ को ज़ूम यसको माथि लाग्छ (प्रयोगकर्ताले बढाएमा बढ्छ)। ──
+(function shlokaFit() {
+  const MIN_PX = 15.5;
+  const SAFE = 0.98;                          // २% सुरक्षा-मार्जिन
+  const mq = window.matchMedia('(max-width: 600px)');
+  window.fitShlokas = function () {
+    const sec = document.querySelector('.stotra-section.active');
+    if (!sec) return;
+    const els = Array.from(sec.querySelectorAll('.shloka')).filter(el => !el.closest('.closing-block'));
+    els.forEach(el => el.style.removeProperty('--fit'));
+    if (!mq.matches) return;                  // डेस्कटप/ट्याब्लेटमा यथावत्
+    // वास्तविक रेन्डर भएको नाप: पङ्क्ति नभाँचिने (white-space:pre) बनाएर scrollWidth = सबैभन्दा लामो पङ्क्ति
+    // (श्लोक-सङ्ख्या ॥१॥ जस्ता बोल्ड/स्टाइल गरिएका अंशसहित)। सबै एकैपटक लेखेर, एकैपटक पढेर, फेरि फर्काउने।
+    els.forEach(el => { el.dataset.ws = el.style.whiteSpace; el.style.whiteSpace = 'pre'; });
+    const jobs = els.map(el => {
+      const cs = getComputedStyle(el);
+      const pad = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+      return { el, avail: el.clientWidth - pad, need: el.scrollWidth - pad,
+               base: parseFloat(cs.fontSize) / (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-scale')) || 1) };
+    });
+    els.forEach(el => { el.style.whiteSpace = el.dataset.ws || ''; delete el.dataset.ws; });
+    jobs.forEach(({ el, avail, need, base }) => {
+      if (!avail || !need || !base) return;
+      // scrollWidth कहिल्यै clientWidth भन्दा सानो हुँदैन — बराबर/सानो भए पङ्क्ति अटिहाल्छ, नछुने
+      if (need <= avail) return;
+      const px = Math.max(MIN_PX, base * (avail * SAFE) / need);
+      el.style.setProperty('--fit', (px / base).toFixed(4));
+    });
+  };
+
+  // ट्याब बदलिँदा (नयाँ सेक्सन देखिएपछि), फन्ट लोड हुँदा, स्क्रिन घुमाउँदा/साइज बदलिँदा पुनः नाप्ने
+  const prev = window.onTabChanged;
+  window.onTabChanged = function () {
+    if (typeof prev === 'function') prev.apply(this, arguments);
+    window.fitShlokas();
+  };
+  let t = null;
+  const later = () => { clearTimeout(t); t = setTimeout(window.fitShlokas, 120); };
+  window.addEventListener('resize', later, { passive: true });
+  if (mq.addEventListener) mq.addEventListener('change', window.fitShlokas);
+  if (document.fonts) {
+    if (document.fonts.ready) document.fonts.ready.then(window.fitShlokas);
+    if (document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', later);
+  }
+  window.fitShlokas();
 })();
 </script>
 </body>
