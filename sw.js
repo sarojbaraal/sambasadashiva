@@ -1,5 +1,5 @@
 // ── Service Worker for Daily Stotra Path PWA ──
-const CACHE_NAME = 'stotra-app-v5'; 
+const CACHE_NAME = 'stotra-app-v6'; 
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
